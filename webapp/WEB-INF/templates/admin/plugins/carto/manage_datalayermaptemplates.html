@@ -1,0 +1,66 @@
+<#include "managecarto_tabs.html" />
+<@tabs2 tab="datalayermaptemplate" />
+
+<@box>
+	<@boxHeader title='#i18n{carto.manage_datalayermaptemplate.title}' boxTools=true>
+		<@tform class='form-inline pull-right' name='manage_datalayermaptemplate' action='jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp'>
+			<@button type='submit' name='view_createDataLayerMapTemplate' buttonIcon='plus' title='#i18n{carto.manage_datalayermaptemplates.buttonAdd}' />
+		</@tform>
+	</@boxHeader>
+	<@boxBody>    
+    <@messages infos=infos />
+    <@paginationAdmin paginator=paginator combo=1 />
+    <div class="clearfix"></div>
+    <@table>
+        <tr>
+            <th>#i18n{carto.manage_datalayermaptemplates.columnIdMapTemplate}</th>
+            <th>#i18n{carto.manage_datalayermaptemplates.columnIdDataLayer}</th>
+            <th>#i18n{carto.manage_datalayermaptemplates.columnPictogram}</th>
+            <th>#i18n{carto.manage_datalayermaptemplates.columnZoomMin}</th>
+            <th>#i18n{carto.manage_datalayermaptemplates.columnZoomMax}</th>
+            <th>#i18n{carto.manage_datalayermaptemplates.columnLayerType}</th>
+            <th>#i18n{carto.manage_datalayermaptemplates.columnColor}</th>
+            <th>#i18n{carto.manage_datalayermaptemplates.columnThickness}</th>
+            <th>#i18n{portal.util.labelActions}</th>
+        </tr>
+        <@tableHeadBodySeparator />
+        <#list datalayermaptemplate_list as datalayermaptemplate >
+        <tr>
+            <td>
+				${datalayermaptemplate.idMapTemplate}
+			</td>
+            <td>
+				${datalayermaptemplate.idDataLayer}
+			</td>
+            <td>
+				<@icon prefix='fa fa-' style='${datalayermaptemplate.pictogram}'  params='style="font-size:48px"'  />
+			</td>
+            <td>
+				${datalayermaptemplate.zoomMin}
+			</td>
+            <td>
+				${datalayermaptemplate.zoomMax}
+			</td>
+            <td>
+				${datalayermaptemplate.layerType}
+			</td>
+            <td>
+				${datalayermaptemplate.color}
+			</td>
+            <td>
+				${datalayermaptemplate.thickness}
+			</td>
+        	<td>
+				<@aButton href='jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp?view=modifyDataLayerMapTemplate&id=${datalayermaptemplate.id}' title='#i18n{portal.util.labelModify}' hideTitle=['all'] buttonIcon='pencil' />
+						
+				<@aButton href='jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp?action=confirmRemoveDataLayerMapTemplate&id=${datalayermaptemplate.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='btn-danger'  />
+
+	        </td>
+        </tr>
+        </#list>
+    </@table>
+
+    <@paginationAdmin paginator=paginator />
+
+  </@boxBody>
+</@box>

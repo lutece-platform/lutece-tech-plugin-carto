@@ -50,13 +50,13 @@ import java.util.Optional;
 public final class CoordonneeDAO implements ICoordonneeDAO
 {
     // Constants
-    private static final String SQL_QUERY_SELECT = "SELECT id_coordonnee, adresse, coordonnee_x, coordonnee_y, geojson FROM carto_coordonnee WHERE id_coordonnee = ?";
-    private static final String SQL_QUERY_INSERT = "INSERT INTO carto_coordonnee ( adresse, coordonnee_x, coordonnee_y, geojson ) VALUES ( ?, ?, ?, ? ) ";
+    private static final String SQL_QUERY_SELECT = "SELECT id_coordonnee, adresse, coordonnee_x, coordonnee_y, geojson, fk_id_data_layer FROM carto_coordonnee WHERE id_coordonnee = ?";
+    private static final String SQL_QUERY_INSERT = "INSERT INTO carto_coordonnee ( adresse, coordonnee_x, coordonnee_y, geojson, fk_id_data_layer ) VALUES ( ?, ?, ?, ?, ? ) ";
     private static final String SQL_QUERY_DELETE = "DELETE FROM carto_coordonnee WHERE id_coordonnee = ? ";
-    private static final String SQL_QUERY_UPDATE = "UPDATE carto_coordonnee SET id_coordonnee = ?, adresse = ?, coordonnee_x = ?, coordonnee_y = ?, geojson = ? WHERE id_coordonnee = ?";
-    private static final String SQL_QUERY_SELECTALL = "SELECT id_coordonnee, adresse, coordonnee_x, coordonnee_y, geojson FROM carto_coordonnee";
+    private static final String SQL_QUERY_UPDATE = "UPDATE carto_coordonnee SET id_coordonnee = ?, adresse = ?, coordonnee_x = ?, coordonnee_y = ?, geojson = ?, fk_id_data_layer = ? WHERE id_coordonnee = ?";
+    private static final String SQL_QUERY_SELECTALL = "SELECT id_coordonnee, adresse, coordonnee_x, coordonnee_y, geojson, fk_id_data_layer FROM carto_coordonnee";
     private static final String SQL_QUERY_SELECTALL_ID = "SELECT id_coordonnee FROM carto_coordonnee";
-    private static final String SQL_QUERY_SELECTALL_BY_IDS = "SELECT id_coordonnee, adresse, coordonnee_x, coordonnee_y, geojson FROM carto_coordonnee WHERE id_coordonnee IN (  ";
+    private static final String SQL_QUERY_SELECTALL_BY_IDS = "SELECT id_coordonnee, adresse, coordonnee_x, coordonnee_y, geojson, fk_id_data_layer FROM carto_coordonnee WHERE id_coordonnee IN (  ";
 
     /**
      * {@inheritDoc }
@@ -71,6 +71,7 @@ public final class CoordonneeDAO implements ICoordonneeDAO
             daoUtil.setDouble( nIndex++ , coordonnee.getCoordonneeX( ) );
             daoUtil.setDouble( nIndex++ , coordonnee.getCoordonneeY( ) );
             daoUtil.setString( nIndex++ , coordonnee.getGeoJson( ) );
+            daoUtil.setInt( nIndex++, coordonnee.getDataLayer( ).getId( ) );
             
             daoUtil.executeUpdate( );
             if ( daoUtil.nextGeneratedKey( ) ) 
@@ -102,7 +103,12 @@ public final class CoordonneeDAO implements ICoordonneeDAO
 			    coordonnee.setAdresse( daoUtil.getString( nIndex++ ) );
 			    coordonnee.setCoordonneeX( daoUtil.getDouble( nIndex++ ) );
 			    coordonnee.setCoordonneeY( daoUtil.getDouble( nIndex++ ) );
-			    coordonnee.setGeoJson( daoUtil.getString( nIndex ) );
+			    coordonnee.setGeoJson( daoUtil.getString( nIndex++ ) );
+			    Optional<DataLayer> dataLyer = DataLayerHome.findByPrimaryKey( daoUtil.getInt( nIndex) );
+			    if ( dataLyer.isPresent( ) )
+			    {
+			    	coordonnee.setDataLayer( dataLyer.get( ) );
+			    }
 	        }
 	
 	        return Optional.ofNullable( coordonnee );
@@ -137,6 +143,7 @@ public final class CoordonneeDAO implements ICoordonneeDAO
             	daoUtil.setDouble( nIndex++ , coordonnee.getCoordonneeX( ) );
             	daoUtil.setDouble( nIndex++ , coordonnee.getCoordonneeY( ) );
             	daoUtil.setString( nIndex++ , coordonnee.getGeoJson( ) );
+            	daoUtil.setInt( nIndex++, coordonnee.getDataLayer( ).getId( ) );
 	        daoUtil.setInt( nIndex , coordonnee.getId( ) );
 	
 	        daoUtil.executeUpdate( );
@@ -163,7 +170,12 @@ public final class CoordonneeDAO implements ICoordonneeDAO
 			    coordonnee.setAdresse( daoUtil.getString( nIndex++ ) );
 			    coordonnee.setCoordonneeX( daoUtil.getDouble( nIndex++ ) );
 			    coordonnee.setCoordonneeY( daoUtil.getDouble( nIndex++ ) );
-			    coordonnee.setGeoJson( daoUtil.getString( nIndex ) );
+			    coordonnee.setGeoJson( daoUtil.getString( nIndex++ ) );
+			    Optional<DataLayer> dataLyer = DataLayerHome.findByPrimaryKey( daoUtil.getInt( nIndex) );
+			    if ( dataLyer.isPresent( ) )
+			    {
+			    	coordonnee.setDataLayer( dataLyer.get( ) );
+			    }
 	
 	            coordonneeList.add( coordonnee );
 	        }
@@ -248,7 +260,12 @@ public final class CoordonneeDAO implements ICoordonneeDAO
 				    coordonnee.setAdresse( daoUtil.getString( nIndex++ ) );
 				    coordonnee.setCoordonneeX( daoUtil.getDouble( nIndex++ ) );
 				    coordonnee.setCoordonneeY( daoUtil.getDouble( nIndex++ ) );
-				    coordonnee.setGeoJson( daoUtil.getString( nIndex ) );
+				    coordonnee.setGeoJson( daoUtil.getString( nIndex++ ) );
+				    Optional<DataLayer> dataLyer = DataLayerHome.findByPrimaryKey( daoUtil.getInt( nIndex) );
+				    if ( dataLyer.isPresent( ) )
+				    {
+				    	coordonnee.setDataLayer( dataLyer.get( ) );
+				    }
 		            
 		            coordonneeList.add( coordonnee );
 		        }

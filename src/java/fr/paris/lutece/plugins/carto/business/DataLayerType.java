@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2022, City of Paris
+ * Copyright (c) 2002-2023, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,26 +37,22 @@ import javax.validation.constraints.Size;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 /**
- * This is the business class for the object Coordonnee
+ * This is the business class for the object DataLayerType
  */ 
-public class Coordonnee implements Serializable
+public class DataLayerType implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
     // Variables declarations 
     private int _nId;
     
-    @NotEmpty( message = "#i18n{carto.validation.coordonnee.Adresse.notEmpty}" )
-    @Size( max = 255 , message = "#i18n{carto.validation.coordonnee.Adresse.size}" ) 
-    private String _strAdresse;
+    @NotEmpty( message = "#i18n{carto.validation.datalayertype.Title.notEmpty}" )
+    @Size( max = 255 , message = "#i18n{carto.validation.datalayertype.Title.size}" ) 
+    private String _strTitle;
     
-    private Double _nCoordonneeX;
+    private boolean _bEditable;
     
-    private Double _nCoordonneeY;
-    
-    private String _strGeoJson;
-    
-    private DataLayer _dataLayer;
+    private boolean _bSearchableByOthers;
 
     /**
      * Returns the Id
@@ -77,75 +73,59 @@ public class Coordonnee implements Serializable
     }
     
     /**
-     * Returns the Adresse
-     * @return The Adresse
+     * Returns the Title
+     * @return The Title
      */
-    public String getAdresse( )
+    public String getTitle( )
     {
-        return _strAdresse;
+        return _strTitle;
     }
 
     /**
-     * Sets the Adresse
-     * @param strAdresse The Adresse
+     * Sets the Title
+     * @param strTitle The Title
      */ 
-    public void setAdresse( String strAdresse )
+    public void setTitle( String strTitle )
     {
-        _strAdresse = strAdresse;
+        _strTitle = strTitle;
     }
     
     
     /**
-     * Returns the CoordonneeX
-     * @return The CoordonneeX
+     * Returns the Editable
+     * @return The Editable
      */
-    public double getCoordonneeX( )
+    public boolean getEditable( )
     {
-        return _nCoordonneeX;
+        return _bEditable;
     }
 
     /**
-     * Sets the CoordonneeX
-     * @param nCoordonneeX The CoordonneeX
+     * Sets the Editable
+     * @param bEditable The Editable
      */ 
-    public void setCoordonneeX( Double nCoordonneeX )
+    public void setEditable( boolean bEditable )
     {
-        _nCoordonneeX = nCoordonneeX;
+        _bEditable = bEditable;
     }
     
     
     /**
-     * Returns the CoordonneeY
-     * @return The CoordonneeY
+     * Returns the SearchableByOthers
+     * @return The SearchableByOthers
      */
-    public double getCoordonneeY( )
+    public boolean getSearchableByOthers( )
     {
-        return _nCoordonneeY;
+        return _bSearchableByOthers;
     }
 
     /**
-     * Sets the CoordonneeY
-     * @param nCoordonneeY The CoordonneeY
+     * Sets the SearchableByOthers
+     * @param bSearchableByOthers The SearchableByOthers
      */ 
-    public void setCoordonneeY( Double nCoordonneeY )
+    public void setSearchableByOthers( boolean bSearchableByOthers )
     {
-        _nCoordonneeY = nCoordonneeY;
+        _bSearchableByOthers = bSearchableByOthers;
     }
-
-	public String getGeoJson() {
-		return _strGeoJson;
-	}
-
-	public void setGeoJson(String _strGeoJson) {
-		this._strGeoJson = _strGeoJson;
-	}
-
-	public DataLayer getDataLayer() {
-		return _dataLayer;
-	}
-
-	public void setDataLayer(DataLayer _dataLayer) {
-		this._dataLayer = _dataLayer;
-	}
     
 }

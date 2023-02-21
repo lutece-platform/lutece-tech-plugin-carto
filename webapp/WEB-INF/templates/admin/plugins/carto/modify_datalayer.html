@@ -1,0 +1,25 @@
+<#include "managecarto_tabs.html" />
+<@tabs2 tab="datalayer" />
+
+
+<@box>
+	<@boxHeader title='#i18n{carto.modify_datalayer.title}' />
+	<@boxBody>
+    <@tform class="form-horizontal" method="post" name="modify_datalayer" action="jsp/admin/plugins/carto/ManageDataLayers.jsp" >
+			<@messages errors=errors />
+			<@input type="hidden" id="id" name="id" value="${datalayer.id}"/>
+			<@input type="hidden" value="${token}" name="token" />
+			
+			<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayer.labelTitle}' mandatory=true>
+				<@input type='text' id='title' name='title'  maxlength=255 value='${datalayer.title!\'\'}' tabIndex='0' />
+			</@formGroup>
+			<@formGroup labelFor='solr_tag' labelKey='#i18n{carto.modify_datalayer.labelSolrTag}' mandatory=true>
+				<@input type='text' id='solr_tag' name='solr_tag'  maxlength=255 value='${datalayer.solrTag!\'\'}' tabIndex='1' />
+			</@formGroup>
+			<@formGroup labelFor='geometry' labelKey='#i18n{carto.modify_datalayer.labelGeometry}' mandatory=true>
+				<@select name='geometry' items=list_geo_type id='geometry' default_value='${datalayer.geometryType.id!\'\'}' />
+			</@formGroup>
+        <@actionButtons button1Name="action_modifyDataLayer" button2Name="view_manageDataLayer"/>
+    </@tform>
+	</@boxBody>
+</@box>

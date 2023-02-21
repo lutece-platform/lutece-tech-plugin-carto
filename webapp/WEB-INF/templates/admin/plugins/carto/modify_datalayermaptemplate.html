@@ -1,0 +1,40 @@
+<#include "managecarto_tabs.html" />
+<@tabs2 tab="datalayermaptemplate" />
+
+
+<@box>
+	<@boxHeader title='#i18n{carto.modify_datalayermaptemplate.title}' />
+	<@boxBody>
+    <@tform class="form-horizontal" method="post" name="modify_datalayermaptemplate" action="jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp" >
+			<@messages errors=errors />
+			<@input type="hidden" id="id" name="id" value="${datalayermaptemplate.id}"/>
+			<@input type="hidden" value="${token}" name="token" />
+			
+			<@formGroup labelFor='id_map_template' labelKey='#i18n{carto.modify_datalayermaptemplate.labelIdMapTemplate}' mandatory=true>
+				<@select name='id_map_template' items=reflist_map_template id='id_map_template' default_value='${datalayermaptemplate.idMapTemplate!\'\'}' />
+			</@formGroup>
+			<@formGroup labelFor='id_data_layer' labelKey='#i18n{carto.modify_datalayermaptemplate.labelIdDataLayer}' mandatory=true>
+				<@select name='id_data_layer' items=reflist_data_layer id='id_data_layer' default_value='${datalayermaptemplate.idDataLayer!\'\'}' />
+			</@formGroup>
+			<@formGroup labelFor='pictogram' labelKey='#i18n{carto.modify_datalayermaptemplate.labelPictogram}' mandatory=true>
+				<@selectIconFont id='pictogram' class='' name='pictogram' defaultValue='${datalayermaptemplate.pictogram!\'\'}' showListLabel=true showListIcon=true searchShow=true searchFocus=false searchHighlight=true type='yaml' prefix='fa' iconsUrl='https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/metadata/icons.yml' resources=true />
+			</@formGroup>
+			<@formGroup labelFor='zoom_min' labelKey='#i18n{carto.modify_datalayermaptemplate.labelZoomMin}' mandatory=true>
+				<@input type='text' id='zoom_min' name='zoom_min'  value='${datalayermaptemplate.zoomMin!\'\'}' tabIndex='3' />
+			</@formGroup>
+			<@formGroup labelFor='zoom_max' labelKey='#i18n{carto.modify_datalayermaptemplate.labelZoomMax}' mandatory=true>
+				<@input type='text' id='zoom_max' name='zoom_max'  value='${datalayermaptemplate.zoomMax!\'\'}' tabIndex='4' />
+			</@formGroup>
+			<@formGroup labelFor='layer_type' labelKey='#i18n{carto.modify_datalayermaptemplate.labelLayerType}' mandatory=true>
+				<@select name='layer_type' items=reflist_data_layer_type id='layer_type' default_value='${datalayermaptemplate.layerType!\'\'}' />
+			</@formGroup>
+			<@formGroup labelFor='color' labelKey='#i18n{carto.modify_datalayermaptemplate.labelColor}' mandatory=true>
+				<@input type='text' id='color' name='color'  maxlength=50 value='${datalayermaptemplate.color!\'\'}' tabIndex='6' />
+			</@formGroup>
+			<@formGroup labelFor='thickness' labelKey='#i18n{carto.modify_datalayermaptemplate.labelThickness}' mandatory=true>
+				<@input type='text' id='thickness' name='thickness'  value='${datalayermaptemplate.thickness!\'\'}' tabIndex='7' />
+			</@formGroup>
+        <@actionButtons button1Name="action_modifyDataLayerMapTemplate" button2Name="view_manageDataLayerMapTemplate"/>
+    </@tform>
+	</@boxBody>
+</@box>

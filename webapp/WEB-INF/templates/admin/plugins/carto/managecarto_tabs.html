@@ -4,6 +4,21 @@
 			<li <#if tab="coordonnee">class="active"</#if>>
 				<@aButton href="jsp/admin/plugins/carto/ManageCoordonnees.jsp">#i18n{carto.manage_coordonnees.pageTitle}</@aButton>
 			</li>
+			<li <#if tab="datalayer">class="active"</#if>>
+				<@aButton href="jsp/admin/plugins/carto/ManageDataLayers.jsp">#i18n{carto.manage_datalayers.pageTitle}</@aButton>
+			</li>
+			<li <#if tab="datalayermaptemplate">class="active"</#if>>
+				<@aButton href="jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp">#i18n{carto.manage_datalayermaptemplates.pageTitle}</@aButton>
+			</li>
+			<li <#if tab="maptemplate">class="active"</#if>>
+				<@aButton href="jsp/admin/plugins/carto/ManageMapTemplates.jsp">#i18n{carto.manage_maptemplates.pageTitle}</@aButton>
+			</li>
+			<li <#if tab="geometrytype">class="active"</#if>>
+				<@aButton href="jsp/admin/plugins/carto/ManageGeometryTypes.jsp">#i18n{carto.manage_geometrytypes.pageTitle}</@aButton>
+			</li>
+			<li <#if tab="datalayertype">class="active"</#if>>
+				<@aButton href="jsp/admin/plugins/carto/ManageDataLayerTypes.jsp">#i18n{carto.manage_datalayertypes.pageTitle}</@aButton>
+			</li>
 	</@tabList>
 </@tabs>
 

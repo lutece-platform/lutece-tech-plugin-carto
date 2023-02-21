@@ -154,6 +154,7 @@ public class SolrCoordonneeIndexer implements SolrIndexer
 
         //solrItem.addDynamicField( "coordonnee_geojson", coord.getGeoJson() );
         solrItem.addDynamicFieldGeoloc("coordonnee_geojson", coord.getGeoJson(), "Coordonnee");
+        solrItem.addDynamicField("DataLayer", String.valueOf( coord.getDataLayer( ).getId( ) ) );
     	
     	return solrItem;
     	

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2022, City of Paris
+ * Copyright (c) 2002-2023, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,26 +37,22 @@ import javax.validation.constraints.Size;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 /**
- * This is the business class for the object Coordonnee
+ * This is the business class for the object GeometryType
  */ 
-public class Coordonnee implements Serializable
+public class GeometryType implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
     // Variables declarations 
     private int _nId;
     
-    @NotEmpty( message = "#i18n{carto.validation.coordonnee.Adresse.notEmpty}" )
-    @Size( max = 255 , message = "#i18n{carto.validation.coordonnee.Adresse.size}" ) 
-    private String _strAdresse;
+    @NotEmpty( message = "#i18n{carto.validation.geometrytype.Name.notEmpty}" )
+    @Size( max = 255 , message = "#i18n{carto.validation.geometrytype.Name.size}" ) 
+    private String _strName;
     
-    private Double _nCoordonneeX;
-    
-    private Double _nCoordonneeY;
-    
-    private String _strGeoJson;
-    
-    private DataLayer _dataLayer;
+    @NotEmpty( message = "#i18n{carto.validation.geometrytype.TechnicalName.notEmpty}" )
+    @Size( max = 255 , message = "#i18n{carto.validation.geometrytype.TechnicalName.size}" ) 
+    private String _strTechnicalName;
 
     /**
      * Returns the Id
@@ -77,75 +73,40 @@ public class Coordonnee implements Serializable
     }
     
     /**
-     * Returns the Adresse
-     * @return The Adresse
+     * Returns the Name
+     * @return The Name
      */
-    public String getAdresse( )
+    public String getName( )
     {
-        return _strAdresse;
+        return _strName;
     }
 
     /**
-     * Sets the Adresse
-     * @param strAdresse The Adresse
+     * Sets the Name
+     * @param strName The Name
      */ 
-    public void setAdresse( String strAdresse )
+    public void setName( String strName )
     {
-        _strAdresse = strAdresse;
+        _strName = strName;
     }
     
     
     /**
-     * Returns the CoordonneeX
-     * @return The CoordonneeX
+     * Returns the TechnicalName
+     * @return The TechnicalName
      */
-    public double getCoordonneeX( )
+    public String getTechnicalName( )
     {
-        return _nCoordonneeX;
+        return _strTechnicalName;
     }
 
     /**
-     * Sets the CoordonneeX
-     * @param nCoordonneeX The CoordonneeX
+     * Sets the TechnicalName
+     * @param strTechnicalName The TechnicalName
      */ 
-    public void setCoordonneeX( Double nCoordonneeX )
+    public void setTechnicalName( String strTechnicalName )
     {
-        _nCoordonneeX = nCoordonneeX;
+        _strTechnicalName = strTechnicalName;
     }
-    
-    
-    /**
-     * Returns the CoordonneeY
-     * @return The CoordonneeY
-     */
-    public double getCoordonneeY( )
-    {
-        return _nCoordonneeY;
-    }
-
-    /**
-     * Sets the CoordonneeY
-     * @param nCoordonneeY The CoordonneeY
-     */ 
-    public void setCoordonneeY( Double nCoordonneeY )
-    {
-        _nCoordonneeY = nCoordonneeY;
-    }
-
-	public String getGeoJson() {
-		return _strGeoJson;
-	}
-
-	public void setGeoJson(String _strGeoJson) {
-		this._strGeoJson = _strGeoJson;
-	}
-
-	public DataLayer getDataLayer() {
-		return _dataLayer;
-	}
-
-	public void setDataLayer(DataLayer _dataLayer) {
-		this._dataLayer = _dataLayer;
-	}
     
 }

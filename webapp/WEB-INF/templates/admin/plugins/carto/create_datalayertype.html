@@ -1,0 +1,25 @@
+<#include "managecarto_tabs.html" />
+<@tabs2 tab="datalayertype" />
+<@box>
+	<@boxHeader title='#i18n{carto.create_datalayertype.title}' />
+	<@boxBody>
+    <@tform name='create_datalayertype' action='jsp/admin/plugins/carto/ManageDataLayerTypes.jsp' >
+
+        <@messages errors=errors />
+        <@input type="hidden" id="id" name="id"/>
+        <@input type="hidden" value="${token}" name="token" />
+
+		<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayertype.labelTitle}' mandatory=true>
+			<@input type='text' id='title' name='title'  maxlength=255 value='${datalayertype.title!\'\'}' tabIndex='0' />
+		</@formGroup>
+		<@formGroup labelFor='editable' labelKey='#i18n{carto.modify_datalayertype.labelEditable}' mandatory=true>
+          	<@checkBox id="editable" name="editable"  value="1" checked=datalayertype.editable!'false' tabIndex='1' />
+		</@formGroup>
+		<@formGroup labelFor='searchable_by_others' labelKey='#i18n{carto.modify_datalayertype.labelSearchableByOthers}' mandatory=true>
+          	<@checkBox id="searchable_by_others" name="searchable_by_others"  value="1" checked=datalayertype.searchableByOthers!'false' tabIndex='2' />
+		</@formGroup>
+				
+		<@actionButtons button1Name="action_createDataLayerType" button2Name="view_manageDataLayerType"/>
+    </@tform>
+	</@boxBody>
+</@box>

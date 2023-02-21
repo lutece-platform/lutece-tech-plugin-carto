@@ -5,6 +5,11 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" >
 
     <bean id="carto.coordonneeDAO" class="fr.paris.lutece.plugins.carto.business.CoordonneeDAO" />
+    <bean id="carto.mapTemplateDAO" class="fr.paris.lutece.plugins.carto.business.MapTemplateDAO" />
+    <bean id="carto.dataLayerDAO" class="fr.paris.lutece.plugins.carto.business.DataLayerDAO" />
+    <bean id="carto.dataLayerMapTemplateDAO" class="fr.paris.lutece.plugins.carto.business.DataLayerMapTemplateDAO" />
+    <bean id="carto.geometryTypeDAO" class="fr.paris.lutece.plugins.carto.business.GeometryTypeDAO" />
+    <bean id="carto.dataLayerTypeDAO" class="fr.paris.lutece.plugins.carto.business.DataLayerTypeDAO" />
 
 	<!-- Indexer -->
     <bean id="solr.solrCoordonneeIndexer"

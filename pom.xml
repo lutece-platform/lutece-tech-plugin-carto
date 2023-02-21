@@ -91,8 +91,20 @@
 			<version>[1.0.3,)</version>
 			<type>lutece-plugin</type>
 		</dependency>
-
-
+		 
+		<dependency>
+			<groupId>fr.paris.lutece.plugins</groupId>
+			<artifactId>module-address-autocomplete</artifactId>
+			<version>[1.1.2,)</version>
+			<type>lutece-plugin</type>
+			<exclusions>
+	        <exclusion> 
+	          <groupId>javax.xml.bind</groupId>
+	            <artifactId>jaxb-api</artifactId>
+	        </exclusion>
+	      </exclusions> 
+		</dependency>
+		
     </dependencies>
 
     <properties>

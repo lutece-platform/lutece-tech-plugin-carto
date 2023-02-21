@@ -14,7 +14,7 @@
 
 
 
-
+<link href="css/admin/style/bootstrap4/all.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="js/jquery/plugins/toastr/toastr.min.css" >
 <script src="js/jquery/plugins/toastr/toastr.min.js"></script>
 <script type="text/javascript">
@@ -66,12 +66,15 @@ document.getElementsByTagName("head")[0].appendChild(loadresource);
 
 <script type="text/javascript">
 $(window).on('load', function(){
-    map = L.map('forms-admin-map').setView([48.85632, 2.33272], 12);
+	var defaultZoom = ${mapLoaded.defaultZoom};
+    map = L.map('forms-admin-map').setView([48.85632, 2.33272], defaultZoom);
     //var points = JSON.parse($("#geojson_points").text());
     // create the tile layer with correct attribution
     var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
-    var osm = new L.TileLayer(osmUrl, {minZoom: 8, maxZoom: 16, attribution: osmAttrib}).addTo(map);
+    var zoomMin = ${mapLoaded.zoomMin};
+    var zoomMax = ${mapLoaded.zoomMax};
+    var osm = new L.TileLayer(osmUrl, {minZoom: zoomMin, maxZoom: zoomMax, attribution: osmAttrib}).addTo(map);
     //var markers = L.markerClusterGroup().addTo(map);
     
     
@@ -191,7 +194,9 @@ $(window).on('load', function(){
                 "type": "${point.type}",
                 "code": "${point.code}",
                 "id": "${point.id}",
-                "geojson": ${point.geojson}
+                "geojson": ${point.geojson},
+                "datalayertitle" : "${point.data_layer_title}",
+                "iconPoint" : "<i class='fa fa-${point.iconPoint.pictogram} fa-4x'></i>"
             }<#if point_has_next>,</#if>
             </#list>
         ];
@@ -209,7 +214,7 @@ $(window).on('load', function(){
                 layer = properties["layer"];
             }
             if (!layer) {
-                layer = points[i]["code"];
+                layer = points[i]["datalayertitle"];
             }
             if (typeof(marker_clusters[layer]) != "undefined") {
                 markers = marker_clusters[layer];
@@ -241,8 +246,14 @@ $(window).on('load', function(){
                 marker_icons[layer] = icon;
             }
             
+            //Icon
+            const fontAwesomeIcon = L.divIcon({
+			    html: points[i]["iconPoint"],
+			    iconSize: [5, 5],
+			    className: 'myDivIcon'
+			});
             if ( points[i]["geojson"]["geometry"]["type"] == "Point" ) {
-	            var marker = L.marker([points[i]["geojson"]["geometry"]["coordinates"][1],points[i]["geojson"]["geometry"]["coordinates"][0]] ,{icon: icon});
+	            var marker = L.marker([points[i]["geojson"]["geometry"]["coordinates"][1],points[i]["geojson"]["geometry"]["coordinates"][0]] ,{icon: fontAwesomeIcon});
 	
 	            if ( (typeof(properties) != 'undefined') && (typeof(properties["popupContent"]) != 'undefined') ) {
 	                if (properties["popupContent"]) {
@@ -281,14 +292,16 @@ $(window).on('load', function(){
 //		var inverse = L.GeoJSON.coordsToLatLng(aPolygon)
     		    
     		var polygon = L.polygon(aPolygon, {color: 'red'});
-                polygon.addTo(map);
+            //polygon.addTo(map);
+    		markers.addLayer(polygon);
             
             
             }
 			else if ( points[i]["geojson"]["geometry"]["type"] == "Polyline" ) {
             	var aPolyline = points[i]["geojson"]["geometry"]["coordinates"];
     			var polyline = L.polyline(aPolyline, {color: 'red'});
-                polyline.addTo(map);
+                //polyline.addTo(map);
+    			markers.addLayer(polyline);
             }
         }
         for (var markers in marker_clusters) {
@@ -390,6 +403,23 @@ $(window).on('load', function(){
 	// Initialise the draw control and pass it the FeatureGroup of editable layers
 	var drawControl = new L.Control.Draw(drawPluginOptions);
 	map.addControl(drawControl);
+	
+	var typeDraw = "${data_layer_editable.geometryType.technicalName}";
+	if ( typeDraw === 'Point' )
+	{
+		$('.leaflet-draw-draw-polygon').hide();
+		$('.leaflet-draw-draw-polyline').hide();	
+	}
+	else if ( typeDraw === 'Polygon' )
+	{
+		$('.leaflet-draw-draw-marker').hide();
+		$('.leaflet-draw-draw-polyline').hide();	
+	}
+	else if ( typeDraw === 'Polyline' )
+	{
+		$('.leaflet-draw-draw-polygon').hide();
+		$('.leaflet-draw-draw-marker').hide();	
+	}
 	
 	//var editableLayers = new L.FeatureGroup();
 	//map.addLayer(editableLayers);
@@ -639,7 +669,8 @@ $( function(){
 				<@input name="coordonnex" id="coordonnex"/>
 				<@input name="coordonney" id="coordonney" />
 				<@input name="coordonnepolygon" id="coordonnepolygon" />
-				<@input name="coordonnepolyline" id="coordonnepolyline" />    
+				<@input name="coordonnepolyline" id="coordonnepolyline" />
+				<@input name="iddatalayer" id="iddatalayer" value='${data_layer_editable.id!\'\'}' />    
 
         		<@formGroup>
           			<@button id='action_createCoordonnee' name='action_createCoordonnee' type='submit' tabIndex='3' title='#i18n{portal.util.labelCreate}' buttonIcon='plus' />

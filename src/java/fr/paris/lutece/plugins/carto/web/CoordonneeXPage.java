@@ -36,6 +36,12 @@ package fr.paris.lutece.plugins.carto.web;
 
 import fr.paris.lutece.plugins.carto.business.Coordonnee;
 import fr.paris.lutece.plugins.carto.business.CoordonneeHome;
+import fr.paris.lutece.plugins.carto.business.DataLayer;
+import fr.paris.lutece.plugins.carto.business.DataLayerHome;
+import fr.paris.lutece.plugins.carto.business.DataLayerMapTemplate;
+import fr.paris.lutece.plugins.carto.business.DataLayerMapTemplateHome;
+import fr.paris.lutece.plugins.carto.business.MapTemplate;
+import fr.paris.lutece.plugins.carto.business.MapTemplateHome;
 import fr.paris.lutece.plugins.forms.business.Form;
 import fr.paris.lutece.plugins.forms.business.FormQuestionResponse;
 import fr.paris.lutece.plugins.forms.business.FormResponse;
@@ -44,6 +50,7 @@ import fr.paris.lutece.plugins.forms.modules.solr.service.Utilities;
 import fr.paris.lutece.plugins.leaflet.business.GeolocItem;
 import fr.paris.lutece.plugins.leaflet.business.GeolocItemPolygon;
 import fr.paris.lutece.plugins.leaflet.service.IconService;
+import fr.paris.lutece.plugins.search.solr.business.SolrFacetedResult;
 import fr.paris.lutece.plugins.search.solr.business.SolrSearchAppConf;
 import fr.paris.lutece.plugins.search.solr.business.SolrSearchEngine;
 import fr.paris.lutece.plugins.search.solr.business.SolrSearchResult;
@@ -109,7 +116,6 @@ public class CoordonneeXPage extends MVCApplication
     private static final String ACTION_MODIFY_COORDONNEE = "modifyCoordonnee";
     private static final String ACTION_REMOVE_COORDONNEE = "removeCoordonnee";
     private static final String ACTION_CONFIRM_REMOVE_COORDONNEE = "confirmRemoveCoordonnee";
-    private static final String ACTION_CREATE_NEW_POINT = "createPoint";
 
     // Infos
     private static final String INFO_COORDONNEE_CREATED = "carto.info.coordonnee.created";
@@ -124,6 +130,11 @@ public class CoordonneeXPage extends MVCApplication
     private static final String MARK_POINTS_ID = "id";
     private static final String MARK_POINTS_FIELDCODE = "code";
     private static final String MARK_POINTS_TYPE = "type";
+    private static final String MARK_DATA_LAYER_TITLE = "data_layer_title";
+    private static final String MARK_DATA_LAYER = "data_layer";
+    private static final String MARK_LAYER_EDITABLE = "data_layer_editable";
+    private static final String MARK_MAP = "mapLoaded";
+    private static final String MARK_ICON = "iconPoint";
     
     // Session variable to store working values
     private Coordonnee _coordonnee;
@@ -137,7 +148,10 @@ public class CoordonneeXPage extends MVCApplication
     public XPage getManageCoordonnees( HttpServletRequest request )
     {
         _coordonnee = null;
-        List<Coordonnee> listCoordonnees = CoordonneeHome.getCoordonneesList(  );
+        
+        //Charger map par defaut.
+        MapTemplate map = MapTemplateHome.findByPrimaryKey(1).get();
+        //List<Coordonnee> listCoordonnees = CoordonneeHome.getCoordonneesList(  );
         
         SolrSearchEngine engine = SolrSearchEngine.getInstance( );
         
@@ -149,18 +163,34 @@ public class CoordonneeXPage extends MVCApplication
             // Use default conf if the requested one doesn't exist
             conf = SolrSearchAppConfService.loadConfiguration( null );
         }
+        /*
+        SolrFacetedResult facetedResult = engine.getFacetedSearchResults( "*:*", new String [] {conf.getFieldList()}, null, "uid","asc", 100, 1 ,
+                100, false );
+        List<SolrSearchResult> listResults = facetedResult.getSolrSearchResults( );
+        */
         
-        List<HashMap<String, Object>> points = null;
-        if ( !conf.getExtraMappingQuery( ) )
+        List<HashMap<String, Object>> points = new ArrayList<HashMap<String, Object>> ();
+        List<DataLayer> lstDatalayer = DataLayerMapTemplateHome.getDataLayerListByMapTemplateId( map.getId() );
+        Optional<DataLayer> dataLayerEditable  = DataLayerHome.findEditableDataLayerFromMapId( map.getId( ) );
+        //StringBuilder query = new StringBuilder("DataLayer_text:");
+        for (DataLayer datalayer : lstDatalayer)
         {
-            List<SolrSearchResult> listResultsGeoloc = engine.getGeolocSearchResults( "*:*", null, 100 );
-            points = getGeolocModel( listResultsGeoloc );
+        	//query.append(datalayer.getId()).append("+");
+        	List<SolrSearchResult> listResultsGeoloc = engine.getGeolocSearchResults( "DataLayer_text:"+datalayer.getId( ), null, 100 );
+        	Optional<DataLayerMapTemplate> dataLayerMapTemplate = DataLayerMapTemplateHome.findByIdMapKeyIdDataLayerKey( map.getId( ), datalayer.getId( ) );
+        	points.addAll( getGeolocModel( listResultsGeoloc, datalayer, dataLayerMapTemplate.get( ) ) );
         }
+
+        //List<SolrSearchResult> listResultsGeoloc = engine.getGeolocSearchResults( query.toString( ), null, 100 );
+        //points = getGeolocModel( listResultsGeoloc );
+        
 
         
         Map<String, Object> model = getModel(  );
-        model.put( MARK_COORDONNEE_LIST, listCoordonnees );
+        //model.put( MARK_COORDONNEE_LIST, listCoordonnees );
         model.put( MARK_POINTS, points );
+        model.put( MARK_MAP, map );
+        model.put( MARK_LAYER_EDITABLE, dataLayerEditable.get( ) );
         
         return getXPage( TEMPLATE_MANAGE_COORDONNEES, getLocale( request ), model );
     }
@@ -221,6 +251,7 @@ public class CoordonneeXPage extends MVCApplication
                     h.put( MARK_POINTS_ID, result.getId( ).substring( result.getId( ).indexOf( '_' ) + 1, result.getId( ).lastIndexOf( '_' ) ) );
                     h.put( MARK_POINTS_FIELDCODE, entry.getKey( ).substring( 0, entry.getKey( ).lastIndexOf( '_' ) ) );
                     h.put( MARK_POINTS_TYPE, strType );
+                    h.put( MARK_ICON, iconKeysCache);
                     points.add( h );
                 }
             }
@@ -229,34 +260,71 @@ public class CoordonneeXPage extends MVCApplication
     }
     
     /**
-     * Process the data capture form of a new coordonnee
-     *
-     * @param request The Http Request
-     * @return The Jsp URL of the process result
-     * @throws AccessDeniedException
+     * Returns a model with points data from a geoloc search
+     * 
+     * @param listResultsGeoloc
+     *            the result of a search
+     * @return the model
      */
-    @Action( ACTION_CREATE_NEW_POINT )
-    public XPage doCreatePoint( HttpServletRequest request ) throws AccessDeniedException
+    private static List<HashMap<String, Object>> getGeolocModel( List<SolrSearchResult> listResultsGeoloc, DataLayer datalayer, DataLayerMapTemplate dataLayerMapTemplate )
     {
-        populate( _coordonnee, request, getLocale( request ) );
+        List<HashMap<String, Object>> points = new ArrayList<>( listResultsGeoloc.size( ) );
+        Map<String, String> iconKeysCache = new HashMap<>( );
 
-		
-        if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_CREATE_COORDONNEE ) )
+        for ( SolrSearchResult result : listResultsGeoloc )
         {
-            throw new AccessDeniedException ( "Invalid security token" );
+            Map<String, Object> dynamicFields = result.getDynamicFields( );
+
+            for ( Entry<String, Object> entry : dynamicFields.entrySet( ) )
+            {
+                if ( !entry.getKey( ).endsWith( SolrItem.DYNAMIC_GEOJSON_FIELD_SUFFIX ) )
+                {
+                    continue;
+                }
+                HashMap<String, Object> h = new HashMap<>( );
+                String strJson = (String) entry.getValue( );
+                GeolocItem geolocItem = null;
+
+                try
+                {
+                    geolocItem = GeolocItem.fromJSON( strJson );
+                }
+                catch( IOException e )
+                {
+                    AppLogService.error( "SolrSearchApp: error parsing geoloc JSON: " + strJson + ", exception " + e );
+                }
+
+                //if ( geolocItem != null && geolocItem.getTypegeometry( ).equals( GeolocItem.VALUE_GEOMETRY_TYPE ) )
+                if ( geolocItem != null )
+                {
+                    String strType = result.getId( ).substring( result.getId( ).lastIndexOf( '_' ) + 1 );
+                    String strIcon;
+
+                    if ( iconKeysCache.containsKey( geolocItem.getIcon( ) ) )
+                    {
+                        strIcon = iconKeysCache.get( geolocItem.getIcon( ) );
+                    }
+                    else
+                    {
+                        strIcon = IconService.getIcon( strType, geolocItem.getIcon( ) );
+                        iconKeysCache.put( geolocItem.getIcon( ), strIcon );
+                    }
+
+                    geolocItem.setIcon( strIcon );
+                    h.put( MARK_POINTS_GEOJSON, geolocItem.toJSON( ) );
+                    h.put( MARK_POINTS_ID, result.getId( ).substring( result.getId( ).indexOf( '_' ) + 1, result.getId( ).lastIndexOf( '_' ) ) );
+                    h.put( MARK_POINTS_FIELDCODE, entry.getKey( ).substring( 0, entry.getKey( ).lastIndexOf( '_' ) ) );
+                    h.put( MARK_POINTS_TYPE, strType );
+                    h.put( MARK_DATA_LAYER_TITLE, datalayer.getTitle( ) );
+                    //h.put( MARK_DATA_LAYER, datalayer );
+                    h.put( MARK_ICON, dataLayerMapTemplate );
+                    points.add( h );
+                }
+            }
         }
-
-        // Check constraints
-        if ( !validateBean( _coordonnee ) )
-        {
-            return redirectView( request, VIEW_CREATE_COORDONNEE );
-        }
-
-        CoordonneeHome.create( _coordonnee );
-        addInfo( INFO_COORDONNEE_CREATED, getLocale( request ) );
-
-        return redirectView( request, VIEW_MANAGE_COORDONNEES );
+        return points;
     }
+    
 
     /**
      * Returns the form to create a coordonnee
@@ -286,6 +354,17 @@ public class CoordonneeXPage extends MVCApplication
     @Action( ACTION_CREATE_COORDONNEE )
     public XPage doCreateCoordonnee( HttpServletRequest request ) throws AccessDeniedException
     {
+    	//Data Layer
+    	DataLayer datalayer = new DataLayer( );
+    	if ( request.getParameter( "iddatalayer" ) != null && !request.getParameter( "iddatalayer" ).isEmpty( ) )
+    	{
+    		Optional<DataLayer> dlayer = DataLayerHome.findByPrimaryKey( Integer.valueOf( request.getParameter( "iddatalayer" ) ) );
+    		if ( dlayer.isPresent( ) )
+    		{
+    			datalayer = dlayer.get( );
+    		}
+    	}
+    	
     	//Point
     	if ( request.getParameter( "coordonnex" ) != null && !request.getParameter( "coordonnex" ).isEmpty( ) && request.getParameter( "coordonney" ) != null && !request.getParameter( "coordonney" ).isEmpty( ) )
     	{
@@ -314,6 +393,7 @@ public class CoordonneeXPage extends MVCApplication
 	        _dfGeojson.put( "point_geojson", geolocItem.toJSON( ) );
 	        
 	        coord.setGeoJson(geolocItem.toJSON( ));
+	        coord.setDataLayer( datalayer );
 	        CoordonneeHome.create(coord);
     	}
         
@@ -350,6 +430,7 @@ public class CoordonneeXPage extends MVCApplication
 	        coord.setCoordonneeX(0.0);
 	        coord.setCoordonneeY(0.0);
 	        coord.setGeoJson(geoPolygon.toJSON( ));
+	        coord.setDataLayer( datalayer );
 	        CoordonneeHome.create(coord);
         }
         
@@ -391,6 +472,7 @@ public class CoordonneeXPage extends MVCApplication
 	        coord.setCoordonneeX(0.0);
 	        coord.setCoordonneeY(0.0);
 	        coord.setGeoJson(geolocItem.toJSON( ));
+	        coord.setDataLayer( datalayer );
 	        CoordonneeHome.create(coord);
         }
         

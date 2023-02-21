@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2022, City of Paris
+ * Copyright (c) 2002-2023, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,26 +37,25 @@ import javax.validation.constraints.Size;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 /**
- * This is the business class for the object Coordonnee
+ * This is the business class for the object DataLayer
  */ 
-public class Coordonnee implements Serializable
+public class DataLayer implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
     // Variables declarations 
     private int _nId;
     
-    @NotEmpty( message = "#i18n{carto.validation.coordonnee.Adresse.notEmpty}" )
-    @Size( max = 255 , message = "#i18n{carto.validation.coordonnee.Adresse.size}" ) 
-    private String _strAdresse;
+    @NotEmpty( message = "#i18n{carto.validation.datalayer.Title.notEmpty}" )
+    @Size( max = 255 , message = "#i18n{carto.validation.datalayer.Title.size}" ) 
+    private String _strTitle;
     
-    private Double _nCoordonneeX;
+    @Size( max = 255 , message = "#i18n{carto.validation.datalayer.SolrTag.size}" ) 
+    private String _strSolrTag;
     
-    private Double _nCoordonneeY;
+    private int _nGeometry;
     
-    private String _strGeoJson;
-    
-    private DataLayer _dataLayer;
+    private GeometryType _geometryType;
 
     /**
      * Returns the Id
@@ -77,75 +76,75 @@ public class Coordonnee implements Serializable
     }
     
     /**
-     * Returns the Adresse
-     * @return The Adresse
+     * Returns the Title
+     * @return The Title
      */
-    public String getAdresse( )
+    public String getTitle( )
     {
-        return _strAdresse;
+        return _strTitle;
     }
 
     /**
-     * Sets the Adresse
-     * @param strAdresse The Adresse
+     * Sets the Title
+     * @param strTitle The Title
      */ 
-    public void setAdresse( String strAdresse )
+    public void setTitle( String strTitle )
     {
-        _strAdresse = strAdresse;
+        _strTitle = strTitle;
     }
     
     
     /**
-     * Returns the CoordonneeX
-     * @return The CoordonneeX
+     * Returns the SolrTag
+     * @return The SolrTag
      */
-    public double getCoordonneeX( )
+    public String getSolrTag( )
     {
-        return _nCoordonneeX;
+        return _strSolrTag;
     }
 
     /**
-     * Sets the CoordonneeX
-     * @param nCoordonneeX The CoordonneeX
+     * Sets the SolrTag
+     * @param strSolrTag The SolrTag
      */ 
-    public void setCoordonneeX( Double nCoordonneeX )
+    public void setSolrTag( String strSolrTag )
     {
-        _nCoordonneeX = nCoordonneeX;
+        _strSolrTag = strSolrTag;
     }
     
     
     /**
-     * Returns the CoordonneeY
-     * @return The CoordonneeY
+     * Returns the Geometry
+     * @return The Geometry
      */
-    public double getCoordonneeY( )
+    public int getGeometry( )
     {
-        return _nCoordonneeY;
+        return _nGeometry;
     }
 
     /**
-     * Sets the CoordonneeY
-     * @param nCoordonneeY The CoordonneeY
+     * Sets the Geometry
+     * @param nGeometry The Geometry
      */ 
-    public void setCoordonneeY( Double nCoordonneeY )
+    public void setGeometry( int nGeometry )
     {
-        _nCoordonneeY = nCoordonneeY;
+        _nGeometry = nGeometry;
     }
 
-	public String getGeoJson() {
-		return _strGeoJson;
+    /**
+     * Returns the geometryType
+     * @return The geometryType
+     */
+	public GeometryType getGeometryType( ) {
+		return _geometryType;
 	}
 
-	public void setGeoJson(String _strGeoJson) {
-		this._strGeoJson = _strGeoJson;
-	}
-
-	public DataLayer getDataLayer() {
-		return _dataLayer;
-	}
-
-	public void setDataLayer(DataLayer _dataLayer) {
-		this._dataLayer = _dataLayer;
+	/**
+     * Sets the geometryType
+     * @param geometryType The geometryType
+     */ 
+	public void setGeometryType(GeometryType geometryType) {
+		this._geometryType = geometryType;
 	}
     
 }
