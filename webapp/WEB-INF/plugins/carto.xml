@@ -26,7 +26,15 @@
             <feature-title>carto.adminFeature.ManageCarto.name</feature-title>
             <feature-description>carto.adminFeature.ManageCarto.description</feature-description>
             <feature-level>0</feature-level>
-            <feature-url>jsp/admin/plugins/carto/ManageCoordonnees.jsp</feature-url>
+            <feature-url>jsp/admin/plugins/carto/ManageMapTemplate.jsp</feature-url>
+            <feature-icon-url></feature-icon-url>
+        </admin-feature>
+        <admin-feature>
+            <feature-id>CARTO_MANAGEMENT_REFERENTIEL</feature-id>
+            <feature-title>carto.adminFeature.ManageReferentielCartographie.name</feature-title>
+            <feature-description>carto.adminFeature.ManageReferentielCartographie.description</feature-description>
+            <feature-level>0</feature-level>
+            <feature-url>jsp/admin/plugins/carto/ManageDataLayerTypes.jsp</feature-url>
             <feature-icon-url></feature-icon-url>
         </admin-feature>
     </admin-features>

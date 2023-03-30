@@ -1,0 +1,13 @@
+<#macro tabs2 tab >
+<@tabs>
+	<@tabList>
+			<li <#if tab="datalayertype">class="active"</#if>>
+				<@aButton href="jsp/admin/plugins/carto/ManageDataLayerTypes.jsp">#i18n{carto.manage_datalayertypes.pageTitle}</@aButton>
+			</li>
+			<li <#if tab="geometrytype">class="active"</#if>>
+				<@aButton href="jsp/admin/plugins/carto/ManageGeometryTypes.jsp">#i18n{carto.manage_geometrytypes.pageTitle}</@aButton>
+			</li>
+	</@tabList>
+</@tabs>
+
+</#macro>
