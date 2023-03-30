@@ -63,6 +63,8 @@ public class DataLayerMapTemplate implements Serializable
     private String _strColor;
     
     private int _nThickness;
+    
+    private int _idCoordinate;
 
     /**
      * Returns the Id
@@ -232,5 +234,21 @@ public class DataLayerMapTemplate implements Serializable
     {
         _nThickness = nThickness;
     }
+
+    /**
+     * Returns the IdCoordinate
+     * @return The IdCoordinate
+     */
+	public int getIdCoordinate() {
+		return _idCoordinate;
+	}
+
+	/**
+     * Sets the IdCoordinate
+     * @param _fkIdCoordinate The IdCoordinate
+     */ 
+	public void setIdCoordinate(int _fkIdCoordinate) {
+		this._idCoordinate = _fkIdCoordinate;
+	}
     
 }

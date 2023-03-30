@@ -50,15 +50,15 @@ import java.util.Optional;
 public final class DataLayerMapTemplateDAO implements IDataLayerMapTemplateDAO
 {
     // Constants
-    private static final String SQL_QUERY_SELECT = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness FROM carto_data_layer_map_template WHERE id_data_layer_map_template = ?";
-    private static final String SQL_QUERY_INSERT = "INSERT INTO carto_data_layer_map_template ( id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? ) ";
+    private static final String SQL_QUERY_SELECT = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate FROM carto_data_layer_map_template WHERE id_data_layer_map_template = ?";
+    private static final String SQL_QUERY_INSERT = "INSERT INTO carto_data_layer_map_template ( id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? ) ";
     private static final String SQL_QUERY_DELETE = "DELETE FROM carto_data_layer_map_template WHERE id_data_layer_map_template = ? ";
-    private static final String SQL_QUERY_UPDATE = "UPDATE carto_data_layer_map_template SET id_map_template = ?, id_data_layer = ?, pictogram = ?, zoom_min = ?, zoom_max = ?, layer_type = ?, color = ?, thickness = ? WHERE id_data_layer_map_template = ?";
-    private static final String SQL_QUERY_SELECTALL = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness FROM carto_data_layer_map_template";
+    private static final String SQL_QUERY_UPDATE = "UPDATE carto_data_layer_map_template SET id_map_template = ?, id_data_layer = ?, pictogram = ?, zoom_min = ?, zoom_max = ?, layer_type = ?, color = ?, thickness = ?, id_coordinate = ? WHERE id_data_layer_map_template = ?";
+    private static final String SQL_QUERY_SELECTALL = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate FROM carto_data_layer_map_template";
     private static final String SQL_QUERY_SELECTALL_ID = "SELECT id_data_layer_map_template FROM carto_data_layer_map_template";
-    private static final String SQL_QUERY_SELECTALL_BY_IDS = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness FROM carto_data_layer_map_template WHERE id_data_layer_map_template IN (  ";
+    private static final String SQL_QUERY_SELECTALL_BY_IDS = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate FROM carto_data_layer_map_template WHERE id_data_layer_map_template IN (  ";
     private static final String SQL_QUERY_SELECT_DATA_LAYER_BY_MAP_TEMPLATE_ID = "SELECT id_data_layer FROM carto_data_layer_map_template WHERE id_map_template = ?";
-    private static final String SQL_QUERY_SELECT_BY_ID_MAP_ID_LAYER = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness FROM carto_data_layer_map_template WHERE id_map_template = ? AND id_data_layer = ?";
+    private static final String SQL_QUERY_SELECT_BY_ID_MAP_ID_LAYER = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate FROM carto_data_layer_map_template WHERE id_map_template = ? AND id_data_layer = ?";
 
     /**
      * {@inheritDoc }
@@ -77,6 +77,7 @@ public final class DataLayerMapTemplateDAO implements IDataLayerMapTemplateDAO
             daoUtil.setInt( nIndex++ , dataLayerMapTemplate.getLayerType( ) );
             daoUtil.setString( nIndex++ , dataLayerMapTemplate.getColor( ) );
             daoUtil.setInt( nIndex++ , dataLayerMapTemplate.getThickness( ) );
+            daoUtil.setInt( nIndex++ , dataLayerMapTemplate.getIdCoordinate( ) );
             
             daoUtil.executeUpdate( );
             if ( daoUtil.nextGeneratedKey( ) ) 
@@ -112,7 +113,9 @@ public final class DataLayerMapTemplateDAO implements IDataLayerMapTemplateDAO
 			    dataLayerMapTemplate.setZoomMax( daoUtil.getInt( nIndex++ ) );
 			    dataLayerMapTemplate.setLayerType( daoUtil.getInt( nIndex++ ) );
 			    dataLayerMapTemplate.setColor( daoUtil.getString( nIndex++ ) );
-			    dataLayerMapTemplate.setThickness( daoUtil.getInt( nIndex ) );
+			    dataLayerMapTemplate.setThickness( daoUtil.getInt( nIndex++ ) );
+			    dataLayerMapTemplate.setIdCoordinate( daoUtil.getInt( nIndex ) );
+			    
 	        }
 	
 	        return Optional.ofNullable( dataLayerMapTemplate );
@@ -150,6 +153,7 @@ public final class DataLayerMapTemplateDAO implements IDataLayerMapTemplateDAO
             	daoUtil.setInt( nIndex++ , dataLayerMapTemplate.getLayerType( ) );
             	daoUtil.setString( nIndex++ , dataLayerMapTemplate.getColor( ) );
             	daoUtil.setInt( nIndex++ , dataLayerMapTemplate.getThickness( ) );
+            	daoUtil.setInt( nIndex++ , dataLayerMapTemplate.getIdCoordinate( ) );
 	        daoUtil.setInt( nIndex , dataLayerMapTemplate.getId( ) );
 	
 	        daoUtil.executeUpdate( );
@@ -180,7 +184,8 @@ public final class DataLayerMapTemplateDAO implements IDataLayerMapTemplateDAO
 			    dataLayerMapTemplate.setZoomMax( daoUtil.getInt( nIndex++ ) );
 			    dataLayerMapTemplate.setLayerType( daoUtil.getInt( nIndex++ ) );
 			    dataLayerMapTemplate.setColor( daoUtil.getString( nIndex++ ) );
-			    dataLayerMapTemplate.setThickness( daoUtil.getInt( nIndex ) );
+			    dataLayerMapTemplate.setThickness( daoUtil.getInt( nIndex++ ) );
+			    dataLayerMapTemplate.setIdCoordinate( daoUtil.getInt( nIndex ) );
 	
 	            dataLayerMapTemplateList.add( dataLayerMapTemplate );
 	        }
@@ -269,7 +274,8 @@ public final class DataLayerMapTemplateDAO implements IDataLayerMapTemplateDAO
 				    dataLayerMapTemplate.setZoomMax( daoUtil.getInt( nIndex++ ) );
 				    dataLayerMapTemplate.setLayerType( daoUtil.getInt( nIndex++ ) );
 				    dataLayerMapTemplate.setColor( daoUtil.getString( nIndex++ ) );
-				    dataLayerMapTemplate.setThickness( daoUtil.getInt( nIndex ) );
+				    dataLayerMapTemplate.setThickness( daoUtil.getInt( nIndex++ ) );
+				    dataLayerMapTemplate.setIdCoordinate( daoUtil.getInt( nIndex ) );
 		            
 		            dataLayerMapTemplateList.add( dataLayerMapTemplate );
 		        }
@@ -333,7 +339,8 @@ public final class DataLayerMapTemplateDAO implements IDataLayerMapTemplateDAO
 			    dataLayerMapTemplate.setZoomMax( daoUtil.getInt( nIndex++ ) );
 			    dataLayerMapTemplate.setLayerType( daoUtil.getInt( nIndex++ ) );
 			    dataLayerMapTemplate.setColor( daoUtil.getString( nIndex++ ) );
-			    dataLayerMapTemplate.setThickness( daoUtil.getInt( nIndex ) );
+			    dataLayerMapTemplate.setThickness( daoUtil.getInt( nIndex++ ) );
+			    dataLayerMapTemplate.setIdCoordinate( daoUtil.getInt( nIndex ) );
 	        }
 	
 	        return Optional.ofNullable( dataLayerMapTemplate );

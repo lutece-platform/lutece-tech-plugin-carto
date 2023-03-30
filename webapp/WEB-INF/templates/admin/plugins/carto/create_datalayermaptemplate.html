@@ -3,7 +3,7 @@
 <@box>
 	<@boxHeader title='#i18n{carto.create_datalayermaptemplate.title}' />
 	<@boxBody>
-    <@tform name='create_datalayermaptemplate' action='jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp' >
+    <@tform name='create_datalayermaptemplate' enctype="multipart/form-data" action='jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp' >
 
         <@messages errors=errors />
         <@input type="hidden" id="id" name="id"/>
@@ -33,8 +33,11 @@
 		<@formGroup labelFor='thickness' labelKey='#i18n{carto.modify_datalayermaptemplate.labelThickness}' mandatory=true>
 			<@input type='text' id='thickness' name='thickness'  value='${datalayermaptemplate.thickness!\'\'}' tabIndex='7' />
 		</@formGroup>
+		<@input type='file' id='zone_json'  name='zone_json' />
 				
 		<@actionButtons button1Name="action_createDataLayerMapTemplate" button2Name="view_manageDataLayerMapTemplate"/>
     </@tform>
 	</@boxBody>
 </@box>
+
+

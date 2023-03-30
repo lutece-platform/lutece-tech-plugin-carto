@@ -5,7 +5,7 @@
 <@box>
 	<@boxHeader title='#i18n{carto.modify_datalayermaptemplate.title}' />
 	<@boxBody>
-    <@tform class="form-horizontal" method="post" name="modify_datalayermaptemplate" action="jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp" >
+    <@tform class="form-horizontal" method="post" enctype="multipart/form-data" name="modify_datalayermaptemplate" action="jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp" >
 			<@messages errors=errors />
 			<@input type="hidden" id="id" name="id" value="${datalayermaptemplate.id}"/>
 			<@input type="hidden" value="${token}" name="token" />
@@ -34,7 +34,80 @@
 			<@formGroup labelFor='thickness' labelKey='#i18n{carto.modify_datalayermaptemplate.labelThickness}' mandatory=true>
 				<@input type='text' id='thickness' name='thickness'  value='${datalayermaptemplate.thickness!\'\'}' tabIndex='7' />
 			</@formGroup>
+			<@input type='file' id='zone_json'  name='zone_json' />
+			
+			<@div class='position-relative'>
+		   		 <@div id='forms-admin-map' params='style="height: 400px; width: 100%"'></@div>
+			</@div>
         <@actionButtons button1Name="action_modifyDataLayerMapTemplate" button2Name="view_manageDataLayerMapTemplate"/>
     </@tform>
 	</@boxBody>
 </@box>
+
+<link href="css/admin/style/bootstrap4/all.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="js/jquery/plugins/toastr/toastr.min.css" >
+<script src="js/jquery/plugins/toastr/toastr.min.js"></script>
+<script type="text/javascript">
+var loadresource, map;
+loadresource = document.createElement('link');
+loadresource.setAttribute("rel", "stylesheet");
+loadresource.setAttribute("type", "text/css");
+loadresource.setAttribute("href", "js/plugins/leaflet/leaflet/leaflet.css");
+document.getElementsByTagName("head")[0].appendChild(loadresource);
+loadresource = document.createElement('link');
+loadresource.setAttribute("rel", "stylesheet");
+loadresource.setAttribute("type", "text/css");
+loadresource.setAttribute("href", "js/plugins/leaflet/leaflet/MarkerCluster.css");
+document.getElementsByTagName("head")[0].appendChild(loadresource);
+loadresource = document.createElement('link');
+loadresource.setAttribute("rel", "stylesheet");
+loadresource.setAttribute("type", "text/css");
+loadresource.setAttribute("href", "js/plugins/leaflet/leaflet/MarkerCluster.Default.css");
+document.getElementsByTagName("head")[0].appendChild(loadresource);
+
+loadresource = document.createElement('link');
+loadresource.setAttribute("rel", "stylesheet");
+loadresource.setAttribute("type", "text/css");
+loadresource.setAttribute("href", "js/admin/plugins/carto/leaflet.draw.css");
+document.getElementsByTagName("head")[0].appendChild(loadresource);
+
+loadresource = document.createElement('script');
+loadresource.setAttribute("type", "text/javascript");
+loadresource.setAttribute("src", "js/plugins/leaflet/leaflet/leaflet.js" );
+loadresource.async = false;
+document.getElementsByTagName("head")[0].appendChild(loadresource);
+loadresource = document.createElement('script');
+loadresource.setAttribute("type", "text/javascript");
+loadresource.setAttribute("src", "js/plugins/leaflet/leaflet/leaflet.markercluster.js" );
+loadresource.async = false;
+document.getElementsByTagName("head")[0].appendChild(loadresource);
+loadresource = document.createElement('script');
+loadresource.setAttribute("type", "text/javascript");
+loadresource.setAttribute("src", "js/admin/plugins/carto/leaflet.draw.js" );
+loadresource.async = false;
+document.getElementsByTagName("head")[0].appendChild(loadresource);
+
+loadresource = document.createElement('script');
+loadresource.setAttribute("type", "text/javascript");
+loadresource.setAttribute("src", "js/admin/plugins/carto/BoundaryCanvas.js" );
+loadresource.async = false;
+document.getElementsByTagName("head")[0].appendChild(loadresource);
+</script>
+
+<script type="text/javascript">
+$(window).on('load', function(){
+    map = L.map('forms-admin-map').setView([48.85632, 2.33272], 10);
+    var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+    var osm = new L.TileLayer(osmUrl, {minZoom: 6, maxZoom: 16, attribution: osmAttrib}).addTo(map);
+    
+    <#if polygon_inclusion_exclusion??>
+		var polygon_inclusion_exclusion = ${polygon_inclusion_exclusion};
+		var aPolygon = polygon_inclusion_exclusion["geometry"]["coordinates"];
+		var polygon = L.polygon(aPolygon );
+	    polygon.addTo(map);
+    </#if>
+    
+  });  
+
+</script>
