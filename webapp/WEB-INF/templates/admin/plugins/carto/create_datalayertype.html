@@ -1,4 +1,4 @@
-<#include "managecarto_tabs.html" />
+<#include "managereferentielcartographie_tabs.html" />
 <@tabs2 tab="datalayertype" />
 <@box>
 	<@boxHeader title='#i18n{carto.create_datalayertype.title}' />
@@ -17,6 +17,12 @@
 		</@formGroup>
 		<@formGroup labelFor='searchable_by_others' labelKey='#i18n{carto.modify_datalayertype.labelSearchableByOthers}' mandatory=true>
           	<@checkBox id="searchable_by_others" name="searchable_by_others"  value="1" checked=datalayertype.searchableByOthers!'false' tabIndex='2' />
+		</@formGroup>
+		<@formGroup labelFor='inclusion' labelKey='#i18n{carto.modify_datalayertype.labelInclusion}' mandatory=true>
+          	<@checkBox id="inclusion" name="inclusion"  value="1" checked=datalayertype.inclusion!'false' tabIndex='3' />
+		</@formGroup>
+		<@formGroup labelFor='exclusion' labelKey='#i18n{carto.modify_datalayertype.labelExclusion}' mandatory=true>
+          	<@checkBox id="exclusion" name="exclusion"  value="1" checked=datalayertype.exclusion!'false' tabIndex='4' />
 		</@formGroup>
 				
 		<@actionButtons button1Name="action_createDataLayerType" button2Name="view_manageDataLayerType"/>

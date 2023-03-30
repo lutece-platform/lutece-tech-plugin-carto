@@ -53,6 +53,10 @@ public class DataLayerType implements Serializable
     private boolean _bEditable;
     
     private boolean _bSearchableByOthers;
+    
+    private boolean _bInclusion;
+    
+    private boolean _bExclusion;
 
     /**
      * Returns the Id
@@ -126,6 +130,42 @@ public class DataLayerType implements Serializable
     public void setSearchableByOthers( boolean bSearchableByOthers )
     {
         _bSearchableByOthers = bSearchableByOthers;
+    }
+    
+    /**
+     * Returns the Inclusion
+     * @return The Inclusion
+     */
+    public boolean getInclusion( )
+    {
+        return _bInclusion;
+    }
+
+    /**
+     * Sets the Inclusion
+     * @param bInclusion The Inclusion
+     */ 
+    public void setInclusion( boolean bInclusion )
+    {
+        _bInclusion = bInclusion;
+    }
+    
+    /**
+     * Returns the Exclusion
+     * @return The Exclusion
+     */
+    public boolean getExclusion( )
+    {
+        return _bExclusion;
+    }
+
+    /**
+     * Sets the Exclusion
+     * @param bExclusion The Exclusion
+     */ 
+    public void setExclusion( boolean bExclusion )
+    {
+        _bExclusion = bExclusion;
     }
     
 }

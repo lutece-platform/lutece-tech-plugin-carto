@@ -50,13 +50,13 @@ import java.util.Optional;
 public final class DataLayerTypeDAO implements IDataLayerTypeDAO
 {
     // Constants
-    private static final String SQL_QUERY_SELECT = "SELECT id_data_layer_type, title, editable, searchable_by_others FROM carto_data_layer_type WHERE id_data_layer_type = ?";
-    private static final String SQL_QUERY_INSERT = "INSERT INTO carto_data_layer_type ( title, editable, searchable_by_others ) VALUES ( ?, ?, ? ) ";
+    private static final String SQL_QUERY_SELECT = "SELECT id_data_layer_type, title, editable, searchable_by_others, inclusion, exclusion FROM carto_data_layer_type WHERE id_data_layer_type = ?";
+    private static final String SQL_QUERY_INSERT = "INSERT INTO carto_data_layer_type ( title, editable, searchable_by_others, inclusion, exclusion ) VALUES ( ?, ?, ?, ?, ? ) ";
     private static final String SQL_QUERY_DELETE = "DELETE FROM carto_data_layer_type WHERE id_data_layer_type = ? ";
-    private static final String SQL_QUERY_UPDATE = "UPDATE carto_data_layer_type SET title = ?, editable = ?, searchable_by_others = ? WHERE id_data_layer_type = ?";
-    private static final String SQL_QUERY_SELECTALL = "SELECT id_data_layer_type, title, editable, searchable_by_others FROM carto_data_layer_type";
+    private static final String SQL_QUERY_UPDATE = "UPDATE carto_data_layer_type SET title = ?, editable = ?, searchable_by_others = ?, inclusion = ?, exclusion = ? WHERE id_data_layer_type = ?";
+    private static final String SQL_QUERY_SELECTALL = "SELECT id_data_layer_type, title, editable, searchable_by_others, inclusion, exclusion FROM carto_data_layer_type";
     private static final String SQL_QUERY_SELECTALL_ID = "SELECT id_data_layer_type FROM carto_data_layer_type";
-    private static final String SQL_QUERY_SELECTALL_BY_IDS = "SELECT id_data_layer_type, title, editable, searchable_by_others FROM carto_data_layer_type WHERE id_data_layer_type IN (  ";
+    private static final String SQL_QUERY_SELECTALL_BY_IDS = "SELECT id_data_layer_type, title, editable, searchable_by_others, inclusion, exclusion FROM carto_data_layer_type WHERE id_data_layer_type IN (  ";
 
     /**
      * {@inheritDoc }
@@ -70,6 +70,8 @@ public final class DataLayerTypeDAO implements IDataLayerTypeDAO
             daoUtil.setString( nIndex++ , dataLayerType.getTitle( ) );
             daoUtil.setBoolean( nIndex++ , dataLayerType.getEditable( ) );
             daoUtil.setBoolean( nIndex++ , dataLayerType.getSearchableByOthers( ) );
+            daoUtil.setBoolean( nIndex++ , dataLayerType.getInclusion( ) );
+            daoUtil.setBoolean( nIndex++ , dataLayerType.getExclusion( ) );
             
             daoUtil.executeUpdate( );
             if ( daoUtil.nextGeneratedKey( ) ) 
@@ -100,7 +102,9 @@ public final class DataLayerTypeDAO implements IDataLayerTypeDAO
 	            dataLayerType.setId( daoUtil.getInt( nIndex++ ) );
 			    dataLayerType.setTitle( daoUtil.getString( nIndex++ ) );
 			    dataLayerType.setEditable( daoUtil.getBoolean( nIndex++ ) );
-			    dataLayerType.setSearchableByOthers( daoUtil.getBoolean( nIndex ) );
+			    dataLayerType.setSearchableByOthers( daoUtil.getBoolean( nIndex++ ) );
+			    dataLayerType.setInclusion( daoUtil.getBoolean( nIndex++ ) );
+			    dataLayerType.setExclusion( daoUtil.getBoolean( nIndex ) );
 	        }
 	
 	        return Optional.ofNullable( dataLayerType );
@@ -133,6 +137,8 @@ public final class DataLayerTypeDAO implements IDataLayerTypeDAO
             	daoUtil.setString( nIndex++ , dataLayerType.getTitle( ) );
             	daoUtil.setBoolean( nIndex++ , dataLayerType.getEditable( ) );
             	daoUtil.setBoolean( nIndex++ , dataLayerType.getSearchableByOthers( ) );
+            	daoUtil.setBoolean( nIndex++ , dataLayerType.getInclusion( ) );
+            	daoUtil.setBoolean( nIndex++ , dataLayerType.getExclusion( ) );
 	        daoUtil.setInt( nIndex , dataLayerType.getId( ) );
 	
 	        daoUtil.executeUpdate( );
@@ -158,7 +164,9 @@ public final class DataLayerTypeDAO implements IDataLayerTypeDAO
 	            dataLayerType.setId( daoUtil.getInt( nIndex++ ) );
 			    dataLayerType.setTitle( daoUtil.getString( nIndex++ ) );
 			    dataLayerType.setEditable( daoUtil.getBoolean( nIndex++ ) );
-			    dataLayerType.setSearchableByOthers( daoUtil.getBoolean( nIndex ) );
+			    dataLayerType.setSearchableByOthers( daoUtil.getBoolean( nIndex++ ) );
+			    dataLayerType.setInclusion( daoUtil.getBoolean( nIndex++ ) );
+			    dataLayerType.setExclusion( daoUtil.getBoolean( nIndex ) );
 	
 	            dataLayerTypeList.add( dataLayerType );
 	        }
@@ -242,7 +250,9 @@ public final class DataLayerTypeDAO implements IDataLayerTypeDAO
 		            dataLayerType.setId( daoUtil.getInt( nIndex++ ) );
 				    dataLayerType.setTitle( daoUtil.getString( nIndex++ ) );
 				    dataLayerType.setEditable( daoUtil.getBoolean( nIndex++ ) );
-				    dataLayerType.setSearchableByOthers( daoUtil.getBoolean( nIndex ) );
+				    dataLayerType.setSearchableByOthers( daoUtil.getBoolean( nIndex++ ) );
+				    dataLayerType.setInclusion( daoUtil.getBoolean( nIndex++ ) );
+				    dataLayerType.setExclusion( daoUtil.getBoolean( nIndex ) );
 		            
 		            dataLayerTypeList.add( dataLayerType );
 		        }
