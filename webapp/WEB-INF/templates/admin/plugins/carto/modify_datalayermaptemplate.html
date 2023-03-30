@@ -29,7 +29,7 @@
 				<@select name='layer_type' items=reflist_data_layer_type id='layer_type' default_value='${datalayermaptemplate.layerType!\'\'}' />
 			</@formGroup>
 			<@formGroup labelFor='color' labelKey='#i18n{carto.modify_datalayermaptemplate.labelColor}' mandatory=true>
-				<@input type='text' id='color' name='color'  maxlength=50 value='${datalayermaptemplate.color!\'\'}' tabIndex='6' />
+				<@input type='color' id='color' name='color'  maxlength=50 value='${datalayermaptemplate.color!\'\'}' tabIndex='6' />
 			</@formGroup>
 			<@formGroup labelFor='thickness' labelKey='#i18n{carto.modify_datalayermaptemplate.labelThickness}' mandatory=true>
 				<@input type='text' id='thickness' name='thickness'  value='${datalayermaptemplate.thickness!\'\'}' tabIndex='7' />
