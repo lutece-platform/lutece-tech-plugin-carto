@@ -50,13 +50,13 @@ import java.util.Optional;
 public final class MapTemplateDAO implements IMapTemplateDAO
 {
     // Constants
-    private static final String SQL_QUERY_SELECT = "SELECT id_modele_carte, title, description, map_background, default_zoom, zoom_min, zoom_max, center_map FROM carto_map_template WHERE id_modele_carte = ?";
-    private static final String SQL_QUERY_INSERT = "INSERT INTO carto_map_template ( title, description, map_background, default_zoom, zoom_min, zoom_max, center_map ) VALUES ( ?, ?, ?, ?, ?, ?, ? ) ";
+    private static final String SQL_QUERY_SELECT = "SELECT id_modele_carte, title, description, map_background, default_zoom, zoom_min, zoom_max, center_map, center_map_x, center_map_y FROM carto_map_template WHERE id_modele_carte = ?";
+    private static final String SQL_QUERY_INSERT = "INSERT INTO carto_map_template ( title, description, map_background, default_zoom, zoom_min, zoom_max, center_map, center_map_x, center_map_y ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? ) ";
     private static final String SQL_QUERY_DELETE = "DELETE FROM carto_map_template WHERE id_modele_carte = ? ";
-    private static final String SQL_QUERY_UPDATE = "UPDATE carto_map_template SET title = ?, description = ?, map_background = ?, default_zoom = ?, zoom_min = ?, zoom_max = ?, center_map = ? WHERE id_modele_carte = ?";
-    private static final String SQL_QUERY_SELECTALL = "SELECT id_modele_carte, title, description, map_background, default_zoom, zoom_min, zoom_max, center_map FROM carto_map_template";
+    private static final String SQL_QUERY_UPDATE = "UPDATE carto_map_template SET title = ?, description = ?, map_background = ?, default_zoom = ?, zoom_min = ?, zoom_max = ?, center_map = ?, center_map_x = ?, center_map_y = ? WHERE id_modele_carte = ?";
+    private static final String SQL_QUERY_SELECTALL = "SELECT id_modele_carte, title, description, map_background, default_zoom, zoom_min, zoom_max, center_map, center_map_x, center_map_y FROM carto_map_template";
     private static final String SQL_QUERY_SELECTALL_ID = "SELECT id_modele_carte FROM carto_map_template";
-    private static final String SQL_QUERY_SELECTALL_BY_IDS = "SELECT id_modele_carte, title, description, map_background, default_zoom, zoom_min, zoom_max, center_map FROM carto_map_template WHERE id_modele_carte IN (  ";
+    private static final String SQL_QUERY_SELECTALL_BY_IDS = "SELECT id_modele_carte, title, description, map_background, default_zoom, zoom_min, zoom_max, center_map, center_map_x, center_map_y FROM carto_map_template WHERE id_modele_carte IN (  ";
 
     /**
      * {@inheritDoc }
@@ -74,6 +74,8 @@ public final class MapTemplateDAO implements IMapTemplateDAO
             daoUtil.setInt( nIndex++ , mapTemplate.getZoomMin( ) );
             daoUtil.setInt( nIndex++ , mapTemplate.getZoomMax( ) );
             daoUtil.setString( nIndex++ , mapTemplate.getCenterMap( ) );
+            daoUtil.setDouble( nIndex++ , mapTemplate.getCenterMapX( ) );
+            daoUtil.setDouble( nIndex++ , mapTemplate.getCenterMapY( ) );
             
             daoUtil.executeUpdate( );
             if ( daoUtil.nextGeneratedKey( ) ) 
@@ -108,7 +110,9 @@ public final class MapTemplateDAO implements IMapTemplateDAO
 			    mapTemplate.setDefaultZoom( daoUtil.getInt( nIndex++ ) );
 			    mapTemplate.setZoomMin( daoUtil.getInt( nIndex++ ) );
 			    mapTemplate.setZoomMax( daoUtil.getInt( nIndex++ ) );
-			    mapTemplate.setCenterMap( daoUtil.getString( nIndex ) );
+			    mapTemplate.setCenterMap( daoUtil.getString( nIndex++ ) );
+			    mapTemplate.setCenterMapX( daoUtil.getDouble( nIndex++ ) );
+			    mapTemplate.setCenterMapY( daoUtil.getDouble( nIndex ) );
 	        }
 	
 	        return Optional.ofNullable( mapTemplate );
@@ -145,6 +149,8 @@ public final class MapTemplateDAO implements IMapTemplateDAO
             	daoUtil.setInt( nIndex++ , mapTemplate.getZoomMin( ) );
             	daoUtil.setInt( nIndex++ , mapTemplate.getZoomMax( ) );
             	daoUtil.setString( nIndex++ , mapTemplate.getCenterMap( ) );
+            	daoUtil.setDouble( nIndex++ , mapTemplate.getCenterMapX( ) );
+                daoUtil.setDouble( nIndex++ , mapTemplate.getCenterMapY( ) );
 	        daoUtil.setInt( nIndex , mapTemplate.getId( ) );
 	
 	        daoUtil.executeUpdate( );
@@ -174,7 +180,9 @@ public final class MapTemplateDAO implements IMapTemplateDAO
 			    mapTemplate.setDefaultZoom( daoUtil.getInt( nIndex++ ) );
 			    mapTemplate.setZoomMin( daoUtil.getInt( nIndex++ ) );
 			    mapTemplate.setZoomMax( daoUtil.getInt( nIndex++ ) );
-			    mapTemplate.setCenterMap( daoUtil.getString( nIndex ) );
+			    mapTemplate.setCenterMap( daoUtil.getString( nIndex++ ) );
+			    mapTemplate.setCenterMapX( daoUtil.getDouble( nIndex++ ) );
+			    mapTemplate.setCenterMapY( daoUtil.getDouble( nIndex ) );
 	
 	            mapTemplateList.add( mapTemplate );
 	        }
@@ -262,7 +270,9 @@ public final class MapTemplateDAO implements IMapTemplateDAO
 				    mapTemplate.setDefaultZoom( daoUtil.getInt( nIndex++ ) );
 				    mapTemplate.setZoomMin( daoUtil.getInt( nIndex++ ) );
 				    mapTemplate.setZoomMax( daoUtil.getInt( nIndex++ ) );
-				    mapTemplate.setCenterMap( daoUtil.getString( nIndex ) );
+				    mapTemplate.setCenterMap( daoUtil.getString( nIndex++ ) );
+				    mapTemplate.setCenterMapX( daoUtil.getDouble( nIndex++ ) );
+				    mapTemplate.setCenterMapY( daoUtil.getDouble( nIndex ) );
 		            
 		            mapTemplateList.add( mapTemplate );
 		        }

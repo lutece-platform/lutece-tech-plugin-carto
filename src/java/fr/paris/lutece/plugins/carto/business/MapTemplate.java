@@ -63,6 +63,10 @@ public class MapTemplate implements Serializable
     
     @Size( max = 255 , message = "#i18n{carto.validation.maptemplate.CenterMap.size}" ) 
     private String _strCenterMap;
+    
+    private Double _nCenterMapX;
+    
+    private Double _nCenterMapY;
 
     /**
      * Returns the Id
@@ -212,6 +216,40 @@ public class MapTemplate implements Serializable
     public void setCenterMap( String strCenterMap )
     {
         _strCenterMap = strCenterMap;
+    }
+
+    /**
+     * Returns the CenterMapX
+     * @return The CenterMapX
+     */
+	public Double getCenterMapX() {
+		return _nCenterMapX;
+	}
+
+	/**
+     * Sets the CenterMapX
+     * @param nCenterMapX The CenterMapX
+     */ 
+	public void setCenterMapX(Double nCenterMapX) {
+		this._nCenterMapX = nCenterMapX;
+	}
+
+	/**
+     * Returns the CenterMapY
+     * @return The CenterMapY
+     */
+    public Double getCenterMapY( )
+    {
+        return _nCenterMapY;
+    }
+
+    /**
+     * Sets the CenterMapY
+     * @param nCenterMapY The CenterMapY
+     */ 
+    public void setCenterMapY( Double nCenterMapY )
+    {
+        _nCenterMapY = nCenterMapY;
     }
     
 }
