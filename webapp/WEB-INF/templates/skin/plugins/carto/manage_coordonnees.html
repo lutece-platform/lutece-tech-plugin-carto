@@ -422,22 +422,28 @@ $(window).on('load', function(){
 	var drawControl = new L.Control.Draw(drawPluginOptions);
 	map.addControl(drawControl);
 	
-	var typeDraw = "${data_layer_editable.geometryType.technicalName}";
-	if ( typeDraw === 'Point' )
-	{
+	<#if data_layer_editable??>
+		var typeDraw = "${data_layer_editable.geometryType.technicalName}";
+		if ( typeDraw === 'Point' )
+		{
+			$('.leaflet-draw-draw-polygon').hide();
+			$('.leaflet-draw-draw-polyline').hide();	
+		}
+		else if ( typeDraw === 'Polygon' )
+		{
+			$('.leaflet-draw-draw-marker').hide();
+			$('.leaflet-draw-draw-polyline').hide();	
+		}
+		else if ( typeDraw === 'Polyline' )
+		{
+			$('.leaflet-draw-draw-polygon').hide();
+			$('.leaflet-draw-draw-marker').hide();	
+		}
+	<#else>
+		$('.leaflet-draw-draw-polyline').hide();
 		$('.leaflet-draw-draw-polygon').hide();
-		$('.leaflet-draw-draw-polyline').hide();	
-	}
-	else if ( typeDraw === 'Polygon' )
-	{
 		$('.leaflet-draw-draw-marker').hide();
-		$('.leaflet-draw-draw-polyline').hide();	
-	}
-	else if ( typeDraw === 'Polyline' )
-	{
-		$('.leaflet-draw-draw-polygon').hide();
-		$('.leaflet-draw-draw-marker').hide();	
-	}
+	</#if>
 	
 	//var editableLayers = new L.FeatureGroup();
 	//map.addLayer(editableLayers);
@@ -722,9 +728,10 @@ $( function(){
 				<@input name="coordonney" id="coordonney" />
 				<@input name="coordonnepolygon" id="coordonnepolygon" />
 				<@input name="coordonnepolyline" id="coordonnepolyline" />
-				<@input name="iddatalayer" id="iddatalayer" value='${data_layer_editable.id!\'\'}' />    
-
-        		<@formGroup>
-          			<@button id='action_createCoordonnee' name='action_createCoordonnee' type='submit' tabIndex='3' title='#i18n{portal.util.labelCreate}' buttonIcon='plus' />
-				</@formGroup>
+				<#if data_layer_editable??>
+					<@input name="iddatalayer" id="iddatalayer" value='${data_layer_editable.id!\'\'}' />    
+	        		<@formGroup>
+	          			<@button id='action_createCoordonnee' name='action_createCoordonnee' type='submit' tabIndex='3' title='#i18n{portal.util.labelCreate}' buttonIcon='plus' />
+					</@formGroup>
+				</#if>
     </@tform>

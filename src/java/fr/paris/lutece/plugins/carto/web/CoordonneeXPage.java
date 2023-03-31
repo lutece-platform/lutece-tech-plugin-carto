@@ -193,7 +193,11 @@ public class CoordonneeXPage extends MVCApplication
         //model.put( MARK_COORDONNEE_LIST, listCoordonnees );
         model.put( MARK_POINTS, points );
         model.put( MARK_MAP, map );
-        model.put( MARK_LAYER_EDITABLE, dataLayerEditable.get( ) );
+        if ( dataLayerEditable.isPresent( ) )
+        {
+        	model.put( MARK_LAYER_EDITABLE, dataLayerEditable.get( ) );
+        }
+        //model.put( MARK_LIST_LAYER_MAP, DataLayerMapTemplateHome.getDataLayerMapTemplateListByMapTemplateId( map.getId( ) ) );
         
         return getXPage( TEMPLATE_MANAGE_COORDONNEES, getLocale( request ), model );
     }
