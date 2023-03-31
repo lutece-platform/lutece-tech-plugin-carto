@@ -40,6 +40,8 @@ import fr.paris.lutece.plugins.carto.business.DataLayer;
 import fr.paris.lutece.plugins.carto.business.DataLayerHome;
 import fr.paris.lutece.plugins.carto.business.DataLayerMapTemplate;
 import fr.paris.lutece.plugins.carto.business.DataLayerMapTemplateHome;
+import fr.paris.lutece.plugins.carto.business.DataLayerType;
+import fr.paris.lutece.plugins.carto.business.DataLayerTypeHome;
 import fr.paris.lutece.plugins.carto.business.MapTemplate;
 import fr.paris.lutece.plugins.carto.business.MapTemplateHome;
 import fr.paris.lutece.plugins.forms.business.Form;
@@ -134,7 +136,8 @@ public class CoordonneeXPage extends MVCApplication
     private static final String MARK_DATA_LAYER = "data_layer";
     private static final String MARK_LAYER_EDITABLE = "data_layer_editable";
     private static final String MARK_MAP = "mapLoaded";
-    private static final String MARK_ICON = "iconPoint";
+    private static final String MARK_LAYER_PROPERTIES = "layer_properties";
+    private static final String MARK_LAYER_TYPE = "layer_type";
     
     // Session variable to store working values
     private Coordonnee _coordonnee;
@@ -251,7 +254,7 @@ public class CoordonneeXPage extends MVCApplication
                     h.put( MARK_POINTS_ID, result.getId( ).substring( result.getId( ).indexOf( '_' ) + 1, result.getId( ).lastIndexOf( '_' ) ) );
                     h.put( MARK_POINTS_FIELDCODE, entry.getKey( ).substring( 0, entry.getKey( ).lastIndexOf( '_' ) ) );
                     h.put( MARK_POINTS_TYPE, strType );
-                    h.put( MARK_ICON, iconKeysCache);
+                    h.put( MARK_LAYER_PROPERTIES, iconKeysCache);
                     points.add( h );
                 }
             }
@@ -317,7 +320,9 @@ public class CoordonneeXPage extends MVCApplication
                     h.put( MARK_POINTS_TYPE, strType );
                     h.put( MARK_DATA_LAYER_TITLE, datalayer.getTitle( ) );
                     //h.put( MARK_DATA_LAYER, datalayer );
-                    h.put( MARK_ICON, dataLayerMapTemplate );
+                    h.put( MARK_LAYER_PROPERTIES, dataLayerMapTemplate );
+                    DataLayerType dataLayerType = DataLayerTypeHome.findByPrimaryKey( dataLayerMapTemplate.getLayerType() ).get( );
+                    h.put( MARK_LAYER_TYPE, dataLayerType );
                     points.add( h );
                 }
             }

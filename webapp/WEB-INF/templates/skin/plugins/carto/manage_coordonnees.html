@@ -147,7 +147,7 @@ $(window).on('load', function(){
 			for (var i = 0; i < latlngs.length; i++) {
 			    document.getElementById('coordonnepolygon').value = document.getElementById('coordonnepolygon').value + latlngs[i].lat + "," + latlngs[i].lng + ";"
 			    var markerEdit = L.marker(latlngs[i]);
-			    if (! isMarkerInsidePolygon(markerEdit, polygon1)) {
+			    if (! isMarkerInsideMultiPolygon( markerEdit, polygonInclusion ) || !isMarkerOutsideMultiPolygon( markerEdit, polygonExclusion ) ) {
 					//alert("Achtung vertex en dehors de la zone");
 					toastr.error("Achtung vertex en dehors de la zone");
 					document.getElementById('coordonnepolygon').value = "";
@@ -162,7 +162,7 @@ $(window).on('load', function(){
 			for (var i = 0; i < latlngs.length; i++) {
 			    document.getElementById('coordonnepolyline').value = document.getElementById('coordonnepolyline').value + latlngs[i].lat + "," + latlngs[i].lng + ";"
 			    var markerEdit = L.marker(latlngs[i]);
-			    if (! isMarkerInsidePolygon(markerEdit, polygon1)) {
+			    if (! isMarkerInsideMultiPolygon(markerEdit, polygonInclusion) || !isMarkerOutsideMultiPolygon( markerEdit, polygonExclusion ) ) {
 					console.log("Achtung vertex en dehors de la zone");
 					//alert("Achtung vertex en dehors de la zone");
 					toastr.error("Achtung vertex en dehors de la zone");
@@ -183,7 +183,7 @@ $(window).on('load', function(){
 		latlngs = layerEditedVertex.getLatLng();
 		console.log(latlngs);
 		var markerEdit = L.marker(latlngs);
-		if (! isMarkerInsidePolygon(markerEdit, polygon1)) {
+		if (! isMarkerInsideMultiPolygon( markerEdit, polygonInclusion ) || !isMarkerOutsideMultiPolygon( markerEdit, polygonExclusion ) ) {
 			var oLatLng = layerEditedVertex._origLatLng;
 			//layerEditedVertex.setLatLng(oLatLng);
 		}
@@ -199,13 +199,20 @@ $(window).on('load', function(){
                 "id": "${point.id}",
                 "geojson": ${point.geojson},
                 "datalayertitle" : "${point.data_layer_title}",
-                "iconPoint" : "<i class='fa fa-${point.iconPoint.pictogram} fa-4x'></i>"
+                "iconPoint" : "<i class='fa fa-${point.layer_properties.pictogram} fa-${point.layer_properties.zoomMax}x'></i>",
+                "colorPolygon" : "${point.layer_properties.color!}",
+                "weight" : "${point.layer_properties.thickness!}",
+                "zoomMin" : "${point.layer_properties.zoomMin}",
+                "inclusion" : "${point.layer_type.inclusion?c}",
+                "exclusion" : "${point.layer_type.exclusion?c}"
             }<#if point_has_next>,</#if>
             </#list>
         ];
 	
 	
-	
+	const mapZoomLayer = new Map();
+	var polygonInclusion = new Array();
+    var polygonExclusion = new Array();
 	for (var i = 0; i < points.length; i++) {
             var markers = undefined;
             var icon = undefined;
@@ -294,15 +301,23 @@ $(window).on('load', function(){
             	var aPolygon = points[i]["geojson"]["geometry"]["coordinates"];
 //		var inverse = L.GeoJSON.coordsToLatLng(aPolygon)
     		    
-    		var polygon = L.polygon(aPolygon, {color: 'red'});
-            //polygon.addTo(map);
-    		markers.addLayer(polygon);
+	    		var polygon = L.polygon(aPolygon, {color: points[i]["colorPolygon"], weight: points[i]["weight"] } );
+	            //polygon.addTo(map);
+	    		markers.addLayer(polygon);
+	    		if ( points[i]["inclusion"] === 'true' )
+	        	{
+	        		polygonInclusion.push( polygon );
+	        	}
+	    		else if ( points[i]["exclusion"] === 'true' )
+	        	{
+	        		polygonExclusion.push( polygon );
+	        	}
             
             
             }
 			else if ( points[i]["geojson"]["geometry"]["type"] == "Polyline" ) {
             	var aPolyline = points[i]["geojson"]["geometry"]["coordinates"];
-    			var polyline = L.polyline(aPolyline, {color: 'red'});
+    			var polyline = L.polyline(aPolyline, {color: points[i]["colorPolygon"], weight: points[i]["weight"] } );
                 //polyline.addTo(map);
     			markers.addLayer(polyline);
             }
@@ -508,22 +523,56 @@ $(window).on('load', function(){
         });
         */
         
+        function isMarkerInsideMultiPolygon(marker, multiPoly) {
+    	    var inside = false;
+    	    if ( multiPoly.length == 0 )
+    	    {
+    	    	return true;
+    	    }
+    	    for (var i = 0; i < multiPoly.length; i++) {
+    		inside = isMarkerInsidePolygon(marker, multiPoly[i])
+    		if ( inside ) 
+    		{
+    			return inside
+    		}
+    	    }
+    	    
+    	    return inside;
+    	};
+    	
+    	function isMarkerOutsideMultiPolygon(marker, multiPoly) {
+    	    var outside = true;
+    	    if ( multiPoly.length == 0 )
+    	    {
+    	    	return true;
+    	    }
+    	    for (var i = 0; i < multiPoly.length; i++) {
+    		outside = !isMarkerInsidePolygon(marker, multiPoly[i])
+    		if ( !outside ) 
+    		{
+    			return outside
+    		}
+    	    }
+    	    
+    	    return outside;
+    	};
+        
         function isMarkerInsidePolygon(marker, poly) {
-	    var polyPoints = poly.getLatLngs();       
-	    var x = marker.getLatLng().lat, y = marker.getLatLng().lng;
-
-	    var inside = false;
-	    for (var i = 0, j = polyPoints.length - 1; i < polyPoints.length; j = i++) {
-		var xi = polyPoints[i].lat, yi = polyPoints[i].lng;
-		var xj = polyPoints[j].lat, yj = polyPoints[j].lng;
-
-		var intersect = ((yi > y) != (yj > y))
-		    && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
-		if (intersect) inside = !inside;
-	    }
-
-	    return inside;
-	};
+		    var polyPoints = poly.getLatLngs();       
+		    var x = marker.getLatLng().lat, y = marker.getLatLng().lng;
+	
+		    var inside = false;
+		    for (var i = 0, j = polyPoints.length - 1; i < polyPoints.length; j = i++) {
+			var xi = polyPoints[i].lat, yi = polyPoints[i].lng;
+			var xj = polyPoints[j].lat, yj = polyPoints[j].lng;
+	
+			var intersect = ((yi > y) != (yj > y))
+			    && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+			if (intersect) inside = !inside;
+		    }
+	
+		    return inside;
+		};
         
         // Empêcher l'utilisateur de placer des marqueurs en dehors du polygone
 	//L.Draw.Marker.include(polygon1);
@@ -553,7 +602,7 @@ $(window).on('load', function(){
 	L.Draw.Marker.include({
 	  _onClick: function () {
 	    // our hack
-	    if (! isMarkerInsidePolygon(this._marker, polygon1)) {
+	    if ( !isMarkerInsideMultiPolygon( this._marker, polygonInclusion ) || !isMarkerOutsideMultiPolygon( this._marker, polygonExclusion ) ) {
 	    return;
 	    }
 	    
@@ -587,7 +636,7 @@ $(window).on('load', function(){
 			zIndexOffset: this.options.zIndexOffset * 2
 		});
 
-		if (! isMarkerInsidePolygon(marker, polygon1)) {
+		if (! isMarkerInsideMultiPolygon( marker, polygonInclusion ) || !isMarkerOutsideMultiPolygon( marker, polygonExclusion ) ) {
 	    return;
 	    }
 		//document.getElementById('coordonnepolygon').value = document.getElementById('coordonnepolygon').value + marker.getLatLng().lng + "," + marker.getLatLng().lat +";";
@@ -613,7 +662,7 @@ $(window).on('load', function(){
 			zIndexOffset: this.options.zIndexOffset * 2
 		});
 
-		if (! isMarkerInsidePolygon(marker, polygon1)) {
+		if (! isMarkerInsideMultiPolygon( marker, polygonInclusion ) || !isMarkerOutsideMultiPolygon( marker, polygonExclusion ) ) {
 		    return;
 		    }
 		
