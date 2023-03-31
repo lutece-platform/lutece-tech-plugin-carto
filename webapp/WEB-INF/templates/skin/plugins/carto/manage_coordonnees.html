@@ -214,48 +214,33 @@ $(window).on('load', function(){
 	var polygonInclusion = new Array();
     var polygonExclusion = new Array();
 	for (var i = 0; i < points.length; i++) {
-            var markers = undefined;
-            var icon = undefined;
-            var layer = "";
-            var popupContent = undefined;
+		var markers = undefined;
+        var icon = undefined;
+        var layer = "";
+        var popupContent = undefined;
+        
 
-            var properties = points[i]["geojson"]["properties"];
-            if (typeof(properties) != 'undefined') {
-                layer = properties["layer"];
+        var properties = points[i]["geojson"]["properties"];
+        if (typeof(properties) != 'undefined') {
+            layer = properties["layer"];
+        }
+        if (!layer) {
+            layer = points[i]["datalayertitle"];
+        }
+        if (typeof(marker_clusters[layer]) != "undefined") {
+            markers = marker_clusters[layer];
+            icon    = marker_icons[layer];
+        } else {
+
+            if (typeof(icon) == 'undefined') {
+                markers = new L.MarkerClusterGroup();
+                icon = new L.Icon.Default();
             }
-            if (!layer) {
-                layer = points[i]["datalayertitle"];
-            }
-            if (typeof(marker_clusters[layer]) != "undefined") {
-                markers = marker_clusters[layer];
-                icon    = marker_icons[layer];
-            } else {
-                if (typeof(properties) != 'undefined' && typeof(properties["icon"]) != 'undefined') {
-                    var clusterIconCreateFunction = undefined;
-                    if (properties["icon"] == 'red' ) {
-                        icon = redIcon;
-                        clusterIconCreateFunction = createRedCluster;
-                    } else if (properties["icon"] == 'green' ) {
-                        icon = greenIcon;
-                        clusterIconCreateFunction = createGreenCluster;
-                    } else if (properties["icon"] == 'yellow' ) {
-                        icon = yellowIcon;
-                        clusterIconCreateFunction = createYellowCluster;
-                    }
-                    if (typeof(clusterIconCreateFunction) != 'undefined') {
-                        markers = new L.MarkerClusterGroup({
-                            iconCreateFunction: clusterIconCreateFunction
-                        });
-                    }
-                }
-                if (typeof(icon) == 'undefined') {
-                    markers = new L.MarkerClusterGroup();
-                    icon = new L.Icon.Default();
-                }
-                marker_clusters[layer] = markers;
-                marker_icons[layer] = icon;
-            }
-            
+            marker_clusters[layer] = markers;
+            marker_icons[layer] = icon;
+        }
+        	
+        mapZoomLayer.set(layer,points[i]["zoomMin"]);
             //Icon
             const fontAwesomeIcon = L.divIcon({
 			    html: points[i]["iconPoint"],
@@ -376,17 +361,19 @@ $(window).on('load', function(){
     
 
     
-    /*
-    var features= points.features;
-    for (var i = 0; i < features.length; i++) {
-        var coordinates = features[i]["geometry"]["coordinates"];
-        var marker = L.marker([coordinates[1],coordinates[0]]);
-        var properties = features[i]["properties"];
-        marker.bindPopup(properties["popupContent"])
-        markers.addLayer(marker);
-    }
-    */
-    
+    		map.on('zoomend', function() {
+	    	for (var markers in marker_clusters) {
+     	   		if ( map.getZoom() < parseInt(mapZoomLayer.get(markers ) ) && map.hasLayer( marker_clusters[markers] ) ){
+     	           	map.removeLayer( marker_clusters[markers] );
+     			}
+     	   		if ( map.getZoom() >= parseInt(mapZoomLayer.get(markers ) ) && !map.hasLayer( marker_clusters[markers] ) ){
+   					map.addLayer( marker_clusters[markers] );
+ 				}
+     		}
+
+      			    
+      		});
+  
     //map.on('click', addMarker);
     
     // Initialise the FeatureGroup to store editable layers
