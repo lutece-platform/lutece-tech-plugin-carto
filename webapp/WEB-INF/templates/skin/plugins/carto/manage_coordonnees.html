@@ -67,7 +67,10 @@ document.getElementsByTagName("head")[0].appendChild(loadresource);
 <script type="text/javascript">
 $(window).on('load', function(){
 	var defaultZoom = ${mapLoaded.defaultZoom};
-    map = L.map('forms-admin-map').setView([48.85632, 2.33272], defaultZoom);
+	var defautCenterMapY = ${mapLoaded.centerMapX?c};
+	var defautCenterMapX = ${mapLoaded.centerMapY?c};
+    //map = L.map('forms-admin-map').setView([48.85632, 2.33272], defaultZoom);
+    map = L.map('forms-admin-map').setView([defautCenterMapX, defautCenterMapY], defaultZoom);
     //var points = JSON.parse($("#geojson_points").text());
     // create the tile layer with correct attribution
     var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
