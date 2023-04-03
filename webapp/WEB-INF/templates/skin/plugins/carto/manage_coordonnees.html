@@ -83,10 +83,6 @@ $(window).on('load', function(){
     
     var marker_clusters = {};
     var marker_icons = {};
-    
-    var geom = {"type":"Polygon","coordinates":[
-        [[48.837, 2.3], [48.85, 2.34], [48.9, 2.35] ]
-    ]};
 	
     map.on('draw:created', function (e) {
 	    var type = e.layerType,
@@ -567,28 +563,7 @@ $(window).on('load', function(){
 		    return inside;
 		};
         
-        // Empêcher l'utilisateur de placer des marqueurs en dehors du polygone
-	//L.Draw.Marker.include(polygon1);
-	
-	var polygon1 = L.polygon([
-
-                               [48.837, 2.3],
-
-                               [48.85, 2.34],
-
-                               [48.9, 2.35]
-
-                ], {
-
-                               color: 'black',
-
-                               fillColor: 'red',
-
-                               fillOpacity: 0                     
-
-                }).addTo(map);
-        
-        
+        // Empêcher l'utilisateur de placer des marqueurs en dehors du polygone        
 	
 	var markerPoint;
 	var markerPoly;

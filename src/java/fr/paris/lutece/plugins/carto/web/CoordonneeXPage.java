@@ -100,6 +100,7 @@ public class CoordonneeXPage extends MVCApplication
     
     // Parameters
     private static final String PARAMETER_ID_COORDONNEE = "id";
+    private static final String PARAMETER_SOLR_GEOJSON = "DataLayer_text";
     
     // Markers
     private static final String MARK_COORDONNEE_LIST = "coordonnee_list";
@@ -178,8 +179,7 @@ public class CoordonneeXPage extends MVCApplication
         //StringBuilder query = new StringBuilder("DataLayer_text:");
         for (DataLayer datalayer : lstDatalayer)
         {
-        	//query.append(datalayer.getId()).append("+");
-        	List<SolrSearchResult> listResultsGeoloc = engine.getGeolocSearchResults( "DataLayer_text:"+datalayer.getId( ), null, 100 );
+        	List<SolrSearchResult> listResultsGeoloc = engine.getGeolocSearchResults( PARAMETER_SOLR_GEOJSON + ":" + datalayer.getSolrTag( ), null, 100 );
         	Optional<DataLayerMapTemplate> dataLayerMapTemplate = DataLayerMapTemplateHome.findByIdMapKeyIdDataLayerKey( map.getId( ), datalayer.getId( ) );
         	points.addAll( getGeolocModel( listResultsGeoloc, datalayer, dataLayerMapTemplate.get( ) ) );
         }
@@ -397,10 +397,6 @@ public class CoordonneeXPage extends MVCApplication
 	        geolocItem.setGeometry( geometry );
 	        geolocItem.setProperties( properties );
 	        
-	        Map<String, String> _dfGeojson = new HashMap<>( );;
-	        
-	        _dfGeojson.put( "point_geojson", geolocItem.toJSON( ) );
-	        
 	        coord.setGeoJson(geolocItem.toJSON( ));
 	        coord.setDataLayer( datalayer );
 	        CoordonneeHome.create(coord);
@@ -410,84 +406,49 @@ public class CoordonneeXPage extends MVCApplication
         String coordPolygon = request.getParameter( "coordonnepolygon" );
         if ( coordPolygon != null && !coordPolygon.isEmpty( ) )
         {
-	        String[] lstCoordPolygon = coordPolygon.split(";");
-	        
-	        GeolocItemPolygon geoPolygon = new GeolocItemPolygon();
-	        List<List<Double>> polygonLonLoat = new ArrayList<>( );
-	        
-	        for (String coordPolygonXY : lstCoordPolygon )
-	        {
-	        	String [] coordPolygonXY2 = coordPolygonXY.split( "," );
-	        	double polygonx = Double.valueOf( coordPolygonXY2[0] );
-	            double polygony = Double.valueOf( coordPolygonXY2[1] );
-	            polygonLonLoat.add( Arrays.asList( polygonx, polygony ) );
-	        }
-	        
-	        
-	        HashMap<String, Object> geometryPolygon = new HashMap<>( );
-	        geometryPolygon.put( GeolocItem.PATH_GEOMETRY_COORDINATES, polygonLonLoat );
-	        geoPolygon.setGeometry( geometryPolygon );
-	        geoPolygon.setTypegeometry( GeolocItemPolygon.VALUE_GEOMETRY_TYPE_POLYGON );
-
-	        
-	        Map<String, String> _dfGeojsonPolygib = new HashMap<>( );;
-	        
-	        _dfGeojsonPolygib.put( "polygon_geojson", geoPolygon.toJSON( ) );
-	        
-	        Coordonnee coord = new Coordonnee();
-	        coord.setAdresse("");
-	        coord.setCoordonneeX(0.0);
-	        coord.setCoordonneeY(0.0);
-	        coord.setGeoJson(geoPolygon.toJSON( ));
-	        coord.setDataLayer( datalayer );
-	        CoordonneeHome.create(coord);
+        	createCoordinate(coordPolygon, GeolocItem.VALUE_GEOMETRY_TYPE_POLYGON, datalayer);
         }
         
         //Polyline
         String coordPolyline = request.getParameter( "coordonnepolyline" );
         if ( coordPolyline != null && !coordPolyline.isEmpty( ) )
         {
-	        String[] lstCoordPolyline = coordPolyline.split(";");
-	        
-	        //GeolocItemPolygon geoPolygon = new GeolocItemPolygon();
-	        List<List<Double>> polylineLonLoat = new ArrayList<>( );
-	        
-	        for (String coordPolylineXY : lstCoordPolyline )
-	        {
-	        	String [] coordPolylineXY2 = coordPolylineXY.split( "," );
-	        	double polylinex = Double.valueOf( coordPolylineXY2[0] );
-	            double polyliney = Double.valueOf( coordPolylineXY2[1] );
-	            polylineLonLoat.add( Arrays.asList( polylinex, polyliney ) );
-	        }
-	        
-	        
-	        GeolocItem geolocItem = new GeolocItem( );
-	        HashMap<String, Object> properties = new HashMap<>( );
-	        properties.put( GeolocItem.PATH_PROPERTIES_ADDRESS, "" );
-	
-	        HashMap<String, Object> geometry = new HashMap<>( );
-	        geometry.put( GeolocItem.PATH_GEOMETRY_COORDINATES, polylineLonLoat );
-	        geometry.put( GeolocItem.PATH_GEOMETRY_TYPE, GeolocItem.VALUE_GEOMETRY_TYPE_POLYLINE );
-	        geolocItem.setGeometry( geometry );
-	        geolocItem.setProperties( properties );
-
-	        
-	        Map<String, String> _dfGeojsonPolygib = new HashMap<>( );;
-	        
-	        _dfGeojsonPolygib.put( "polyline_geojson", geolocItem.toJSON( ) );
-	        
-	        Coordonnee coord = new Coordonnee();
-	        coord.setAdresse("");
-	        coord.setCoordonneeX(0.0);
-	        coord.setCoordonneeY(0.0);
-	        coord.setGeoJson(geolocItem.toJSON( ));
-	        coord.setDataLayer( datalayer );
-	        CoordonneeHome.create(coord);
+        	createCoordinate(coordPolyline, GeolocItem.VALUE_GEOMETRY_TYPE_POLYLINE, datalayer);
         }
         
         SolrIndexerService.processIndexing( true );
 
         return redirectView( request, VIEW_MANAGE_COORDONNEES );
+    }
+    
+    private static void createCoordinate( String coordinate, String strTypeGeometry, DataLayer datalayer )
+    {
+    	String[] lstCoordPolygon = coordinate.split(";");
+        
+        GeolocItemPolygon geoPolygon = new GeolocItemPolygon();
+        List<List<Double>> polygonLonLoat = new ArrayList<>( );
+        
+        for (String coordPolygonXY : lstCoordPolygon )
+        {
+        	String [] coordPolygonXY2 = coordPolygonXY.split( "," );
+        	double polygonx = Double.valueOf( coordPolygonXY2[0] );
+            double polygony = Double.valueOf( coordPolygonXY2[1] );
+            polygonLonLoat.add( Arrays.asList( polygonx, polygony ) );
+        }
+        
+        
+        HashMap<String, Object> geometryPolygon = new HashMap<>( );
+        geometryPolygon.put( GeolocItem.PATH_GEOMETRY_COORDINATES, polygonLonLoat );
+        geoPolygon.setGeometry( geometryPolygon );
+        geoPolygon.setTypegeometry( strTypeGeometry );
+        
+        Coordonnee coord = new Coordonnee();
+        coord.setAdresse("");
+        coord.setCoordonneeX(0.0);
+        coord.setCoordonneeY(0.0);
+        coord.setGeoJson(geoPolygon.toJSON( ));
+        coord.setDataLayer( datalayer );
+        CoordonneeHome.create(coord);
     }
 
     /**
