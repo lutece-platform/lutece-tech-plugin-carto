@@ -108,8 +108,11 @@ public interface IDataLayerDAO
 	/**
      * Load the data from the table
      * @param nKey The identifier of the map
+     * @param editable dataLayer editable
+     * @param inclusion dataLayer inclusion
+     * @param exclusion dataLayer exclusion
      * @param plugin the Plugin
      * @return The instance of the dataLayer
      */
-	Optional<DataLayer> loadDataLayerEditable( int nKey, Plugin plugin );
+	Optional<DataLayer> loadDataLayerWithOptions( int nKey, boolean editable, boolean inclusion, boolean exclusion, Plugin plugin );
 }

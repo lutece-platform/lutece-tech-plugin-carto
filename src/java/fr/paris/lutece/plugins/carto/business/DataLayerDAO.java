@@ -278,9 +278,23 @@ public final class DataLayerDAO implements IDataLayerDAO
      * {@inheritDoc }
      */
     @Override
-    public Optional<DataLayer> loadDataLayerEditable( int nKey, Plugin plugin )
+    public Optional<DataLayer> loadDataLayerWithOptions( int nKey, boolean editable, boolean inclusion, boolean exclusion, Plugin plugin )
     {
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_LAYER_EDITABLE, plugin ) )
+    	StringBuilder builder = new StringBuilder( SQL_QUERY_SELECT_LAYER_EDITABLE );
+    	if ( editable )
+    	{
+    		builder.append( " AND c.editable = 1 " );
+    	}
+    	if ( inclusion )
+    	{
+    		builder.append( " AND c.inclusion = 1 " );
+    	}
+    	if ( exclusion )
+    	{
+    		builder.append( " AND c.exclusion = 1 " );
+    	}
+    	
+    	try( DAOUtil daoUtil = new DAOUtil( builder.toString( ), plugin ) )
         {
 	        daoUtil.setInt( 1 , nKey );
 	        daoUtil.executeQuery( );

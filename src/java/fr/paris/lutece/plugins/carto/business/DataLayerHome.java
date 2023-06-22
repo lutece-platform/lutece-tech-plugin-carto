@@ -146,9 +146,9 @@ public final class DataLayerHome
      * @param nKey The MapTemplate primary key
      * @return an instance of DataLayer
      */
-    public static Optional<DataLayer> findEditableDataLayerFromMapId( int nKey )
+    public static Optional<DataLayer> findDataLayerFromMapId( int nKey, boolean editable, boolean inclusion, boolean exclusion )
     {
-        return _dao.loadDataLayerEditable( nKey, _plugin );
+        return _dao.loadDataLayerWithOptions( nKey, editable, inclusion, exclusion, _plugin );
     }
 
 }

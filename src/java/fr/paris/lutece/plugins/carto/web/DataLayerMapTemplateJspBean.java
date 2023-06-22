@@ -232,54 +232,12 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean <Int
         }
 
         DataLayerType dataLayerType = DataLayerTypeHome.findByPrimaryKey( _datalayermaptemplate.getLayerType( ) ).get( );
-        Optional<DataLayer> dataLayerEditable  = DataLayerHome.findEditableDataLayerFromMapId( _datalayermaptemplate.getIdMapTemplate( ) );
+        Optional<DataLayer> dataLayerEditable  = DataLayerHome.findDataLayerFromMapId( _datalayermaptemplate.getIdMapTemplate( ), true, false, false );
         if ( dataLayerType.getEditable( ) && dataLayerEditable.isPresent( ) )
         {
         	addError( ERROR_LAYER_TEMPLATE_EDITABLE, getLocale( )  );
         	return redirect( request, VIEW_CREATE_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE, _datalayermaptemplate.getId( ) );
         }
-        
-        
-        
-        //Polygon exclusion or inclusion
-        /*
-        String coordPolygon = request.getParameter( "coordonnepolygon" );
-        if ( coordPolygon != null && !coordPolygon.isEmpty( ) )
-        {
-        	String[] lstCoordPolygon = coordPolygon.split(";");
-	        
-	        GeolocItemPolygon geoPolygon = new GeolocItemPolygon();
-	        List<List<Double>> polygonLonLoat = new ArrayList<>( );
-	        
-	        for (String coordPolygonXY : lstCoordPolygon )
-	        {
-	        	String [] coordPolygonXY2 = coordPolygonXY.split( "," );
-	        	double polygonx = Double.valueOf( coordPolygonXY2[0] );
-	            double polygony = Double.valueOf( coordPolygonXY2[1] );
-	            polygonLonLoat.add( Arrays.asList( polygonx, polygony ) );
-	        }
-	        
-	        
-	        HashMap<String, Object> geometryPolygon = new HashMap<>( );
-	        geometryPolygon.put( GeolocItem.PATH_GEOMETRY_COORDINATES, polygonLonLoat );
-	        geoPolygon.setGeometry( geometryPolygon );
-	        geoPolygon.setTypegeometry( GeolocItemPolygon.VALUE_GEOMETRY_TYPE_POLYGON );
-
-	        
-	        Map<String, String> _dfGeojsonPolygib = new HashMap<>( );;
-	        
-	        _dfGeojsonPolygib.put( "polygon_geojson", geoPolygon.toJSON( ) );
-	        
-	        Coordonnee coord = new Coordonnee();
-	        coord.setAdresse("");
-	        coord.setCoordonneeX(0.0);
-	        coord.setCoordonneeY(0.0);
-	        coord.setGeoJson(geoPolygon.toJSON( ));
-	        DataLayer datalayer = DataLayerHome.findByPrimaryKey( _datalayermaptemplate.getIdDataLayer() ).get( );
-	        coord.setDataLayer( datalayer );
-	        CoordonneeHome.create(coord);
-        }
-        */
         
         MultipartHttpServletRequest multipartRequest = ( MultipartHttpServletRequest ) request;
         FileItem zoneJsonFileItem = multipartRequest.getFile( PARAMETER_ZONE_JSON );
@@ -428,7 +386,7 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean <Int
         DataLayerType oldDataLayerType = DataLayerTypeHome.findByPrimaryKey( oldDataLayerMapTemplate.getLayerType( ) ).get( );
         
         DataLayerType dataLayerType = DataLayerTypeHome.findByPrimaryKey( _datalayermaptemplate.getLayerType( ) ).get( );
-        Optional<DataLayer> dataLayerEditable  = DataLayerHome.findEditableDataLayerFromMapId( _datalayermaptemplate.getIdMapTemplate( ) );
+        Optional<DataLayer> dataLayerEditable  = DataLayerHome.findDataLayerFromMapId( _datalayermaptemplate.getIdMapTemplate( ), true, false, false );
         if ( dataLayerType.getEditable( ) && dataLayerEditable.isPresent( ) && !oldDataLayerType.getEditable( ) )
         {
         	addError( ERROR_LAYER_TEMPLATE_EDITABLE, getLocale( )  );
