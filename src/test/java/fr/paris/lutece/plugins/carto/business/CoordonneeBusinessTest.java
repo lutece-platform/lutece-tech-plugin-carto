@@ -46,10 +46,10 @@ public class CoordonneeBusinessTest extends LuteceTestCase
 {
     private static final String ADRESSE1 = "Adresse1";
     private static final String ADRESSE2 = "Adresse2";
-    private static final int COORDONNEEX1 = 1;
-    private static final int COORDONNEEX2 = 2;
-    private static final int COORDONNEEY1 = 1;
-    private static final int COORDONNEEY2 = 2;
+    private static final Double COORDONNEEX1 = 1.0;
+    private static final Double COORDONNEEX2 = 2.0;
+    private static final Double COORDONNEEY1 = 1.0;
+    private static final Double COORDONNEEY2 = 2.0;
 
 	/**
 	* test Coordonnee

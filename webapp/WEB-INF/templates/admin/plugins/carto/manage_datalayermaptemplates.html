@@ -27,10 +27,10 @@
         <#list datalayermaptemplate_list as datalayermaptemplate >
         <tr>
             <td>
-				${datalayermaptemplate.idMapTemplate}
+				${reflist_map_template[datalayermaptemplate.idMapTemplate - 1].name}
 			</td>
             <td>
-				${datalayermaptemplate.idDataLayer}
+				${reflist_data_layer[datalayermaptemplate.idDataLayer - 1].name}
 			</td>
             <td>
 				<@icon prefix='fa fa-' style='${datalayermaptemplate.pictogram}'  params='style="font-size:48px"'  />
@@ -42,7 +42,7 @@
 				${datalayermaptemplate.zoomMax}
 			</td>
             <td>
-				${datalayermaptemplate.layerType}
+				${reflist_data_layer_type[datalayermaptemplate.layerType - 1].name}
 			</td>
             <td>
 				<@input type='color' id='color' name='color'  maxlength=50 value='${datalayermaptemplate.color!\'\'}' />
