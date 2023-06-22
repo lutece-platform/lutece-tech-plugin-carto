@@ -102,6 +102,15 @@ public final class MapTemplateHome
     {
         return _dao.load( nKey, _plugin );
     }
+    
+    /**
+     * Returns an instance of a mapTemplate whose identifier is specified in parameter
+     * @return an instance of MapTemplate
+     */
+    public static Optional<MapTemplate> findXpageFrontOffice( )
+    {
+        return _dao.loadXpageFO( _plugin );
+    }
 
     /**
      * Load the data of all the mapTemplate objects and returns them as a list

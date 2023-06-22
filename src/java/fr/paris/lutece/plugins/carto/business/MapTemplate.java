@@ -67,6 +67,8 @@ public class MapTemplate implements Serializable
     private Double _nCenterMapX;
     
     private Double _nCenterMapY;
+    
+    private boolean _bFrontOffice;
 
     /**
      * Returns the Id
@@ -250,6 +252,24 @@ public class MapTemplate implements Serializable
     public void setCenterMapY( Double nCenterMapY )
     {
         _nCenterMapY = nCenterMapY;
+    }
+    
+    /**
+     * Returns the FrontOffice
+     * @return The FrontOffice
+     */
+    public boolean getFrontOffice( )
+    {
+        return _bFrontOffice;
+    }
+
+    /**
+     * Sets the FrontOffice
+     * @param bFrontOffice The FrontOffice
+     */ 
+    public void setFrontOffice( boolean bFrontOffice )
+    {
+        _bFrontOffice = bFrontOffice;
     }
     
 }

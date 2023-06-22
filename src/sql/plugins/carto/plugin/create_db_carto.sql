@@ -28,6 +28,7 @@ default_zoom int default '0',
 zoom_min int default '0',
 zoom_max int default '0',
 center_map varchar(255) default '',
+front_office SMALLINT,
 PRIMARY KEY (id_modele_carte)
 );
 
