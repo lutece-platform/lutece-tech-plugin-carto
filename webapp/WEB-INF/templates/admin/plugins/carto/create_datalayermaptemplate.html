@@ -33,7 +33,9 @@
 		<@formGroup labelFor='thickness' labelKey='#i18n{carto.modify_datalayermaptemplate.labelThickness}' mandatory=true>
 			<@input type='text' id='thickness' name='thickness'  value='${datalayermaptemplate.thickness!\'\'}' tabIndex='7' />
 		</@formGroup>
-		<@input type='file' id='zone_json'  name='zone_json' />
+		<@formGroup labelFor='zone_json' labelKey='#i18n{carto.modify_datalayermaptemplate.labelJson}' >
+			<@input type='file' id='zone_json'  name='zone_json' />
+		</@formGroup>	
 				
 		<@actionButtons button1Name="action_createDataLayerMapTemplate" button2Name="view_manageDataLayerMapTemplate"/>
     </@tform>
