@@ -34,6 +34,7 @@
  
 package fr.paris.lutece.plugins.carto.web;
 
+import fr.paris.lutece.plugins.carto.business.BasemapHome;
 import fr.paris.lutece.plugins.carto.business.Coordonnee;
 import fr.paris.lutece.plugins.carto.business.CoordonneeHome;
 import fr.paris.lutece.plugins.carto.business.DataLayer;
@@ -139,9 +140,12 @@ public class CoordonneeXPage extends MVCApplication
     private static final String MARK_MAP = "mapLoaded";
     private static final String MARK_LAYER_PROPERTIES = "layer_properties";
     private static final String MARK_LAYER_TYPE = "layer_type";
+    private static final String MARK_LIST_MAP = "list_map";
+    private static final String MARK_BASEMAP = "basemap";
     
     // Session variable to store working values
     private Coordonnee _coordonnee;
+    private static int _idMap = 0;
     
     /**
      * return the form to manage coordonnees

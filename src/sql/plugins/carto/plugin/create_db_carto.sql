@@ -86,3 +86,17 @@ editable SMALLINT,
 searchable_by_others SMALLINT,
 PRIMARY KEY (id_data_layer_type)
 );
+
+--
+-- Structure for table carto_basemap
+--
+
+DROP TABLE IF EXISTS carto_basemap;
+CREATE TABLE carto_basemap (
+id_basemap int AUTO_INCREMENT,
+title varchar(255) default '' NOT NULL,
+url long varchar NOT NULL,
+PRIMARY KEY (id_basemap)
+);
+
+

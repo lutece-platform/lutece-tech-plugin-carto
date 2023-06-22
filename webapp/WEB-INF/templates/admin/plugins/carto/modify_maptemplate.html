@@ -16,7 +16,7 @@
 			<@formGroup labelFor='description' labelKey='#i18n{carto.modify_maptemplate.labelDescription}' mandatory=true>
 				<@input type='text' id='description' name='description'  value='${maptemplate.description!\'\'}' tabIndex='1' />
 			</@formGroup>
-			<@formGroup labelFor='map_background' labelKey='#i18n{carto.modify_maptemplate.labelMapBackground}' mandatory=true>
+			<@formGroup labelFor='map_background' labelKey='#i18n{carto.modify_maptemplate.labelMapBackground}' >
 				<@select name='map_background' items=mapprovider_list id='map_background' default_value='${maptemplate.mapBackground!\'\'}' />
 			</@formGroup>
 			<@formGroup labelFor='default_zoom' labelKey='#i18n{carto.modify_maptemplate.labelDefaultZoom}' mandatory=true>

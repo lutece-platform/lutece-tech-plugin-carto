@@ -57,10 +57,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 
+import fr.paris.lutece.plugins.carto.business.BasemapHome;
 import fr.paris.lutece.plugins.carto.business.MapTemplate;
 import fr.paris.lutece.plugins.carto.business.MapTemplateHome;
-import fr.paris.lutece.plugins.genericattributes.business.IMapProvider;
-import fr.paris.lutece.plugins.genericattributes.business.MapProviderManager;
 
 /**
  * This class provides the user interface to manage MapTemplate features ( manage, create, modify, remove )
@@ -174,7 +173,7 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean <Integer, Map
 
         Map<String, Object> model = getModel(  );
         model.put( MARK_MAPTEMPLATE, _maptemplate );
-        model.put( MARK_MAP_PROVIDER_LIST, getMapProvidersRefList( ) );
+        model.put( MARK_MAP_PROVIDER_LIST, BasemapHome.getBasemapsReferenceList( ) );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_CREATE_MAPTEMPLATE ) );
 
         return getPage( PROPERTY_PAGE_TITLE_CREATE_MAPTEMPLATE, TEMPLATE_CREATE_MAPTEMPLATE, model );
@@ -191,10 +190,12 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean <Integer, Map
 
         refList.addItem( StringUtils.EMPTY, StringUtils.EMPTY );
 
+        /*
         for ( IMapProvider mapProvider : MapProviderManager.getMapProvidersList( ) )
         {
             refList.add( mapProvider.toRefItem( ) );
         }
+        */
 
         return refList;
     }
@@ -288,7 +289,7 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean <Integer, Map
 
         Map<String, Object> model = getModel(  );
         model.put( MARK_MAPTEMPLATE, _maptemplate );
-        model.put( MARK_MAP_PROVIDER_LIST, getMapProvidersRefList( ) );
+        model.put( MARK_MAP_PROVIDER_LIST, BasemapHome.getBasemapsReferenceList( ) );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_MODIFY_MAPTEMPLATE ) );
 
         return getPage( PROPERTY_PAGE_TITLE_MODIFY_MAPTEMPLATE, TEMPLATE_MODIFY_MAPTEMPLATE, model );
