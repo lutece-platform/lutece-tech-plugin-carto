@@ -28,6 +28,8 @@ default_zoom int default '0',
 zoom_min int default '0',
 zoom_max int default '0',
 center_map varchar(255) default '',
+center_map_x float default '0',
+center_map_y float default '0',
 front_office SMALLINT,
 PRIMARY KEY (id_modele_carte)
 );
@@ -60,6 +62,7 @@ zoom_max int default '0',
 layer_type int default '0' NOT NULL,
 color varchar(50) default '',
 thickness int default '0',
+id_coordinate int default '0' NOT NULL,
 PRIMARY KEY (id_data_layer_map_template)
 );
 
@@ -85,6 +88,8 @@ id_data_layer_type int AUTO_INCREMENT,
 title varchar(255) default '' NOT NULL,
 editable SMALLINT,
 searchable_by_others SMALLINT,
+inclusion SMALLINT,
+exclusion SMALLINT,
 PRIMARY KEY (id_data_layer_type)
 );
 
