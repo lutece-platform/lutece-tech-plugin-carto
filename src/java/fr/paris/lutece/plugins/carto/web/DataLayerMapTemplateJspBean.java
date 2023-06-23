@@ -133,6 +133,7 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean <Int
     // Errors
     private static final String ERROR_RESOURCE_NOT_FOUND = "Resource not found";
     private static final String ERROR_LAYER_TEMPLATE_EDITABLE = "carto.modify_datalayermaptemplate.error.layereditable";
+    private static final String ERROR_LAYER_TEMPLATE_INCLUSION_EXCLUSION = "carto.modify_datalayermaptemplate.error.layerinclusionexclusion";
     
     // Session variable to store working values
     private DataLayerMapTemplate _datalayermaptemplate;
@@ -153,8 +154,15 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean <Int
         	_listIdDataLayerMapTemplates = DataLayerMapTemplateHome.getIdDataLayerMapTemplatesList(  );
         }
         
+        ReferenceList refDataLayer = DataLayerHome.getDataLayersReferenceList( );
+        ReferenceList refMapTemplate = MapTemplateHome.getMapTemplatesReferenceList( );
+        ReferenceList refDataLayerType = DataLayerTypeHome.getDataLayerTypesReferenceList( );
+        
         Map<String, Object> model = getPaginatedListModel( request, MARK_DATALAYERMAPTEMPLATE_LIST, _listIdDataLayerMapTemplates, JSP_MANAGE_DATALAYERMAPTEMPLATES );
-
+        model.put( MARK_REF_DATA_LAYER, refDataLayer );
+        model.put( MARK_REF_MAP_TEMPLATE, refMapTemplate );
+        model.put( MARK_REF_DATA_LAYER_TYPE, refDataLayerType); 
+        
         return getPage( PROPERTY_PAGE_TITLE_MANAGE_DATALAYERMAPTEMPLATES, TEMPLATE_MANAGE_DATALAYERMAPTEMPLATES, model );
     }
 
