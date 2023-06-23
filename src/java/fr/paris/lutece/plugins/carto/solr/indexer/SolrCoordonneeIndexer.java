@@ -40,8 +40,6 @@ import org.xml.sax.ContentHandler;
 
 import fr.paris.lutece.plugins.carto.business.Coordonnee;
 import fr.paris.lutece.plugins.carto.business.CoordonneeHome;
-import fr.paris.lutece.plugins.forms.business.FormResponse;
-import fr.paris.lutece.plugins.forms.modules.solr.service.Utilities;
 import fr.paris.lutece.plugins.search.solr.business.field.Field;
 import fr.paris.lutece.plugins.search.solr.indexer.SolrIndexer;
 import fr.paris.lutece.plugins.search.solr.indexer.SolrIndexerService;
@@ -141,67 +139,20 @@ public class SolrCoordonneeIndexer implements SolrIndexer
         
     	// make a new, empty SolrItem
         SolrItem solrItem = new SolrItem( );
-        String nIdFormResponse = String.valueOf( coord.getId( ) );
-        solrItem.setIdResource(  nIdFormResponse );
+        String nIdCoordinate = String.valueOf( coord.getId( ) );
+        solrItem.setIdResource(  nIdCoordinate );
         solrItem.setSite( SolrIndexerService.getWebAppName( ) );
-        solrItem.setRole( Utilities.SHORT_ROLE_FORMS );
-        solrItem.setType( FormResponse.RESOURCE_TYPE + "_" + coord.getId( ) );
-        //solrItem.setUid( getResourceUid(  nIdFormResponse, FormResponse.RESOURCE_TYPE) );
+        solrItem.setRole( "Cartography" );
+        solrItem.setType( "Cartography" + "_" + coord.getId( ) );
         solrItem.setUid( coord.getId() + "_Coordonnees"  );
-        solrItem.setTitle( "Coordonnees" + " #" + nIdFormResponse );
+        solrItem.setTitle( "Coordonnees" + " #" + nIdCoordinate );
         //solrItem.setDate( formResponse.getCreation( ) );
-        solrItem.setUrl( "jsp/site/Portal.jsp?page=formsResponse&id_response="+nIdFormResponse );
+        //solrItem.setUrl( "jsp/site/Portal.jsp?page=formsResponse&id_response="+nIdFormResponse );
 
-        //solrItem.addDynamicField( "coordonnee_geojson", coord.getGeoJson() );
         solrItem.addDynamicFieldGeoloc("coordonnee_geojson", coord.getGeoJson(), "Coordonnee");
-        solrItem.addDynamicField("DataLayer", String.valueOf( coord.getDataLayer( ).getId( ) ) );
+        solrItem.addDynamicField("DataLayer", String.valueOf( coord.getDataLayer( ).getSolrTag( ) ) );
     	
     	return solrItem;
-    	
-    	/*
-    	// the item
-        SolrItem item = new SolrItem( );
-
-        // indexing page content
-        IPageService pageService = SpringContextService.getBean( BEAN_PAGE_SERVICE );
-        String strPageContent = pageService.getPageContent( page.getId( ), 0, null );
-        try
-        {
-            ContentHandler handler = TikaIndexerUtil.parseHtml( strPageContent );
-            // the content of the article is recovered in the parser because this one
-            // had replaced the encoded caracters (as &eacute;) by the corresponding special caracter (as ?)
-            item.setContent( handler.toString( ) );
-        }
-        catch( LuteceSolrException e )
-        {
-            throw new AppException( "Error during page parsing.", e );
-        }
-
-        item.setTitle( page.getName( ) );
-        item.setRole( page.getRole( ) );
-
-        if ( ( page.getDescription( ) != null ) && ( page.getDescription( ).length( ) > 1 ) )
-        {
-            item.setSummary( page.getDescription( ) );
-        }
-
-        item.setType( TYPE );
-        item.setSite( SolrIndexerService.getWebAppName( ) );
-
-        List<String> cat = new ArrayList<>( );
-        cat.add( CATEGORIE );
-        item.setCategorie( cat );
-        item.setDate( page.getDateUpdate( ) );
-
-        UrlItem urlItem = new UrlItem( strUrl );
-        urlItem.addParameter( PARAMETER_PAGE_ID, page.getId( ) );
-        item.setUrl( urlItem.getUrl( ) );
-        item.setUid( getResourceUid( String.valueOf( page.getId( ) ), RESSOURCE_COORDONNEES ) );
-
-		
-
-        return item;
-        */
     }
 
     /**
