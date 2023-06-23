@@ -43,13 +43,9 @@ import fr.paris.lutece.plugins.carto.business.DataLayerMapTemplate;
 import fr.paris.lutece.plugins.carto.business.DataLayerMapTemplateHome;
 import fr.paris.lutece.plugins.carto.business.DataLayerType;
 import fr.paris.lutece.plugins.carto.business.DataLayerTypeHome;
+import fr.paris.lutece.plugins.carto.business.IDataLayerDAO;
 import fr.paris.lutece.plugins.carto.business.MapTemplate;
 import fr.paris.lutece.plugins.carto.business.MapTemplateHome;
-import fr.paris.lutece.plugins.forms.business.Form;
-import fr.paris.lutece.plugins.forms.business.FormQuestionResponse;
-import fr.paris.lutece.plugins.forms.business.FormResponse;
-import fr.paris.lutece.plugins.forms.business.form.search.FormResponseSearchItem;
-import fr.paris.lutece.plugins.forms.modules.solr.service.Utilities;
 import fr.paris.lutece.plugins.leaflet.business.GeolocItem;
 import fr.paris.lutece.plugins.leaflet.business.GeolocItemPolygon;
 import fr.paris.lutece.plugins.leaflet.service.IconService;
@@ -72,6 +68,7 @@ import fr.paris.lutece.portal.service.message.SiteMessageService;
 import fr.paris.lutece.portal.service.message.SiteMessage;
 import fr.paris.lutece.portal.service.message.SiteMessageException;
 import fr.paris.lutece.portal.service.security.SecurityTokenService;
+import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.admin.AccessDeniedException;
 import fr.paris.lutece.portal.service.util.AppException;
 import fr.paris.lutece.portal.service.util.AppLogService;
@@ -102,6 +99,7 @@ public class CoordonneeXPage extends MVCApplication
     // Parameters
     private static final String PARAMETER_ID_COORDONNEE = "id";
     private static final String PARAMETER_SOLR_GEOJSON = "DataLayer_text";
+    private static final String PARAMETER_ID_MAP = "idMap";
     
     // Markers
     private static final String MARK_COORDONNEE_LIST = "coordonnee_list";
@@ -119,6 +117,7 @@ public class CoordonneeXPage extends MVCApplication
     private static final String ACTION_CREATE_COORDONNEE = "createCoordonnee";
     private static final String ACTION_MODIFY_COORDONNEE = "modifyCoordonnee";
     private static final String ACTION_REMOVE_COORDONNEE = "removeCoordonnee";
+    private static final String ACTION_LOAD_MAP = "loadMap";
     private static final String ACTION_CONFIRM_REMOVE_COORDONNEE = "confirmRemoveCoordonnee";
 
     // Infos
@@ -156,53 +155,61 @@ public class CoordonneeXPage extends MVCApplication
     public XPage getManageCoordonnees( HttpServletRequest request )
     {
         _coordonnee = null;
-        
-        //Charger map par defaut.
-        MapTemplate map = MapTemplateHome.findByPrimaryKey(1).get();
-        //List<Coordonnee> listCoordonnees = CoordonneeHome.getCoordonneesList(  );
-        
-        SolrSearchEngine engine = SolrSearchEngine.getInstance( );
-        
-     // Use default conf if the requested one doesn't exist
-        SolrSearchAppConf conf = SolrSearchAppConfService.loadConfiguration( "conf" );
-        
-        if ( conf == null )
-        {
-            // Use default conf if the requested one doesn't exist
-            conf = SolrSearchAppConfService.loadConfiguration( null );
-        }
-        /*
-        SolrFacetedResult facetedResult = engine.getFacetedSearchResults( "*:*", new String [] {conf.getFieldList()}, null, "uid","asc", 100, 1 ,
-                100, false );
-        List<SolrSearchResult> listResults = facetedResult.getSolrSearchResults( );
-        */
-        
-        List<HashMap<String, Object>> points = new ArrayList<HashMap<String, Object>> ();
-        List<DataLayer> lstDatalayer = DataLayerMapTemplateHome.getDataLayerListByMapTemplateId( map.getId() );
-        Optional<DataLayer> dataLayerEditable  = DataLayerHome.findEditableDataLayerFromMapId( map.getId( ) );
-        //StringBuilder query = new StringBuilder("DataLayer_text:");
-        for (DataLayer datalayer : lstDatalayer)
-        {
-        	List<SolrSearchResult> listResultsGeoloc = engine.getGeolocSearchResults( PARAMETER_SOLR_GEOJSON + ":" + datalayer.getSolrTag( ), null, 100 );
-        	Optional<DataLayerMapTemplate> dataLayerMapTemplate = DataLayerMapTemplateHome.findByIdMapKeyIdDataLayerKey( map.getId( ), datalayer.getId( ) );
-        	points.addAll( getGeolocModel( listResultsGeoloc, datalayer, dataLayerMapTemplate.get( ) ) );
-        }
-
-        //List<SolrSearchResult> listResultsGeoloc = engine.getGeolocSearchResults( query.toString( ), null, 100 );
-        //points = getGeolocModel( listResultsGeoloc );
-        
-
-        
         Map<String, Object> model = getModel(  );
-        //model.put( MARK_COORDONNEE_LIST, listCoordonnees );
-        model.put( MARK_POINTS, points );
-        model.put( MARK_MAP, map );
-        if ( dataLayerEditable.isPresent( ) )
+        model.put( MARK_LIST_MAP, MapTemplateHome.getMapTemplatesReferenceList( ) );
+        if ( _idMap != 0 )
         {
-        	model.put( MARK_LAYER_EDITABLE, dataLayerEditable.get( ) );
+	        //Charger map
+	        MapTemplate map = MapTemplateHome.findByPrimaryKey( _idMap ).get();
+	        //List<Coordonnee> listCoordonnees = CoordonneeHome.getCoordonneesList(  );
+	        
+	        SolrSearchEngine engine = SolrSearchEngine.getInstance( );
+	        
+	     // Use default conf if the requested one doesn't exist
+	        SolrSearchAppConf conf = SolrSearchAppConfService.loadConfiguration( "conf" );
+	        
+	        if ( conf == null )
+	        {
+	            // Use default conf if the requested one doesn't exist
+	            conf = SolrSearchAppConfService.loadConfiguration( null );
+	        }
+	        /*
+	        SolrFacetedResult facetedResult = engine.getFacetedSearchResults( "*:*", new String [] {conf.getFieldList()}, null, "uid","asc", 100, 1 ,
+	                100, false );
+	        List<SolrSearchResult> listResults = facetedResult.getSolrSearchResults( );
+	        */
+	        
+	        List<HashMap<String, Object>> points = new ArrayList<HashMap<String, Object>> ();
+	        List<DataLayer> lstDatalayer = DataLayerMapTemplateHome.getDataLayerListByMapTemplateId( map.getId() );
+	        Optional<DataLayer> dataLayerEditable  = DataLayerHome.findDataLayerFromMapId( map.getId( ), true, false, false );
+	        //StringBuilder query = new StringBuilder("DataLayer_text:");
+	        for (DataLayer datalayer : lstDatalayer)
+	        {
+	        	List<SolrSearchResult> listResultsGeoloc = engine.getGeolocSearchResults( PARAMETER_SOLR_GEOJSON + ":" + datalayer.getSolrTag( ), null, 100 );
+	        	Optional<DataLayerMapTemplate> dataLayerMapTemplate = DataLayerMapTemplateHome.findByIdMapKeyIdDataLayerKey( map.getId( ), datalayer.getId( ) );
+	        	points.addAll( getGeolocModel( listResultsGeoloc, datalayer, dataLayerMapTemplate.get( ) ) );
+	        }
+	
+	        //List<SolrSearchResult> listResultsGeoloc = engine.getGeolocSearchResults( query.toString( ), null, 100 );
+	        //points = getGeolocModel( listResultsGeoloc );
+	        
+	
+	        
+	        
+	        //model.put( MARK_COORDONNEE_LIST, listCoordonnees );
+	        model.put( MARK_POINTS, points );
+	        model.put( MARK_MAP, map );
+	        model.put( MARK_BASEMAP, BasemapHome.findByPrimaryKey( Integer.valueOf( map.getMapBackground( ) ) ).get( ).getUrl( ) );
+	        
+	        if ( dataLayerEditable.isPresent( ) )
+	        {
+	        	model.put( MARK_LAYER_EDITABLE, dataLayerEditable.get( ) );
+	        }
+	        //model.put( MARK_LIST_LAYER_MAP, DataLayerMapTemplateHome.getDataLayerMapTemplateListByMapTemplateId( map.getId( ) ) );
+	        
+	        //IMapProvider _mapProvider = SpringContextService.getBean( "genericattributes-openstreetmap.mapProvider" );
+	        //IMapProvider _mapProvider = MapProviderManager.getMapProvider( map.getMapBackground() );
         }
-        //model.put( MARK_LIST_LAYER_MAP, DataLayerMapTemplateHome.getDataLayerMapTemplateListByMapTemplateId( map.getId( ) ) );
-        
         return getXPage( TEMPLATE_MANAGE_COORDONNEES, getLocale( request ), model );
     }
     
@@ -294,38 +301,15 @@ public class CoordonneeXPage extends MVCApplication
                 }
                 HashMap<String, Object> h = new HashMap<>( );
                 String strJson = (String) entry.getValue( );
-                GeolocItem geolocItem = null;
-
-                try
-                {
-                    geolocItem = GeolocItem.fromJSON( strJson );
-                }
-                catch( IOException e )
-                {
-                    AppLogService.error( "SolrSearchApp: error parsing geoloc JSON: " + strJson + ", exception " + e );
-                }
 
                 //if ( geolocItem != null && geolocItem.getTypegeometry( ).equals( GeolocItem.VALUE_GEOMETRY_TYPE ) )
-                if ( geolocItem != null )
+                if ( strJson != null )
                 {
-                    String strType = result.getId( ).substring( result.getId( ).lastIndexOf( '_' ) + 1 );
-                    String strIcon;
-
-                    if ( iconKeysCache.containsKey( geolocItem.getIcon( ) ) )
-                    {
-                        strIcon = iconKeysCache.get( geolocItem.getIcon( ) );
-                    }
-                    else
-                    {
-                        strIcon = IconService.getIcon( strType, geolocItem.getIcon( ) );
-                        iconKeysCache.put( geolocItem.getIcon( ), strIcon );
-                    }
-
-                    geolocItem.setIcon( strIcon );
-                    h.put( MARK_POINTS_GEOJSON, geolocItem.toJSON( ) );
+                    //geolocItem.setIcon( strIcon );
+                    h.put( MARK_POINTS_GEOJSON, strJson );
                     h.put( MARK_POINTS_ID, result.getId( ).substring( result.getId( ).indexOf( '_' ) + 1, result.getId( ).lastIndexOf( '_' ) ) );
                     h.put( MARK_POINTS_FIELDCODE, entry.getKey( ).substring( 0, entry.getKey( ).lastIndexOf( '_' ) ) );
-                    h.put( MARK_POINTS_TYPE, strType );
+                    //h.put( MARK_POINTS_TYPE, strType );
                     h.put( MARK_DATA_LAYER_TITLE, datalayer.getTitle( ) );
                     //h.put( MARK_DATA_LAYER, datalayer );
                     h.put( MARK_LAYER_PROPERTIES, dataLayerMapTemplate );
@@ -379,10 +363,10 @@ public class CoordonneeXPage extends MVCApplication
     	}
     	
     	//Point
-    	if ( request.getParameter( "coordonnex" ) != null && !request.getParameter( "coordonnex" ).isEmpty( ) && request.getParameter( "coordonney" ) != null && !request.getParameter( "coordonney" ).isEmpty( ) )
+    	if ( request.getParameter( "coordinate_x" ) != null && !request.getParameter( "coordinate_x" ).isEmpty( ) && request.getParameter( "coordinate_y" ) != null && !request.getParameter( "coordinate_y" ).isEmpty( ) )
     	{
-	        double x = Double.valueOf( request.getParameter( "coordonnex" ) );
-	        double y = Double.valueOf( request.getParameter( "coordonney" ) );
+	        double x = Double.valueOf( request.getParameter( "coordinate_x" ) );
+	        double y = Double.valueOf( request.getParameter( "coordinate_y" ) );
 	        
 	        String adresse = "";
 	        
@@ -407,14 +391,14 @@ public class CoordonneeXPage extends MVCApplication
     	}
         
         //Polygon
-        String coordPolygon = request.getParameter( "coordonnepolygon" );
+        String coordPolygon = request.getParameter( "coordinate_polygon" );
         if ( coordPolygon != null && !coordPolygon.isEmpty( ) )
         {
         	createCoordinate(coordPolygon, GeolocItem.VALUE_GEOMETRY_TYPE_POLYGON, datalayer);
         }
         
         //Polyline
-        String coordPolyline = request.getParameter( "coordonnepolyline" );
+        String coordPolyline = request.getParameter( "coordinate_polyline" );
         if ( coordPolyline != null && !coordPolyline.isEmpty( ) )
         {
         	createCoordinate(coordPolyline, GeolocItem.VALUE_GEOMETRY_TYPE_POLYLINE, datalayer);
@@ -453,6 +437,21 @@ public class CoordonneeXPage extends MVCApplication
         coord.setGeoJson(geoPolygon.toJSON( ));
         coord.setDataLayer( datalayer );
         CoordonneeHome.create(coord);
+    }
+    
+    /**
+     * Load the map
+     *
+     * @param request The Http request
+     * @return the jsp URL to display the form to manage coordonnees
+     */
+    @Action( ACTION_LOAD_MAP )
+    public XPage doLoadMap( HttpServletRequest request )
+    {
+        _idMap = Integer.parseInt( request.getParameter( PARAMETER_ID_MAP ) );
+        //addInfo( INFO_COORDONNEE_REMOVED, getLocale( request ) );
+
+        return redirectView( request, VIEW_MANAGE_COORDONNEES );
     }
 
     /**
