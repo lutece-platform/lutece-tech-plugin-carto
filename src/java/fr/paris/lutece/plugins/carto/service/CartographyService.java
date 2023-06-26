@@ -9,16 +9,20 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Map.Entry;
 
+import fr.paris.lutece.plugins.carto.business.BasemapHome;
 import fr.paris.lutece.plugins.carto.business.Coordonnee;
 import fr.paris.lutece.plugins.carto.business.CoordonneeHome;
 import fr.paris.lutece.plugins.carto.business.DataLayer;
 import fr.paris.lutece.plugins.carto.business.DataLayerHome;
 import fr.paris.lutece.plugins.carto.business.DataLayerMapTemplate;
+import fr.paris.lutece.plugins.carto.business.DataLayerMapTemplateHome;
 import fr.paris.lutece.plugins.carto.business.DataLayerType;
 import fr.paris.lutece.plugins.carto.business.DataLayerTypeHome;
+import fr.paris.lutece.plugins.carto.business.MapTemplate;
 import fr.paris.lutece.plugins.leaflet.business.GeolocItem;
 import fr.paris.lutece.plugins.leaflet.business.GeolocItemPolygon;
 import fr.paris.lutece.plugins.leaflet.service.IconService;
+import fr.paris.lutece.plugins.search.solr.business.SolrSearchEngine;
 import fr.paris.lutece.plugins.search.solr.business.SolrSearchResult;
 import fr.paris.lutece.plugins.search.solr.indexer.SolrItem;
 import fr.paris.lutece.portal.service.util.AppLogService;
@@ -34,8 +38,10 @@ public class CartographyService {
     public static final String MARK_DATA_LAYER = "data_layer";
     public static final String MARK_LAYER_EDITABLE = "data_layer_editable";
     public static final String MARK_MAP = "mapLoaded";
+    public static final String MARK_BASEMAP = "basemap";
     public static final String MARK_LAYER_PROPERTIES = "layer_properties";
     public static final String MARK_LAYER_TYPE = "layer_type";
+    public static final String PARAMETER_SOLR_GEOJSON = "DataLayer_text";
 	
 	/**
      * Returns a model with points data from a geoloc search
@@ -125,7 +131,7 @@ public class CartographyService {
 	        return geolocItem;
     }
     
-    public static GeolocItemPolygon createGeolocItemPolygon( String coordinate, String strTypeGeometry )
+    public static GeolocItemPolygon getGeolocItemPolygon( String coordinate, String strTypeGeometry )
     {
     	String[] lstCoordPolygon = coordinate.split(";");
         
@@ -147,6 +153,30 @@ public class CartographyService {
         geoPolygon.setTypegeometry( strTypeGeometry );
         
         return geoPolygon;
+    }
+    
+    public static void loadMapAndPoints(MapTemplate map, Map<String, Object> model)
+    {
+    	SolrSearchEngine engine = SolrSearchEngine.getInstance( );
+
+        List<HashMap<String, Object>> points = new ArrayList<HashMap<String, Object>> ( );
+        List<DataLayer> lstDatalayer = DataLayerMapTemplateHome.getDataLayerListByMapTemplateId( map.getId( ) );
+        Optional<DataLayer> dataLayerEditable  = DataLayerHome.findDataLayerFromMapId( map.getId( ), true, false, false );
+        
+        for (DataLayer datalayer : lstDatalayer)
+        {
+        	List<SolrSearchResult> listResultsGeoloc = engine.getGeolocSearchResults( PARAMETER_SOLR_GEOJSON + ":" + datalayer.getSolrTag( ), null, 100 );
+        	Optional<DataLayerMapTemplate> dataLayerMapTemplate = DataLayerMapTemplateHome.findByIdMapKeyIdDataLayerKey( map.getId( ), datalayer.getId( ) );
+        	points.addAll( CartographyService.getGeolocModel( listResultsGeoloc, datalayer, dataLayerMapTemplate.get( ) ) );
+        }
+
+        model.put( CartographyService.MARK_POINTS, points );
+        model.put( CartographyService.MARK_MAP, map );
+        model.put( MARK_BASEMAP, BasemapHome.findByPrimaryKey( Integer.valueOf( map.getMapBackground( ) ) ).get( ).getUrl( ) );
+        if ( dataLayerEditable.isPresent( ) )
+        {
+        	model.put( CartographyService.MARK_LAYER_EDITABLE, dataLayerEditable.get( ) );
+        }
     }
 
 }
