@@ -58,7 +58,12 @@
 		</dependency>
 		
     </dependencies>
-
+	<scm>
+        <connection>scm:git:https://github.com/lutece-platform/lutece-tech-plugin-carto.git</connection>
+        <developerConnection>scm:git:https://github.com/lutece-platform/lutece-tech-plugin-carto.git</developerConnection>
+        <url>https://github.com/lutece-platform/lutece-tech-plugin-carto.git</url>
+        <tag>HEAD</tag>
+    </scm>
     <properties>
         <componentName>carto</componentName>
         <jiraProjectName>CARTO</jiraProjectName>
