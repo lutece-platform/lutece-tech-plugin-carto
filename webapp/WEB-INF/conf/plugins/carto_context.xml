@@ -11,10 +11,8 @@
     <bean id="carto.geometryTypeDAO" class="fr.paris.lutece.plugins.carto.business.GeometryTypeDAO" />
     <bean id="carto.dataLayerTypeDAO" class="fr.paris.lutece.plugins.carto.business.DataLayerTypeDAO" />
     <bean id="carto.basemapDAO" class="fr.paris.lutece.plugins.carto.business.BasemapDAO" />
+    <!-- 
     <bean id="carto.cartoSolrAppAddon" class="fr.paris.lutece.plugins.carto.service.CartoSolrAppAddon" />
-
-	<!-- Indexer -->
-    <bean id="solr.solrCoordonneeIndexer"
-        class="fr.paris.lutece.plugins.carto.solr.indexer.SolrCoordonneeIndexer" />
+	 -->
 
 </beans>

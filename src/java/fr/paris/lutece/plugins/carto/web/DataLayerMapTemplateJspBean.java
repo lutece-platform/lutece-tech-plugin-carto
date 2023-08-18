@@ -50,10 +50,8 @@ import fr.paris.lutece.util.ReferenceList;
 import fr.paris.lutece.util.html.AbstractPaginator;
 
 import java.util.Comparator;
-import java.util.HashMap;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -62,8 +60,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItem;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.paris.lutece.plugins.carto.business.Coordonnee;
@@ -75,8 +71,6 @@ import fr.paris.lutece.plugins.carto.business.DataLayerMapTemplateHome;
 import fr.paris.lutece.plugins.carto.business.DataLayerType;
 import fr.paris.lutece.plugins.carto.business.DataLayerTypeHome;
 import fr.paris.lutece.plugins.carto.business.MapTemplateHome;
-import fr.paris.lutece.plugins.leaflet.business.GeolocItem;
-import fr.paris.lutece.plugins.leaflet.business.GeolocItemPolygon;
 
 /**
  * This class provides the user interface to manage DataLayerMapTemplate features ( manage, create, modify, remove )
