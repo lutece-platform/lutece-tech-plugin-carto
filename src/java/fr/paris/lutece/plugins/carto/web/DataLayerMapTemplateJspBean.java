@@ -153,9 +153,9 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean <Int
         ReferenceList refDataLayerType = DataLayerTypeHome.getDataLayerTypesReferenceList( );
         
         Map<String, Object> model = getPaginatedListModel( request, MARK_DATALAYERMAPTEMPLATE_LIST, _listIdDataLayerMapTemplates, JSP_MANAGE_DATALAYERMAPTEMPLATES );
-        model.put( MARK_REF_DATA_LAYER, refDataLayer );
-        model.put( MARK_REF_MAP_TEMPLATE, refMapTemplate );
-        model.put( MARK_REF_DATA_LAYER_TYPE, refDataLayerType); 
+        model.put( MARK_REF_DATA_LAYER, refDataLayer.toMap( ) );
+        model.put( MARK_REF_MAP_TEMPLATE, refMapTemplate.toMap( ) );
+        model.put( MARK_REF_DATA_LAYER_TYPE, refDataLayerType.toMap( ) ); 
         
         return getPage( PROPERTY_PAGE_TITLE_MANAGE_DATALAYERMAPTEMPLATES, TEMPLATE_MANAGE_DATALAYERMAPTEMPLATES, model );
     }
