@@ -98,6 +98,7 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean <Int
     private static final String MARK_REF_MAP_TEMPLATE = "reflist_map_template";
     private static final String MARK_REF_DATA_LAYER = "reflist_data_layer";
     private static final String MARK_REF_DATA_LAYER_TYPE = "reflist_data_layer_type";
+    private static final String MARK_LIST_DATA_LAYER = "list_data_layer";
     private static final String MARK_POLYGON_INCLUSION_EXCLUSION = "polygon_inclusion_exclusion";
 
     private static final String JSP_MANAGE_DATALAYERMAPTEMPLATES = "jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp";
@@ -198,12 +199,14 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean <Int
         ReferenceList refDataLayer = DataLayerHome.getDataLayersReferenceList( );
         ReferenceList refMapTemplate = MapTemplateHome.getMapTemplatesReferenceList( );
         ReferenceList refDataLayerType = DataLayerTypeHome.getDataLayerTypesReferenceList( );
+        List<DataLayer> lstDataLayer = DataLayerHome.getDataLayersList( );
         
         Map<String, Object> model = getModel(  );
         model.put( MARK_REF_DATA_LAYER, refDataLayer );
         model.put( MARK_REF_MAP_TEMPLATE, refMapTemplate );
         model.put( MARK_DATALAYERMAPTEMPLATE, _datalayermaptemplate );
         model.put( MARK_REF_DATA_LAYER_TYPE, refDataLayerType); 
+        model.put( MARK_LIST_DATA_LAYER , lstDataLayer );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_CREATE_DATALAYERMAPTEMPLATE ) );
 
         return getPage( PROPERTY_PAGE_TITLE_CREATE_DATALAYERMAPTEMPLATE, TEMPLATE_CREATE_DATALAYERMAPTEMPLATE, model );
@@ -340,6 +343,7 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean <Int
         ReferenceList refDataLayer = DataLayerHome.getDataLayersReferenceList( );
         ReferenceList refMapTemplate = MapTemplateHome.getMapTemplatesReferenceList( );
         ReferenceList refDataLayerType = DataLayerTypeHome.getDataLayerTypesReferenceList( );
+        List<DataLayer> lstDataLayer = DataLayerHome.getDataLayersList( );
         
         Map<String, Object> model = getModel(  );
         
@@ -355,6 +359,7 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean <Int
         model.put( MARK_REF_MAP_TEMPLATE, refMapTemplate );
         model.put( MARK_DATALAYERMAPTEMPLATE, _datalayermaptemplate );
         model.put( MARK_REF_DATA_LAYER_TYPE, refDataLayerType); 
+        model.put( MARK_LIST_DATA_LAYER , lstDataLayer );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_MODIFY_DATALAYERMAPTEMPLATE ) );
 
         return getPage( PROPERTY_PAGE_TITLE_MODIFY_DATALAYERMAPTEMPLATE, TEMPLATE_MODIFY_DATALAYERMAPTEMPLATE, model );

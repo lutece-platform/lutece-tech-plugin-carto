@@ -14,8 +14,14 @@
 				<@select name='id_map_template' items=reflist_map_template id='id_map_template' default_value='${datalayermaptemplate.idMapTemplate!\'\'}' />
 			</@formGroup>
 			<@formGroup labelFor='id_data_layer' labelKey='#i18n{carto.modify_datalayermaptemplate.labelIdDataLayer}' mandatory=true>
-				<@select name='id_data_layer' items=reflist_data_layer id='id_data_layer' default_value='${datalayermaptemplate.idDataLayer!\'\'}' />
+				<@select name='id_data_layer' id='id_data_layer' default_value='${datalayermaptemplate.idDataLayer!\'\'}' >
+					<#list list_data_layer as dataLayer>
+						<#assign sel1><#if dataLayer.id==datalayermaptemplate.idDataLayer >true<#else>false</#if></#assign>
+						<@option value=dataLayer.id  selected=sel1?boolean  label=dataLayer.title params="data-geometry=${dataLayer.geometryType.name}"/>
+					</#list>
+				</@select>
 			</@formGroup>
+			
 			<@formGroup labelFor='pictogram' labelKey='#i18n{carto.modify_datalayermaptemplate.labelPictogram}' mandatory=true>
 				<@selectIconFont id='pictogram' class='' name='pictogram' defaultValue='${datalayermaptemplate.pictogram!\'\'}' showListLabel=true showListIcon=true searchShow=true searchFocus=false searchHighlight=true type='yaml' prefix='fa' iconsUrl='https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/metadata/icons.yml' resources=true />
 			</@formGroup>
