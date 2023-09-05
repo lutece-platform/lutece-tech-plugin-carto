@@ -10,16 +10,16 @@
         <@input type="hidden" value="${token}" name="token" />
 
 		<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayertype.labelTitle}' mandatory=true>
-			<@input type='text' id='title' name='title'  maxlength=255 value='${datalayertype.title!\'\'}' tabIndex='0' />
+			<@input type='text' id='title' name='title'  maxlength=255 value='${datalayertype.title!\'\'}' />
 		</@formGroup>
 		<@formGroup labelFor='editable' labelKey='#i18n{carto.modify_datalayertype.labelEditable}' mandatory=true>
-          	<@checkBox id="editable" name="editable"  value="1" checked=datalayertype.editable!'false' tabIndex='1' />
+          	<@checkBox id="editable" name="editable"  value="1" checked=datalayertype.editable!'false' />
 		</@formGroup>
 		<@formGroup labelFor='inclusion' labelKey='#i18n{carto.modify_datalayertype.labelInclusion}' mandatory=true>
-          	<@checkBox id="inclusion" name="inclusion"  value="1" checked=datalayertype.inclusion!'false' tabIndex='3' />
+          	<@checkBox id="inclusion" name="inclusion"  value="1" checked=datalayertype.inclusion!'false' />
 		</@formGroup>
 		<@formGroup labelFor='exclusion' labelKey='#i18n{carto.modify_datalayertype.labelExclusion}' mandatory=true>
-          	<@checkBox id="exclusion" name="exclusion"  value="1" checked=datalayertype.exclusion!'false' tabIndex='4' />
+          	<@checkBox id="exclusion" name="exclusion"  value="1" checked=datalayertype.exclusion!'false' />
 		</@formGroup>
 				
 		<@actionButtons button1Name="action_createDataLayerType" button2Name="view_manageDataLayerType"/>

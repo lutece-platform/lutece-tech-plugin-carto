@@ -11,10 +11,10 @@
 			<@input type="hidden" value="${token}" name="token" />
 			
 			<@formGroup labelFor='title' labelKey='#i18n{carto.modify_basemap.labelTitle}' mandatory=true>
-				<@input type='text' id='title' name='title'  maxlength=255 value='${basemap.title!\'\'}' tabIndex='0' />
+				<@input type='text' id='title' name='title'  maxlength=255 value='${basemap.title!\'\'}' />
 			</@formGroup>
 			<@formGroup labelFor='url' labelKey='#i18n{carto.modify_basemap.labelUrl}' mandatory=true>
-				<@input type='text' id='url' name='url'  value='${basemap.url!\'\'}' tabIndex='1' />
+				<@input type='text' id='url' name='url'  value='${basemap.url!\'\'}' />
 			</@formGroup>
         <@actionButtons button1Name="action_modifyBasemap" button2Name="view_manageBasemap"/>
     </@tform>

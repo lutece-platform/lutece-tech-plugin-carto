@@ -11,10 +11,10 @@
 			<@input type="hidden" value="${token}" name="token" />
 			
 			<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayer.labelTitle}' mandatory=true>
-				<@input type='text' id='title' name='title'  maxlength=255 value='${datalayer.title!\'\'}' tabIndex='0' />
+				<@input type='text' id='title' name='title'  maxlength=255 value='${datalayer.title!\'\'}' />
 			</@formGroup>
 			<@formGroup labelFor='solr_tag' labelKey='#i18n{carto.modify_datalayer.labelSolrTag}' mandatory=true>
-				<@input type='text' id='solr_tag' name='solr_tag'  maxlength=255 value='${datalayer.solrTag!\'\'}' tabIndex='1' />
+				<@input type='text' id='solr_tag' name='solr_tag'  maxlength=255 value='${datalayer.solrTag!\'\'}' />
 			</@formGroup>
 			<@formGroup labelFor='geometry' labelKey='#i18n{carto.modify_datalayer.labelGeometry}' mandatory=true>
 				<@select name='geometry' items=list_geo_type id='geometry' default_value='${datalayer.geometryType.id!\'\'}' />

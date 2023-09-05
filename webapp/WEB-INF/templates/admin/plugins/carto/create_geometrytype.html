@@ -10,10 +10,10 @@
         <@input type="hidden" value="${token}" name="token" />
 
 		<@formGroup labelFor='name' labelKey='#i18n{carto.modify_geometrytype.labelName}' mandatory=true>
-			<@input type='text' id='name' name='name'  maxlength=255 value='${geometrytype.name!\'\'}' tabIndex='0' />
+			<@input type='text' id='name' name='name'  maxlength=255 value='${geometrytype.name!\'\'}' />
 		</@formGroup>
 		<@formGroup labelFor='technical_name' labelKey='#i18n{carto.modify_geometrytype.labelTechnicalName}' mandatory=true>
-			<@input type='text' id='technical_name' name='technical_name'  maxlength=255 value='${geometrytype.technicalName!\'\'}' tabIndex='1' />
+			<@input type='text' id='technical_name' name='technical_name'  maxlength=255 value='${geometrytype.technicalName!\'\'}' />
 		</@formGroup>
 				
 		<@actionButtons button1Name="action_createGeometryType" button2Name="view_manageGeometryType"/>

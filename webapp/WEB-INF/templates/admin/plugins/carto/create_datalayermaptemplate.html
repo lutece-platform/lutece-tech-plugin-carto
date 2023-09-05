@@ -19,19 +19,19 @@
 			<@selectIconFont id='pictogram' class='' name='pictogram' defaultValue='${datalayermaptemplate.pictogram!\'\'}' showListLabel=true showListIcon=true searchShow=true searchFocus=false searchHighlight=true type='yaml' prefix='fa' iconsUrl='https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/metadata/icons.yml' resources=true />
 		</@formGroup>
 		<@formGroup labelFor='zoom_min' labelKey='#i18n{carto.modify_datalayermaptemplate.labelZoomMin}' mandatory=true>
-			<@input type='text' id='zoom_min' name='zoom_min'  value='${datalayermaptemplate.zoomMin!\'\'}' tabIndex='3' />
+			<@input type='text' id='zoom_min' name='zoom_min'  value='${datalayermaptemplate.zoomMin!\'\'}' />
 		</@formGroup>
 		<@formGroup labelFor='zoom_max' labelKey='#i18n{carto.modify_datalayermaptemplate.labelZoomMax}' mandatory=true>
-			<@input type='text' id='zoom_max' name='zoom_max'  value='${datalayermaptemplate.zoomMax!\'\'}' tabIndex='4' />
+			<@input type='text' id='zoom_max' name='zoom_max'  value='${datalayermaptemplate.zoomMax!\'\'}' />
 		</@formGroup>
 		<@formGroup labelFor='layer_type' labelKey='#i18n{carto.modify_datalayermaptemplate.labelLayerType}' mandatory=true>
 			<@select name='layer_type' items=reflist_data_layer_type id='layer_type' default_value='${datalayermaptemplate.layerType!\'\'}' />
 		</@formGroup>
 		<@formGroup labelFor='color' labelKey='#i18n{carto.modify_datalayermaptemplate.labelColor}' mandatory=true>
-			<@input type='color' id='color' name='color'  maxlength=50 value='${datalayermaptemplate.color!\'\'}' tabIndex='6' />
+			<@input type='color' id='color' name='color'  maxlength=50 value='${datalayermaptemplate.color!\'\'}' />
 		</@formGroup>
 		<@formGroup labelFor='thickness' labelKey='#i18n{carto.modify_datalayermaptemplate.labelThickness}' mandatory=true>
-			<@input type='text' id='thickness' name='thickness'  value='${datalayermaptemplate.thickness!\'\'}' tabIndex='7' />
+			<@input type='text' id='thickness' name='thickness'  value='${datalayermaptemplate.thickness!\'\'}' />
 		</@formGroup>
 		<@formGroup labelFor='zone_json' labelKey='#i18n{carto.modify_datalayermaptemplate.labelJson}' >
 			<@input type='file' id='zone_json'  name='zone_json' />
