@@ -1,60 +1,70 @@
-<#include "managecarto_tabs.html" />
-<@tabs2 tab="datalayermaptemplate" />
-
-
-<@box>
-	<@boxHeader title='#i18n{carto.modify_datalayermaptemplate.title}' />
-	<@boxBody>
-    <@tform class="form-horizontal" method="post" enctype="multipart/form-data" name="modify_datalayermaptemplate" action="jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp" >
+<@pageContainer>
+    <@pageColumn>
+        <@pageHeader title='#i18n{carto.modify_datalayermaptemplate.title}' />
+			<@tform method="post" enctype="multipart/form-data" name="modify_datalayermaptemplate" action="jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp" boxed=true>
 			<@messages errors=errors />
 			<@input type="hidden" id="id" name="id" value="${datalayermaptemplate.id}"/>
 			<@input type="hidden" value="${token}" name="token" />
-			
-			<@formGroup labelFor='id_map_template' labelKey='#i18n{carto.modify_datalayermaptemplate.labelIdMapTemplate}' mandatory=true>
-				<@select name='id_map_template' items=reflist_map_template id='id_map_template' default_value='${datalayermaptemplate.idMapTemplate!\'\'}' />
-			</@formGroup>
-			<@formGroup labelFor='id_data_layer' labelKey='#i18n{carto.modify_datalayermaptemplate.labelIdDataLayer}' mandatory=true>
-				<@select name='id_data_layer' id='id_data_layer' default_value='${datalayermaptemplate.idDataLayer!\'\'}' >
-					<#list list_data_layer as dataLayer>
-						<#assign sel1><#if dataLayer.id==datalayermaptemplate.idDataLayer >true<#else>false</#if></#assign>
-						<@option value=dataLayer.id  selected=sel1?boolean  label=dataLayer.title params="data-geometry=${dataLayer.geometryType.name}"/>
-					</#list>
-				</@select>
-			</@formGroup>
-			
-			<@formGroup labelFor='pictogram' labelKey='#i18n{carto.modify_datalayermaptemplate.labelPictogram}' mandatory=true>
-				<@selectIconFont id='pictogram' class='' name='pictogram' defaultValue='${datalayermaptemplate.pictogram!\'\'}' showListLabel=true showListIcon=true searchShow=true searchFocus=false searchHighlight=true type='yaml' prefix='fa' iconsUrl='https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/metadata/icons.yml' resources=true />
-			</@formGroup>
-			<@formGroup labelFor='zoom_min' labelKey='#i18n{carto.modify_datalayermaptemplate.labelZoomMin}' mandatory=true>
-				<@input type='text' id='zoom_min' name='zoom_min'  value='${datalayermaptemplate.zoomMin!\'\'}' />
-			</@formGroup>
-			<@formGroup labelFor='zoom_max' labelKey='#i18n{carto.modify_datalayermaptemplate.labelZoomMax}' mandatory=true>
-				<@input type='text' id='zoom_max' name='zoom_max'  value='${datalayermaptemplate.zoomMax!\'\'}' />
-			</@formGroup>
-			<@formGroup labelFor='layer_type' labelKey='#i18n{carto.modify_datalayermaptemplate.labelLayerType}' mandatory=true>
-				<@select name='layer_type' items=reflist_data_layer_type id='layer_type' default_value='${datalayermaptemplate.layerType!\'\'}' />
-			</@formGroup>
-			<@formGroup labelFor='color' labelKey='#i18n{carto.modify_datalayermaptemplate.labelColor}' mandatory=true>
-				<@input type='color' id='color' name='color'  maxlength=50 value='${datalayermaptemplate.color!\'\'}' />
-			</@formGroup>
-			<@formGroup labelFor='thickness' labelKey='#i18n{carto.modify_datalayermaptemplate.labelThickness}' mandatory=true>
-				<@input type='text' id='thickness' name='thickness'  value='${datalayermaptemplate.thickness!\'\'}' />
-			</@formGroup>
-			<@formGroup labelFor='zone_json' labelKey='#i18n{carto.modify_datalayermaptemplate.labelJson}' >
-				<@input type='file' id='zone_json'  name='zone_json' />
-			</@formGroup>
-			<@div class='position-relative'>
-		   		 <@div id='forms-admin-map' params='style="height: 400px; width: 100%"'></@div>
-			</@div>
-        <@actionButtons button1Name="action_modifyDataLayerMapTemplate" button2Name="view_manageDataLayerMapTemplate"/>
-    </@tform>
-	</@boxBody>
-</@box>
-
-<link href="css/admin/style/bootstrap4/all.min.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="js/jquery/plugins/toastr/toastr.min.css" >
-<script src="js/jquery/plugins/toastr/toastr.min.js"></script>
-<script type="text/javascript">
+			<@row>
+				<@columns sm=3> 
+					<@formGroup labelFor='id_map_template' labelKey='#i18n{carto.modify_datalayermaptemplate.labelIdMapTemplate}' mandatory=true rows=2>
+						<@select name='id_map_template' items=reflist_map_template id='id_map_template' default_value='${datalayermaptemplate.idMapTemplate!\'\'}' />
+					</@formGroup>
+				</@columns>
+				<@columns sm=3>
+					<@formGroup labelFor='id_data_layer' labelKey='#i18n{carto.modify_datalayermaptemplate.labelIdDataLayer}' mandatory=true rows=2>
+						<@select name='id_data_layer' id='id_data_layer' default_value='${datalayermaptemplate.idDataLayer!\'\'}' >
+							<#list list_data_layer as dataLayer>
+								<#assign sel1><#if dataLayer.id==datalayermaptemplate.idDataLayer >true<#else>false</#if></#assign>
+								<@option value=dataLayer.id selected=sel1?boolean label=dataLayer.title params="data-geometry=${dataLayer.geometryType.name?lower_case}"/>
+							</#list>
+						</@select>
+					</@formGroup>
+				</@columns>
+			</@row>
+			<@row>
+                <@columns sm=2>
+					<@formGroup labelFor='pictogram' labelKey='#i18n{carto.modify_datalayermaptemplate.labelPictogram}' mandatory=true rows=2>
+						<@selectIconFont id='pictogram' class='point form-select' name='pictogram' defaultValue='${datalayermaptemplate.pictogram!\'\'}' showListLabel=true showListIcon=true searchShow=true searchFocus=false searchHighlight=true type='yaml' prefix='fa' iconsUrl='https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/metadata/icons.yml' resources=true />
+					</@formGroup>
+				</@columns>
+				<@columns sm=1>
+					<@formGroup labelFor='zoom_min' labelKey='#i18n{carto.modify_datalayermaptemplate.labelZoomMin}' mandatory=true rows=2>
+						<@input type='number' id='zoom_min' name='zoom_min' value='${datalayermaptemplate.zoomMin!\'\'}' />
+					</@formGroup>
+				</@columns>
+				<@columns sm=2>
+					<@formGroup labelFor='zoom_max' labelKey='#i18n{carto.modify_datalayermaptemplate.labelZoomMax}' mandatory=true rows=2>
+						<@input type='number' id='zoom_max' class='point' name='zoom_max'  value='${datalayermaptemplate.zoomMax!\'\'}' />
+					</@formGroup>
+				</@columns>
+				<@columns sm=2>
+					<@formGroup labelFor='layer_type' labelKey='#i18n{carto.modify_datalayermaptemplate.labelLayerType}' mandatory=true  rows=2>
+						<@select name='layer_type' items=reflist_data_layer_type id='layer_type' default_value='${datalayermaptemplate.layerType!\'\'}' />
+					</@formGroup>
+				</@columns>
+				<@columns sm=1>
+					<@formGroup labelFor='color' labelKey='#i18n{carto.modify_datalayermaptemplate.labelColor}' mandatory=true rows=2>
+						<@input type='color' id='color' name='color' class='poly' maxlength=50 value='${datalayermaptemplate.color!\'\'}' params='style="height:36px"' />
+					</@formGroup>
+				</@columns>
+				<@columns sm=1>
+					<@formGroup labelFor='thickness' labelKey='#i18n{carto.modify_datalayermaptemplate.labelThickness}' mandatory=true rows=2>
+						<@input type='number' id='thickness' name='thickness' class='poly' value='${datalayermaptemplate.thickness!\'\'}' />
+					</@formGroup>
+				</@columns>
+				<@columns sm=2>
+					<@formGroup labelFor='zone_json' labelKey='#i18n{carto.modify_datalayermaptemplate.labelJson}' rows=2 >
+						<@input type='file' id='zone_json' class='poly' name='zone_json' />
+					</@formGroup>
+				</@columns>
+			</@row>		
+			<@div id='forms-admin-map' params='style="height: 400px; width: 100%"'></@div>
+			<@actionButtons button1Name="action_modifyDataLayerMapTemplate" button2Name="view_manageDataLayerMapTemplate"/>
+		</@tform>
+	</@pageColumn>
+</@pageContainer>
+<script>
 var loadresource, map;
 loadresource = document.createElement('link');
 loadresource.setAttribute("rel", "stylesheet");
@@ -99,22 +109,61 @@ loadresource.setAttribute("type", "text/javascript");
 loadresource.setAttribute("src", "js/admin/plugins/carto/BoundaryCanvas.js" );
 loadresource.async = false;
 document.getElementsByTagName("head")[0].appendChild(loadresource);
-</script>
 
-<script type="text/javascript">
 $(window).on('load', function(){
     map = L.map('forms-admin-map').setView([48.85632, 2.33272], 10);
     var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
     var osm = new L.TileLayer(osmUrl, {minZoom: 6, maxZoom: 16, attribution: osmAttrib}).addTo(map);
-    
     <#if polygon_inclusion_exclusion??>
 		var polygon_inclusion_exclusion = ${polygon_inclusion_exclusion};
 		var aPolygon = polygon_inclusion_exclusion["geometry"]["coordinates"];
 		var polygon = L.polygon(aPolygon );
 	    polygon.addTo(map);
     </#if>
-    
-  });  
+}); 
 
+function toggleLayerOptions( sel, type ){
+	sel.forEach( el =>{
+		if( type ){
+			el.parentElement.parentElement.classList.add('d-none')
+		} else {
+			el.parentElement.parentElement.classList.remove('d-none')
+		}
+	})
+}
+
+document.addEventListener( "DOMContentLoaded", function(){
+	const 	layers = document.querySelector('#id_data_layer'), 
+			points = document.querySelectorAll('.point'),
+			polys = document.querySelectorAll('.poly');
+
+<#list list_data_layer as dataLayer>
+	<#if dataLayer.id==datalayermaptemplate.idDataLayer >
+		<#if dataLayer.geometryType.name?lower_case == 'point'>
+			toggleLayerOptions( points, false )
+			toggleLayerOptions( polys, true )
+		<#else>
+			toggleLayerOptions( points, true )
+			toggleLayerOptions( polys, false )
+		</#if>
+		<#break />
+	</#if>
+</#list>
+
+	layers.addEventListener( 'change', ( ev ) => {
+		const layerIdx = ev.target.value - 1
+		const layerType = ev.target[layerIdx].dataset.geometry
+		switch( layerType ) {
+			case 'point' :
+				toggleLayerOptions( points, false )
+				toggleLayerOptions( polys, true )
+				break;
+			case 'polygone' :
+			case 'polyligne' :
+				toggleLayerOptions( points, true )
+				toggleLayerOptions( polys, false )
+		}
+	})
+})
 </script>
