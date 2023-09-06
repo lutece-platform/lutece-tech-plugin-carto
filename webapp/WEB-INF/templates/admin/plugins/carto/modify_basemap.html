@@ -1,22 +1,19 @@
-<#include "managereferentielcartographie_tabs.html" />
-<@tabs2 tab="basemap" />
-
-
-<@box>
-	<@boxHeader title='#i18n{carto.modify_basemap.title}' />
-	<@boxBody>
-    <@tform class="form-horizontal" method="post" name="modify_basemap" action="jsp/admin/plugins/carto/ManageBasemaps.jsp" >
+<@pageContainer>
+    <@pageColumn>
+        <@pageHeader title='#i18n{carto.modify_basemap.title}' />
+		<@div id='modify_basemap'>
+			<@tform method="post" name="modify_basemap" action="jsp/admin/plugins/carto/ManageBasemaps.jsp" >
 			<@messages errors=errors />
 			<@input type="hidden" id="id" name="id" value="${basemap.id}"/>
 			<@input type="hidden" value="${token}" name="token" />
-			
 			<@formGroup labelFor='title' labelKey='#i18n{carto.modify_basemap.labelTitle}' mandatory=true>
 				<@input type='text' id='title' name='title'  maxlength=255 value='${basemap.title!\'\'}' />
 			</@formGroup>
 			<@formGroup labelFor='url' labelKey='#i18n{carto.modify_basemap.labelUrl}' mandatory=true>
-				<@input type='text' id='url' name='url'  value='${basemap.url!\'\'}' />
+				<@input type='text' id='url' name='url'  value='${basemap.url!\'\'}'  />
 			</@formGroup>
-        <@actionButtons button1Name="action_modifyBasemap" button2Name="view_manageBasemap"/>
-    </@tform>
-	</@boxBody>
-</@box>
+			<@actionButtons button1Name="action_modifyBasemap" button2Name="view_manageBasemap"/>
+			</@tform>
+		</@div>
+	</@pageColumn>
+</@pageContainer>

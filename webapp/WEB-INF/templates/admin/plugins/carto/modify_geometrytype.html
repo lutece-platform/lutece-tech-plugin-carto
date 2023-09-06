@@ -1,22 +1,19 @@
-<#include "managereferentielcartographie_tabs.html" />
-<@tabs2 tab="geometrytype" />
-
-
-<@box>
-	<@boxHeader title='#i18n{carto.modify_geometrytype.title}' />
-	<@boxBody>
-    <@tform class="form-horizontal" method="post" name="modify_geometrytype" action="jsp/admin/plugins/carto/ManageGeometryTypes.jsp" >
+<@pageContainer>
+    <@pageColumn>
+        <@pageHeader title='#i18n{carto.modify_geometrytype.title}' />
+		<@div id='modify_geometrytype'>
 			<@messages errors=errors />
-			<@input type="hidden" id="id" name="id" value="${geometrytype.id}"/>
-			<@input type="hidden" value="${token}" name="token" />
-			
-			<@formGroup labelFor='name' labelKey='#i18n{carto.modify_geometrytype.labelName}' mandatory=true>
-				<@input type='text' id='name' name='name'  maxlength=255 value='${geometrytype.name!\'\'}' />
-			</@formGroup>
-			<@formGroup labelFor='technical_name' labelKey='#i18n{carto.modify_geometrytype.labelTechnicalName}' mandatory=true>
-				<@input type='text' id='technical_name' name='technical_name'  maxlength=255 value='${geometrytype.technicalName!\'\'}' />
-			</@formGroup>
-        <@actionButtons button1Name="action_modifyGeometryType" button2Name="view_manageGeometryType"/>
-    </@tform>
-	</@boxBody>
-</@box>
+		    <@tform method="post" name="modify_geometrytype" action="jsp/admin/plugins/carto/ManageGeometryTypes.jsp" >
+				<@input type="hidden" id="id" name="id" value="${geometrytype.id}"/>
+				<@input type="hidden" value="${token}" name="token" />
+				<@formGroup labelFor='name' labelKey='#i18n{carto.modify_geometrytype.labelName}' mandatory=true>
+					<@input type='text' id='name' name='name'  maxlength=255 value='${geometrytype.name!\'\'}' />
+				</@formGroup>
+				<@formGroup labelFor='technical_name' labelKey='#i18n{carto.modify_geometrytype.labelTechnicalName}' mandatory=true>
+					<@input type='text' id='technical_name' name='technical_name'  maxlength=255 value='${geometrytype.technicalName!\'\'}' />
+				</@formGroup>
+				<@actionButtons button1Name="action_modifyGeometryType" button2Name="view_manageGeometryType"/>
+			</@tform>
+		</@div>
+	</@pageColumn>
+</@pageContainer>

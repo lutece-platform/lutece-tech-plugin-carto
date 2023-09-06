@@ -1,46 +1,38 @@
 <#include "managecarto_tabs.html" />
-<@tabs2 tab="datalayer" />
-
-<@box>
-	<@boxHeader title='#i18n{carto.manage_datalayer.title}' boxTools=true>
-		<@tform class='form-inline pull-right' name='manage_datalayer' action='jsp/admin/plugins/carto/ManageDataLayers.jsp'>
-			<@button type='submit' name='view_createDataLayer' buttonIcon='plus' title='#i18n{carto.manage_datalayers.buttonAdd}' />
-		</@tform>
-	</@boxHeader>
-	<@boxBody>    
-    <@messages infos=infos />
-    <@paginationAdmin paginator=paginator combo=1 />
-    <div class="clearfix"></div>
-    <@table>
-        <tr>
-            <th>#i18n{carto.manage_datalayers.columnTitle}</th>
-            <th>#i18n{carto.manage_datalayers.columnSolrTag}</th>
-            <th>#i18n{carto.manage_datalayers.columnGeometry}</th>
-            <th>#i18n{portal.util.labelActions}</th>
-        </tr>
-        <@tableHeadBodySeparator />
-        <#list datalayer_list as datalayer >
-        <tr>
-            <td>
-				${datalayer.title}
-			</td>
-            <td>
-				${datalayer.solrTag}
-			</td>
-            <td>
-				${datalayer.geometryType.name}
-			</td>
-        	<td>
-				<@aButton href='jsp/admin/plugins/carto/ManageDataLayers.jsp?view=modifyDataLayer&id=${datalayer.id}' title='#i18n{portal.util.labelModify}' hideTitle=['all'] buttonIcon='pencil' />
-						
-				<@aButton href='jsp/admin/plugins/carto/ManageDataLayers.jsp?action=confirmRemoveDataLayer&id=${datalayer.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='btn-danger'  />
-
-	        </td>
-        </tr>
-        </#list>
-    </@table>
-
-    <@paginationAdmin paginator=paginator />
-
-  </@boxBody>
-</@box>
+<@pageContainer>
+    <@pageColumn>
+        <@pageHeader title='#i18n{carto.manage_datalayer.title}'>
+            <@offcanvas targetUrl="jsp/admin/plugins/carto/ManageDataLayers.jsp?view_createDataLayer" targetElement="#new_datalayer" id="template-create-datalayer" title="#i18n{carto.manage_datalayer.buttonAdd}" btnTitle="#i18n{carto.manage_datalayer.buttonAdd}" btnIcon="plus" btnSize="" position="end" size="half" />
+        </@pageHeader>
+        <@tabs>
+            <@tabs2 tab='datalayer' />
+            <@tabContent>
+                <@tabPanel id='datalayer' active=true>
+                <@messages infos=infos />
+                <@table headBody=true>
+                    <@tr>
+                        <@th>#i18n{carto.manage_datalayer.columnTitle}</@th>
+                        <@th>#i18n{carto.manage_datalayer.columnSolrTag}</@th>
+                        <@th>#i18n{carto.manage_datalayer.columnGeometry}</@th>
+                        <@th>#i18n{portal.util.labelActions}</@th>
+                    </@tr>
+                    <@tableHeadBodySeparator />
+                    <#list datalayer_list as datalayer >
+                    <@tr>
+                        <@td>${datalayer.title}</@td>
+                        <@td>${datalayer.solrTag}</@td>
+                        <@td>${datalayer.geometryType.name}</@td>
+                        <@td>
+                            <@offcanvas targetUrl="jsp/admin/plugins/carto/ManageDataLayers.jsp?view=modifyDataLayer&id=${datalayer.id}" targetElement="#modify_datalayer" id="template-modify-datalayer-${datalayer.id}" title="#i18n{portal.util.labelModify}" btnTitle="#i18n{portal.util.labelModify}" btnIcon="pencil" btnSize="" position="end" />
+                            <!-- <@aButton href='jsp/admin/plugins/carto/ManageDataLayers.jsp?view=modifyDataLayer&id=${datalayer.id}' title='#i18n{portal.util.labelModify}' hideTitle=['all'] buttonIcon='pencil' /> -->
+                            <@aButton href='jsp/admin/plugins/carto/ManageDataLayers.jsp?action=confirmRemoveDataLayer&id=${datalayer.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='danger'  />
+                        </@td>
+                    </@tr>
+                    </#list>
+                </@table>
+                <@paginationAdmin paginator=paginator combo=1 showcount=0 />
+                </@tabPanel>
+            </@tabContent>
+        </@tabs>
+    </@pageColumn>
+</@pageContainer>

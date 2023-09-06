@@ -1,16 +1,12 @@
 <#macro tabs2 tab >
 <@tabs>
 	<@tabList>
-			<li <#if tab="maptemplate">class="active"</#if>>
-				<@aButton href="jsp/admin/plugins/carto/ManageMapTemplates.jsp">#i18n{carto.manage_maptemplates.pageTitle}</@aButton>
-			</li>
-			<li <#if tab="datalayer">class="active"</#if>>
-				<@aButton href="jsp/admin/plugins/carto/ManageDataLayers.jsp">#i18n{carto.manage_datalayers.pageTitle}</@aButton>
-			</li>
-			<li <#if tab="datalayermaptemplate">class="active"</#if>>
-				<@aButton href="jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp">#i18n{carto.manage_datalayermaptemplates.pageTitle}</@aButton>
-			</li>
+		<#assign isTabActive><#if tab="maptemplate">true<#else>false</#if></#assign>
+		<@tabLink active=isTabActive?boolean href='jsp/admin/plugins/carto/ManageMapTemplates.jsp' title='#i18n{carto.manage_maptemplate.pageTitle}' tabLabel='#i18n{carto.manage_maptemplate.pageTitle}' />
+		<#assign isTabActive><#if tab="datalayer">true<#else>false</#if></#assign>
+		<@tabLink active=isTabActive?boolean href='jsp/admin/plugins/carto/ManageDataLayers.jsp' title='#i18n{carto.manage_datalayer.pageTitle}' tabLabel='#i18n{carto.manage_datalayer.pageTitle}' />
+		<#assign isTabActive><#if tab="datalayermaptemplate">true<#else>false</#if></#assign>
+		<@tabLink active=isTabActive?boolean href='jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp' title='#i18n{carto.manage_datalayermaptemplate.pageTitle}' tabLabel='#i18n{carto.manage_datalayermaptemplate.pageTitle}' />
 	</@tabList>
 </@tabs>
-
 </#macro>

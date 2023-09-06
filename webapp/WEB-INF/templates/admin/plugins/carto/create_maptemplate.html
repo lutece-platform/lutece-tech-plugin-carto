@@ -1,124 +1,125 @@
-<#include "managecarto_tabs.html" />
-<script src="js/admin/jquery/jquery.min.js"></script>
-<@tabs2 tab="maptemplate" />
-<@box>
-	<@boxHeader title='#i18n{carto.create_maptemplate.title}' />
-	<@boxBody>
-    <@tform name='create_maptemplate' action='jsp/admin/plugins/carto/ManageMapTemplates.jsp' >
-
+<@pageContainer>
+    <@pageColumn >
+        <@pageHeader title='#i18n{carto.create_maptemplate.title}' />
         <@messages errors=errors />
-        <@input type="hidden" id="id" name="id"/>
+        <@tform name='create_maptemplate' action='jsp/admin/plugins/carto/ManageMapTemplates.jsp' boxed=true >
         <@input type="hidden" value="${token}" name="token" />
-
 		<@formGroup labelFor='title' labelKey='#i18n{carto.modify_maptemplate.labelTitle}' mandatory=true>
 			<@input type='text' id='title' name='title'  maxlength=255 value='${maptemplate.title!\'\'}' />
 		</@formGroup>
 		<@formGroup labelFor='description' labelKey='#i18n{carto.modify_maptemplate.labelDescription}' mandatory=true>
 			<@input type='text' id='description' name='description'  value='${maptemplate.description!\'\'}'  />
 		</@formGroup>
-		<@formGroup labelFor='map_background' labelKey='#i18n{carto.modify_maptemplate.labelMapBackground}' >
-			<@select name='map_background' items=mapprovider_list id='map_background' default_value='${maptemplate.mapBackground!\'\'}' />
-		</@formGroup>
-		<@formGroup labelFor='default_zoom' labelKey='#i18n{carto.modify_maptemplate.labelDefaultZoom}' mandatory=true>
-			<@input type='text' id='default_zoom' name='default_zoom'  value='${maptemplate.defaultZoom!\'\'}' />
-		</@formGroup>
-		<@formGroup labelFor='zoom_min' labelKey='#i18n{carto.modify_maptemplate.labelZoomMin}' mandatory=true>
-			<@input type='text' id='zoom_min' name='zoom_min'  value='${maptemplate.zoomMin!\'\'}' />
-		</@formGroup>
-		<@formGroup labelFor='zoom_max' labelKey='#i18n{carto.modify_maptemplate.labelZoomMax}' mandatory=true>
-			<@input type='text' id='zoom_max' name='zoom_max'  value='${maptemplate.zoomMax!\'\'}' />
-		</@formGroup>
-		<@formGroup labelFor='front_office' labelKey='#i18n{carto.modify_maptemplate.labelFrontOffice}' mandatory=true>
-          	<@checkBox id="front_office" name="front_office"  value="1" checked=maptemplate.frontOffice!'false' />
-		</@formGroup>
-		<@formGroup labelFor='center_map' labelKey='#i18n{carto.modify_maptemplate.labelCenterMap}' mandatory=true>
-			<@input type='text' id='center_map' name='center_map'  maxlength=255 value='${maptemplate.centerMap!\'\'}' />
-			<@input type='hidden' id='4_idAddress' name='4_idAddress'  value="" />
-		    <@input type='hidden' id='center_map_x' name='center_map_x'  value='${maptemplate.centerMapX!0?c}' />
-		    <@input type='hidden' id='center_map_y' name='center_map_y'  value="${maptemplate.centerMapY!0?c}" />
-		    <@input type='hidden' id='4_geometry' name='4_geometry'  value="" />
-		</@formGroup>
-				
+        <@row>
+            <@columns sm=2>
+                <@formGroup labelFor='map_background' labelKey='#i18n{carto.modify_maptemplate.labelMapBackground}' rows=2>
+                    <@select name='map_background' items=mapprovider_list id='map_background' default_value='${maptemplate.mapBackground!\'\'}' />
+                </@formGroup>
+            </@columns>
+            <@columns sm=1>
+                <@formGroup labelFor='default_zoom' labelKey='#i18n{carto.modify_maptemplate.labelDefaultZoom}' mandatory=true rows=2>
+                    <@input type='text' id='default_zoom' name='default_zoom'  value='${maptemplate.defaultZoom!\'\'}' />
+                </@formGroup>
+            </@columns>
+            <@columns sm=1>
+                <@formGroup labelFor='zoom_min' labelKey='#i18n{carto.modify_maptemplate.labelZoomMin}' mandatory=true rows=2>
+                    <@input type='number' id='zoom_min' name='zoom_min'  value='${maptemplate.zoomMin!\'\'}' />
+                </@formGroup>
+            </@columns>
+            <@columns sm=1>
+                <@formGroup labelFor='zoom_max' labelKey='#i18n{carto.modify_maptemplate.labelZoomMax}' mandatory=true rows=2>
+                    <@input type='number' id='zoom_max' name='zoom_max'  value='${maptemplate.zoomMax!\'\'}' />
+                </@formGroup>
+            </@columns>
+            <@columns sm=1>
+                <@formGroup labelFor='front_office' labelKey='#i18n{carto.modify_maptemplate.labelFrontOffice}' hideLabel=['all'] class='ms-3 mt-4' mandatory=true  rows=2>
+                    <@checkBox id='front_office' name='front_office' labelKey='#i18n{carto.modify_maptemplate.labelFrontOffice}' orientation='switch' value='1' checked=maptemplate.frontOffice!'false' />
+                </@formGroup>
+            </@columns>
+            <@columns sm=5>
+                <@formGroup labelFor='center_map' labelKey='#i18n{carto.modify_maptemplate.labelCenterMap}' class='ms-3' mandatory=true rows=2>
+                    <@input type='text' id='center_map' name='center_map'  maxlength=255 value='${maptemplate.centerMap!\'\'}' />
+                    <@input type='hidden' id='4_idAddress' name='4_idAddress'  value="" />
+                    <@input type='hidden' id='center_map_x' name='center_map_x'  value='${maptemplate.centerMapX!0?c}' />
+                    <@input type='hidden' id='center_map_y' name='center_map_y'  value="${maptemplate.centerMapY!0?c}" />
+                    <@input type='hidden' id='4_geometry' name='4_geometry'  value="" />
+                </@formGroup>
+            </@columns>
+        </@row>
 		<@actionButtons button1Name="action_createMapTemplate" button2Name="view_manageMapTemplate"/>
-    </@tform>
-	</@boxBody>
-</@box>
-
+        </@tform>
+	</@pageColumn>
+</@pageContainer>
 <link rel="stylesheet" type="text/css" href="js/jquery/plugins/ui/css/jquery-ui.css"/>
-
 <script src="js/admin/jquery/jquery.min.js"></script>
-<script type="text/javascript" src="js/jquery/jQuery.onReady.js"></script>
-<script type="text/javascript" src="js/jquery/plugins/ui/jquery-ui.custom-autocomplete.min.js"></script>
-<script type="text/javascript" src="jsp/site/plugins/address/modules/autocomplete/SetupSuggestPOI.js.jsp"></script>
-<script type="text/javascript" src="js/plugins/address/modules/autocomplete/jQuery.suggestPOI.js"></script>
+<script src="js/jquery/jQuery.onReady.js"></script>
+<script src="js/jquery/plugins/ui/jquery-ui.custom-autocomplete.min.js"></script>
+<script src="jsp/site/plugins/address/modules/autocomplete/SetupSuggestPOI.js.jsp"></script>
+<script src="js/plugins/address/modules/autocomplete/jQuery.suggestPOI.js"></script>
+<script>
+$(window).on( 'load', function () {
+    const currStep=$('.step-current .step-content'), hasCheckAdr=currStep.find('.checkaddress').length;
+    if( hasCheckAdr > 0 ){
+        currStep.addClass('checkadress');
+        currStep.find('[name="action_doSaveStep"]').attr('disabled','disabled');
+    }
 
-<script type="text/javascript">
-        $(window).on( 'load', function () {
-            const currStep=$('.step-current .step-content'), hasCheckAdr=currStep.find('.checkaddress').length;
-            if( hasCheckAdr > 0 ){
-                currStep.addClass('checkadress');
-                currStep.find('[name="action_doSaveStep"]').attr('disabled','disabled');
+    var jAdresse = $('#center_map');
+    var jAdresseId = $('#4_idAddress');
+    var jAdresseX = $('#center_map_x');
+    var jAdresseY = $('#center_map_y');
+    var jAdresseGeometry = $('#4_geometry');
+
+    jAdresse.suggestPOI();
+    jAdresse.bind( $.suggestPOI.EVT_SELECT, function (event) {
+        event.preventDefault();
+        jAdresseGeometry.val(event.poi.type);
+        jAdresseY.val(event.poi.y);
+        jAdresseX.val(event.poi.x);
+        jAdresseId.val(event.poi.id);
+        jAdresse.addClass('wssuggest');
+        jAdresse.removeClass('is-invalid').next('.invalid-feedback').remove();
+    });
+    
+    /* Remove unused field with wsadress */
+    $('#4_address_results').remove();
+    
+    /* JIRA :           																	 */
+    /* Check if an entry has been selected in the data list and prevent from validating step */
+    var wsv = sessionStorage.getItem('wsvalidated_4');
+    if( wsv === 'done' ){
+        jAdresse.addClass('wssuggest');
+        jAdresse.removeClass('is-invalid').next('.invalid-feedback').remove();
+        $('[name="action_doSaveStep"]').removeAttr('disabled');
+    } 
+
+    if( hasCheckAdr > 0 ){
+        jAdresse.on( 'focus', (e) => {
+            if( $(e.target).hasClass('wsvalidated') ){
+                $(e.target).addClass('wssuggest');
             }
-
-            var jAdresse = $('#center_map');
-            var jAdresseId = $('#4_idAddress');
-            var jAdresseX = $('#center_map_x');
-            var jAdresseY = $('#center_map_y');
-            var jAdresseGeometry = $('#4_geometry');
-        
-            jAdresse.suggestPOI();
-            jAdresse.bind( $.suggestPOI.EVT_SELECT, function (event) {
-                event.preventDefault();
-                jAdresseGeometry.val(event.poi.type);
-                jAdresseY.val(event.poi.y);
-                jAdresseX.val(event.poi.x);
-                jAdresseId.val(event.poi.id);
-				jAdresse.addClass('wssuggest');
-				jAdresse.removeClass('is-invalid').next('.invalid-feedback').remove();
-            });
-			
-			/* Remove unused field with wsadress */
-			$('#4_address_results').remove();
-			
-			/* JIRA :           																	 */
-			/* Check if an entry has been selected in the data list and prevent from validating step */
-            
-
-            var wsv = sessionStorage.getItem('wsvalidated_4');
-            if( wsv === 'done' ){
-                jAdresse.addClass('wssuggest');
-                jAdresse.removeClass('is-invalid').next('.invalid-feedback').remove();
-                $('[name="action_doSaveStep"]').removeAttr('disabled');
-            } 
-
-            if( hasCheckAdr > 0 ){
-                jAdresse.on( 'focus', (e) => {
-                    if( $(e.target).hasClass('wsvalidated') ){
-                        $(e.target).addClass('wssuggest');
-                    }
-                });
-                
-                jAdresse.on( 'keyup', (e) => {
-                    if( $(e.target).hasClass('wssuggest') ){
-                        $(e.target).removeClass('wssuggest').removeClass('wsvalidated');
-                        $('.btn-action').attr('disabled','disabled');
-                    }
-                });
-                
-                jAdresse.on( 'blur', (e) => {
-                    if( !$(e.target).hasClass('wssuggest') ){
-                        $(e.target).addClass('is-invalid');
-                        $(e.target).next('.invalid-feedback').length===0 ? $(e.target).after('<div class="invalid-feedback">Vous devez sélectionner un adresse dans la liste proposée.</div>') : '';
-                        $('.btn-action').attr('disabled','disabled');
-                        $(e.target).focus();
-                    } else {
-                        $(e.target).addClass('wsvalidated').removeClass('wssuggest').removeClass('is-invalid').next('.invalid-feedback').remove();
-                        $('.btn-action').removeAttr('disabled');
-                        sessionStorage.setItem('wsvalidated_4', 'done');
-                    }
-                });
-            }
-            
         });
+        
+        jAdresse.on( 'keyup', (e) => {
+            if( $(e.target).hasClass('wssuggest') ){
+                $(e.target).removeClass('wssuggest').removeClass('wsvalidated');
+                $('.btn-action').attr('disabled','disabled');
+            }
+        });
+        
+        jAdresse.on( 'blur', (e) => {
+            if( !$(e.target).hasClass('wssuggest') ){
+                $(e.target).addClass('is-invalid');
+                $(e.target).next('.invalid-feedback').length===0 ? $(e.target).after('<div class="invalid-feedback">Vous devez sélectionner un adresse dans la liste proposée.</div>') : '';
+                $('.btn-action').attr('disabled','disabled');
+                $(e.target).focus();
+            } else {
+                $(e.target).addClass('wsvalidated').removeClass('wssuggest').removeClass('is-invalid').next('.invalid-feedback').remove();
+                $('.btn-action').removeAttr('disabled');
+                sessionStorage.setItem('wsvalidated_4', 'done');
+            }
+        });
+    }
+    
+});
 </script>
-

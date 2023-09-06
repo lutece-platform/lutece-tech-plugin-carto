@@ -1,50 +1,39 @@
 <#include "managereferentielcartographie_tabs.html" />
-<@tabs2 tab="datalayertype" />
-
-<@box>
-	<@boxHeader title='#i18n{carto.manage_datalayertype.title}' boxTools=true>
-		<@tform class='form-inline pull-right' name='manage_datalayertype' action='jsp/admin/plugins/carto/ManageDataLayerTypes.jsp'>
-			<@button type='submit' name='view_createDataLayerType' buttonIcon='plus' title='#i18n{carto.manage_datalayertypes.buttonAdd}' />
-		</@tform>
-	</@boxHeader>
-	<@boxBody>    
-    <@messages infos=infos />
-    <@paginationAdmin paginator=paginator combo=1 />
-    <div class="clearfix"></div>
-    <@table>
-        <tr>
-            <th>#i18n{carto.manage_datalayertypes.columnTitle}</th>
-            <th>#i18n{carto.manage_datalayertypes.columnEditable}</th>
-            <th>#i18n{carto.manage_datalayertypes.columnInclusion}</th>
-            <th>#i18n{carto.manage_datalayertypes.columnExclusion}</th>
-            <th>#i18n{portal.util.labelActions}</th>
-        </tr>
-        <@tableHeadBodySeparator />
-        <#list datalayertype_list as datalayertype >
-        <tr>
-            <td>
-				${datalayertype.title}
-			</td>
-            <td>
-				${datalayertype.editable?c}
-			</td>
-			<td>
-				${datalayertype.inclusion?c}
-			</td>
-            <td>
-				${datalayertype.exclusion?c}
-			</td>
-        	<td>
-				<@aButton href='jsp/admin/plugins/carto/ManageDataLayerTypes.jsp?view=modifyDataLayerType&id=${datalayertype.id}' title='#i18n{portal.util.labelModify}' hideTitle=['all'] buttonIcon='pencil' />
-						
-				<@aButton href='jsp/admin/plugins/carto/ManageDataLayerTypes.jsp?action=confirmRemoveDataLayerType&id=${datalayertype.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='btn-danger'  />
-
-	        </td>
-        </tr>
-        </#list>
-    </@table>
-
-    <@paginationAdmin paginator=paginator />
-
-  </@boxBody>
-</@box>
+<@pageContainer>
+    <@pageColumn>
+        <@pageHeader title='#i18n{carto.manage_datalayertype.title}'>
+            <@offcanvas targetUrl="jsp/admin/plugins/carto/ManageDataLayerTypes.jsp?view_createDataLayerType" targetElement="#new_datalayertype" id="template-create-datalayertyp" title="#i18n{carto.manage_datalayertype.buttonAdd}" btnTitle="#i18n{carto.manage_datalayertype.buttonAdd}" btnIcon="plus" btnSize="" position="end" size="half" />
+	    </@pageHeader>   
+        <@tabs>
+            <@tabs2 tab="datalayertype" />
+            <@tabContent>
+                <@tabPanel id='datalayertype' active=true>
+                <@messages infos=infos />
+                <@table headBody=true>
+                    <@tr>
+                        <@th>#i18n{carto.manage_datalayertype.columnTitle}</@th>
+                        <@th>#i18n{carto.manage_datalayertype.columnEditable}</@th>
+                        <@th>#i18n{carto.manage_datalayertype.columnInclusion}</@th>
+                        <@th>#i18n{carto.manage_datalayertype.columnExclusion}</@th>
+                        <@th>#i18n{portal.util.labelActions}</@th>
+                    </@tr>
+                    <@tableHeadBodySeparator />
+                    <#list datalayertype_list as datalayertype >
+                    <@tr>
+                        <@td>${datalayertype.title}</@td>
+                        <@td><#if datalayertype.editable>#i18n{portal.util.labelYes}<#else>#i18n{portal.util.labelNo}</#if></@td>
+                        <@td><#if datalayertype.inclusion>#i18n{portal.util.labelYes}<#else>#i18n{portal.util.labelNo}</#if></@td>
+                        <@td><#if datalayertype.exclusion>#i18n{portal.util.labelYes}<#else>#i18n{portal.util.labelNo}</#if></@td>
+                        <@td>
+                            <@offcanvas targetUrl="jsp/admin/plugins/carto/ManageDataLayerTypes.jsp?view=modifyDataLayerType&id=${datalayertype.id}" targetElement="#modify_datalayertype" id="template-modify-datalayertype-${datalayertype.id}" title="#i18n{portal.util.labelModify}" btnTitle="#i18n{portal.util.labelModify}" btnIcon="pencil" btnSize="" position="end" size="half" />
+                            <@aButton href='jsp/admin/plugins/carto/ManageDataLayerTypes.jsp?action=confirmRemoveDataLayerType&id=${datalayertype.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='danger'  />
+                        </@td>
+                    </@tr>
+                    </#list>
+                </@table>
+                <@paginationAdmin paginator=paginator combo=1 showcount=0 />
+            </@tabPanel>
+            </@tabContent>      
+        </@tabs>
+    </@pageColumn>
+</@pageContainer>

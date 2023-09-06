@@ -1,58 +1,48 @@
 <#include "managecarto_tabs.html" />
-<@tabs2 tab="maptemplate" />
-
-<@box>
-	<@boxHeader title='#i18n{carto.manage_maptemplate.title}' boxTools=true>
-		<@tform class='form-inline pull-right' name='manage_maptemplate' action='jsp/admin/plugins/carto/ManageMapTemplates.jsp'>
-			<@button type='submit' name='view_createMapTemplate' buttonIcon='plus' title='#i18n{carto.manage_maptemplates.buttonAdd}' />
-		</@tform>
-	</@boxHeader>
-	<@boxBody>    
-    <@messages infos=infos />
-    <@paginationAdmin paginator=paginator combo=1 />
-    <div class="clearfix"></div>
-    <@table>
-        <tr>
-            <th>#i18n{carto.manage_maptemplates.columnTitle}</th>
-            <th>#i18n{carto.manage_maptemplates.columnDescription}</th>
-            <th>#i18n{carto.manage_maptemplates.columnDefaultZoom}</th>
-            <th>#i18n{carto.manage_maptemplates.columnZoomMin}</th>
-            <th>#i18n{carto.manage_maptemplates.columnZoomMax}</th>
-            <th>#i18n{carto.manage_maptemplates.columnCenterMap}</th>
-            <th>#i18n{portal.util.labelActions}</th>
-        </tr>
-        <@tableHeadBodySeparator />
-        <#list maptemplate_list as maptemplate >
-        <tr>
-            <td>
-				${maptemplate.title}
-			</td>
-            <td>
-				${maptemplate.description}
-			</td>
-            <td>
-				${maptemplate.defaultZoom}
-			</td>
-            <td>
-				${maptemplate.zoomMin}
-			</td>
-            <td>
-				${maptemplate.zoomMax}
-			</td>
-            <td>
-				${maptemplate.centerMap}
-			</td>
-        	<td>
-				<@aButton href='jsp/admin/plugins/carto/ManageMapTemplates.jsp?view=modifyMapTemplate&id=${maptemplate.id}' title='#i18n{portal.util.labelModify}' hideTitle=['all'] buttonIcon='pencil' />
-						
-				<@aButton href='jsp/admin/plugins/carto/ManageMapTemplates.jsp?action=confirmRemoveMapTemplate&id=${maptemplate.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='btn-danger'  />
-
-	        </td>
-        </tr>
-        </#list>
-    </@table>
-
-    <@paginationAdmin paginator=paginator />
-
-  </@boxBody>
-</@box>
+<@pageContainer>
+    <@pageColumn>
+        <@pageHeader title='#i18n{carto.manage_maptemplate.title}'>
+            <@tform name='manage_maptemplate' action='jsp/admin/plugins/carto/ManageMapTemplates.jsp'>
+			    <@button type='submit' name='view_createMapTemplate' buttonIcon='plus' title='#i18n{carto.manage_maptemplate.buttonAdd}' />
+		    </@tform>
+	    </@pageHeader>
+        <@tabs>
+            <@tabs2 tab="maptemplate" />
+            <@tabContent>
+                <@tabPanel id='basemap' active=true>
+                <@messages infos=infos />
+                <@table headBody=true>
+                    <@tr>
+                        <@th>#i18n{carto.manage_maptemplate.columnTitle}</@th>
+                        <@th>#i18n{carto.manage_maptemplate.columnDescription}</@th>
+                        <@th>#i18n{carto.manage_maptemplate.columnDefaultZoom}</@th>
+                        <@th>#i18n{carto.manage_maptemplate.columnZoomMin}</@th>
+                        <@th>#i18n{carto.manage_maptemplate.columnZoomMax}</@th>
+                        <@th>#i18n{carto.manage_maptemplate.columnFrontOffice}</@th>
+                        <@th>#i18n{carto.manage_maptemplate.columnCenterMap}</@th>
+                        <@th>#i18n{portal.util.labelActions}</@th>
+                    </@tr>
+                    <@tableHeadBodySeparator />
+                    <#list maptemplate_list as maptemplate >
+                    <@tr>
+                        <@td>${maptemplate.title}
+                        </@td>
+                        <@td>${maptemplate.description}</@td>
+                        <@td>${maptemplate.defaultZoom}</@td>
+                        <@td>${maptemplate.zoomMin}</@td>
+                        <@td>${maptemplate.zoomMax}</@td>
+                        <@td><#if maptemplate.frontOffice><@tag color='success' title='#i18n{portal.util.labelEnabled}' tagIcon='check' /><#else><@tag color='danger' title='#i18n{portal.util.labelDisabled}' tagIcon='x' /></#if></@td>
+                        <@td>${maptemplate.centerMap}</@td>
+                        <@td>
+                            <@aButton href='jsp/admin/plugins/carto/ManageMapTemplates.jsp?view=modifyMapTemplate&id=${maptemplate.id}' title='#i18n{portal.util.labelModify}' buttonIcon='pencil' />
+                            <@aButton href='jsp/admin/plugins/carto/ManageMapTemplates.jsp?action=confirmRemoveMapTemplate&id=${maptemplate.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='danger'  />
+                        </@td>
+                    </@tr>
+                    </#list>
+                </@table>
+                <@paginationAdmin paginator=paginator combo=1 showcount=0 />
+                </@tabPanel>
+            </@tabContent>
+        </@tabs>
+	</@pageColumn>
+</@pageContainer>

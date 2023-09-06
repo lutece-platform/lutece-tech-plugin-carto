@@ -1,16 +1,12 @@
 <#macro tabs2 tab >
 <@tabs>
 	<@tabList>
-			<li <#if tab="datalayertype">class="active"</#if>>
-				<@aButton href="jsp/admin/plugins/carto/ManageDataLayerTypes.jsp">#i18n{carto.manage_datalayertypes.pageTitle}</@aButton>
-			</li>
-			<li <#if tab="geometrytype">class="active"</#if>>
-				<@aButton href="jsp/admin/plugins/carto/ManageGeometryTypes.jsp">#i18n{carto.manage_geometrytypes.pageTitle}</@aButton>
-			</li>
-			<li <#if tab="basemap">class="active"</#if>>
-				<@aButton href="jsp/admin/plugins/carto/ManageBasemaps.jsp">#i18n{carto.manage_basemaps.pageTitle}</@aButton>
-			</li>
+		<#assign isTabActive><#if tab="datalayertype">true<#else>false</#if></#assign>
+		<@tabLink active=isTabActive?boolean href='jsp/admin/plugins/carto/ManageDataLayerTypes.jsp' title='#i18n{carto.manage_datalayertype.pageTitle}' tabLabel='#i18n{carto.manage_datalayertype.pageTitle}' />
+		<#assign isTabActive><#if tab="geometrytype">true<#else>false</#if></#assign>
+		<@tabLink active=isTabActive?boolean href='jsp/admin/plugins/carto/ManageGeometryTypes.jsp' title='#i18n{carto.manage_geometrytype.pageTitle}' tabLabel='#i18n{carto.manage_geometrytype.pageTitle}' />
+		<#assign isTabActive><#if tab="basemap">true<#else>false</#if></#assign>
+		<@tabLink active=isTabActive?boolean href='jsp/admin/plugins/carto/ManageBasemaps.jsp' title='#i18n{carto.manage_basemap.pageTitle}' tabLabel='#i18n{carto.manage_basemap.pageTitle}' />
 	</@tabList>
 </@tabs>
-
 </#macro>

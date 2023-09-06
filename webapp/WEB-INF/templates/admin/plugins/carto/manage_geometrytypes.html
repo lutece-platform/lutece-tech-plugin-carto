@@ -1,42 +1,35 @@
 <#include "managereferentielcartographie_tabs.html" />
-<@tabs2 tab="geometrytype" />
-
-<@box>
-	<@boxHeader title='#i18n{carto.manage_geometrytype.title}' boxTools=true>
-		<@tform class='form-inline pull-right' name='manage_geometrytype' action='jsp/admin/plugins/carto/ManageGeometryTypes.jsp'>
-			<@button type='submit' name='view_createGeometryType' buttonIcon='plus' title='#i18n{carto.manage_geometrytypes.buttonAdd}' />
-		</@tform>
-	</@boxHeader>
-	<@boxBody>    
-    <@messages infos=infos />
-    <@paginationAdmin paginator=paginator combo=1 />
-    <div class="clearfix"></div>
-    <@table>
-        <tr>
-            <th>#i18n{carto.manage_geometrytypes.columnName}</th>
-            <th>#i18n{carto.manage_geometrytypes.columnTechnicalName}</th>
-            <th>#i18n{portal.util.labelActions}</th>
-        </tr>
-        <@tableHeadBodySeparator />
-        <#list geometrytype_list as geometrytype >
-        <tr>
-            <td>
-				${geometrytype.name}
-			</td>
-            <td>
-				${geometrytype.technicalName}
-			</td>
-        	<td>
-				<@aButton href='jsp/admin/plugins/carto/ManageGeometryTypes.jsp?view=modifyGeometryType&id=${geometrytype.id}' title='#i18n{portal.util.labelModify}' hideTitle=['all'] buttonIcon='pencil' />
-						
-				<@aButton href='jsp/admin/plugins/carto/ManageGeometryTypes.jsp?action=confirmRemoveGeometryType&id=${geometrytype.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='btn-danger'  />
-
-	        </td>
-        </tr>
-        </#list>
-    </@table>
-
-    <@paginationAdmin paginator=paginator />
-
-  </@boxBody>
-</@box>
+<@pageContainer>
+    <@pageColumn>
+        <@pageHeader title='#i18n{carto.manage_geometrytype.title}'>
+            <@offcanvas targetUrl="jsp/admin/plugins/carto/ManageGeometryTypes.jsp?view_createGeometryType" targetElement="#new_geometrytype" id="template-create-geometrytype" title="#i18n{carto.manage_geometrytype.buttonAdd}" btnTitle="#i18n{carto.manage_geometrytype.buttonAdd}" btnIcon="plus" btnSize="" position="end" size="half" />
+	    </@pageHeader>   
+        <@tabs>
+            <@tabs2 tab="geometrytype" />
+            <@tabContent>
+                <@tabPanel id='geometrytype' active=true>
+                <@messages infos=infos />
+                <@table headBody=true>
+                    <@tr>
+                        <@th>#i18n{carto.manage_geometrytype.columnName}</@th>
+                        <@th>#i18n{carto.manage_geometrytype.columnTechnicalName}</@th>
+                        <@th>#i18n{portal.util.labelActions}</@th>
+                    </@tr>
+                    <@tableHeadBodySeparator />
+                    <#list geometrytype_list as geometrytype >
+                    <@tr>
+                        <@td>${geometrytype.name}</@td>
+                        <@td>${geometrytype.technicalName}</@td>
+                        <@td>
+                            <@offcanvas targetUrl="jsp/admin/plugins/carto/ManageGeometryTypes.jsp?view=modifyGeometryType&id=${geometrytype.id}" targetElement="#modify_geometrytype" redirectForm=true id="template-geometrytype-basemap-${geometrytype.id}" title="#i18n{portal.util.labelModify}" btnTitle="#i18n{portal.util.labelModify}" btnIcon="pencil" btnSize="" position="end" size="half" />
+                            <@aButton href='jsp/admin/plugins/carto/ManageGeometryTypes.jsp?action=confirmRemoveGeometryType&id=${geometrytype.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='danger'  />
+                        </@td>
+                    </@tr>
+                    </#list>
+                </@table>
+                <@paginationAdmin paginator=paginator combo=1 showcount=0 />
+                </@tabPanel>
+            </@tabContent>
+        </@tabs>
+    </@pageColumn>
+</@pageContainer>
