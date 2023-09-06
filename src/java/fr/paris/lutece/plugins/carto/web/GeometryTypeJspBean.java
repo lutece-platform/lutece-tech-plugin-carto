@@ -59,7 +59,7 @@ import fr.paris.lutece.plugins.carto.business.GeometryTypeHome;
 /**
  * This class provides the user interface to manage GeometryType features ( manage, create, modify, remove )
  */
-@Controller( controllerJsp = "ManageGeometryTypes.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT" )
+@Controller( controllerJsp = "ManageGeometryTypes.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT_REFERENTIEL" )
 public class GeometryTypeJspBean extends AbstractManageCartoJspBean <Integer, GeometryType>
 {
     // Templates

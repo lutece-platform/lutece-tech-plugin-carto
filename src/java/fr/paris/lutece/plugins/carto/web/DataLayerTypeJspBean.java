@@ -59,7 +59,7 @@ import fr.paris.lutece.plugins.carto.business.DataLayerTypeHome;
 /**
  * This class provides the user interface to manage DataLayerType features ( manage, create, modify, remove )
  */
-@Controller( controllerJsp = "ManageDataLayerTypes.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT" )
+@Controller( controllerJsp = "ManageDataLayerTypes.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT_REFERENTIEL" )
 public class DataLayerTypeJspBean extends AbstractManageCartoJspBean <Integer, DataLayerType>
 {
     // Templates
