@@ -1,4 +1,4 @@
-<#include "managecarto_tabs.html" />
+<#include "carto_commons.html" />
 <@pageContainer>
     <@pageColumn>
         <@pageHeader title='#i18n{carto.manage_maptemplate.title}'>
@@ -7,7 +7,7 @@
 		    </@tform>
 	    </@pageHeader>
         <@tabs>
-            <@tabs2 tab="maptemplate" />
+            <@tabsConfig tab="maptemplate" />
             <@tabContent>
                 <@tabPanel id='basemap' active=true>
                 <@messages infos=infos />

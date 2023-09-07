@@ -1,0 +1,24 @@
+<#macro tabsReferentiel tab >
+<@tabs>
+	<@tabList>
+		<#assign isTabActive><#if tab="datalayertype">true<#else>false</#if></#assign>
+		<@tabLink active=isTabActive?boolean href='jsp/admin/plugins/carto/ManageDataLayerTypes.jsp' title='#i18n{carto.manage_datalayertype.pageTitle}' tabLabel='#i18n{carto.manage_datalayertype.pageTitle}' />
+		<#assign isTabActive><#if tab="geometrytype">true<#else>false</#if></#assign>
+		<@tabLink active=isTabActive?boolean href='jsp/admin/plugins/carto/ManageGeometryTypes.jsp' title='#i18n{carto.manage_geometrytype.pageTitle}' tabLabel='#i18n{carto.manage_geometrytype.pageTitle}' />
+		<#assign isTabActive><#if tab="basemap">true<#else>false</#if></#assign>
+		<@tabLink active=isTabActive?boolean href='jsp/admin/plugins/carto/ManageBasemaps.jsp' title='#i18n{carto.manage_basemap.pageTitle}' tabLabel='#i18n{carto.manage_basemap.pageTitle}' />
+	</@tabList>
+</@tabs>
+</#macro>
+<#macro tabsConfig tab >
+<@tabs>
+	<@tabList>
+		<#assign isTabActive><#if tab="maptemplate">true<#else>false</#if></#assign>
+		<@tabLink active=isTabActive?boolean href='jsp/admin/plugins/carto/ManageMapTemplates.jsp' title='#i18n{carto.manage_maptemplate.pageTitle}' tabLabel='#i18n{carto.manage_maptemplate.pageTitle}' />
+		<#assign isTabActive><#if tab="datalayer">true<#else>false</#if></#assign>
+		<@tabLink active=isTabActive?boolean href='jsp/admin/plugins/carto/ManageDataLayers.jsp' title='#i18n{carto.manage_datalayer.pageTitle}' tabLabel='#i18n{carto.manage_datalayer.pageTitle}' />
+		<#assign isTabActive><#if tab="datalayermaptemplate">true<#else>false</#if></#assign>
+		<@tabLink active=isTabActive?boolean href='jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp' title='#i18n{carto.manage_datalayermaptemplate.pageTitle}' tabLabel='#i18n{carto.manage_datalayermaptemplate.pageTitle}' />
+	</@tabList>
+</@tabs>
+</#macro>

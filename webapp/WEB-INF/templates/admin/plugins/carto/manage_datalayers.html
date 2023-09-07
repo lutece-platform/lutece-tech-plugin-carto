@@ -1,11 +1,11 @@
-<#include "managecarto_tabs.html" />
+<#include "carto_commons.html" />
 <@pageContainer>
     <@pageColumn>
         <@pageHeader title='#i18n{carto.manage_datalayer.title}'>
             <@offcanvas targetUrl="jsp/admin/plugins/carto/ManageDataLayers.jsp?view_createDataLayer" targetElement="#new_datalayer" id="template-create-datalayer" title="#i18n{carto.manage_datalayer.buttonAdd}" btnTitle="#i18n{carto.manage_datalayer.buttonAdd}" btnIcon="plus" btnSize="" position="end" size="half" />
         </@pageHeader>
         <@tabs>
-            <@tabs2 tab='datalayer' />
+            <@tabsConfig tab='datalayer' />
             <@tabContent>
                 <@tabPanel id='datalayer' active=true>
                 <@messages infos=infos />

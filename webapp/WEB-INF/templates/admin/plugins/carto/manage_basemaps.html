@@ -1,11 +1,11 @@
-<#include "managereferentielcartographie_tabs.html" />
+<#include "carto_commons.html" />
 <@pageContainer>
     <@pageColumn>
         <@pageHeader title='#i18n{carto.manage_basemap.title}'>
             <@offcanvas targetUrl="jsp/admin/plugins/carto/ManageBasemaps.jsp?view_createBasemap" targetElement="#new_basemap" id="template-create-basemap" title="#i18n{carto.manage_basemap.buttonAdd}" btnTitle="#i18n{carto.manage_basemap.buttonAdd}" btnIcon="plus" btnSize="" position="end" size="half" />
 	    </@pageHeader>
         <@tabs>
-            <@tabs2 tab="basemap" />
+            <@tabsReferentiel tab="basemap" />
             <@tabContent>
                 <@tabPanel id='basemap' active=true>
                 <@messages infos=infos />

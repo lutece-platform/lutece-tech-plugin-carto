@@ -1,11 +1,11 @@
-<#include "managereferentielcartographie_tabs.html" />
+<#include "carto_commons.html" />
 <@pageContainer>
     <@pageColumn>
         <@pageHeader title='#i18n{carto.manage_geometrytype.title}'>
             <@offcanvas targetUrl="jsp/admin/plugins/carto/ManageGeometryTypes.jsp?view_createGeometryType" targetElement="#new_geometrytype" id="template-create-geometrytype" title="#i18n{carto.manage_geometrytype.buttonAdd}" btnTitle="#i18n{carto.manage_geometrytype.buttonAdd}" btnIcon="plus" btnSize="" position="end" size="half" />
 	    </@pageHeader>   
         <@tabs>
-            <@tabs2 tab="geometrytype" />
+            <@tabsReferentiel tab="geometrytype" />
             <@tabContent>
                 <@tabPanel id='geometrytype' active=true>
                 <@messages infos=infos />

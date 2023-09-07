@@ -1,11 +1,11 @@
-<#include "managereferentielcartographie_tabs.html" />
+<#include "carto_commons.html" />
 <@pageContainer>
     <@pageColumn>
         <@pageHeader title='#i18n{carto.manage_datalayertype.title}'>
             <@offcanvas targetUrl="jsp/admin/plugins/carto/ManageDataLayerTypes.jsp?view_createDataLayerType" targetElement="#new_datalayertype" id="template-create-datalayertyp" title="#i18n{carto.manage_datalayertype.buttonAdd}" btnTitle="#i18n{carto.manage_datalayertype.buttonAdd}" btnIcon="plus" btnSize="" position="end" size="half" />
 	    </@pageHeader>   
         <@tabs>
-            <@tabs2 tab="datalayertype" />
+            <@tabsReferentiel tab="datalayertype" />
             <@tabContent>
                 <@tabPanel id='datalayertype' active=true>
                 <@messages infos=infos />

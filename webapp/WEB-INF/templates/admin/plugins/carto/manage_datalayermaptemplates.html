@@ -1,4 +1,4 @@
-<#include "managecarto_tabs.html" />
+<#include "carto_commons.html" />
 <@pageContainer>
     <@pageColumn>
         <@pageHeader title='#i18n{carto.manage_datalayermaptemplate.title}'>
@@ -7,7 +7,7 @@
             </@tform>
 	    </@pageHeader>
         <@tabs>
-            <@tabs2 tab="datalayermaptemplate" />
+            <@tabsConfig tab="datalayermaptemplate" />
             <@tabContent>
                 <@tabPanel id='basemap' active=true>
                 <@messages infos=infos />
@@ -21,15 +21,9 @@
                     <@tableHeadBodySeparator />
                     <#list datalayermaptemplate_list as datalayermaptemplate >
                     <@tr>
-                        <@td>
-                            ${reflist_map_template[datalayermaptemplate.idMapTemplate?c]}
-                        </@td>
-                        <@td>
-                            ${reflist_data_layer[datalayermaptemplate.idDataLayer?c]}
-                        </@td>
-                        <@td>
-                            ${reflist_data_layer_type[datalayermaptemplate.layerType?c]}
-                        </@td>
+                        <@td>${reflist_map_template[datalayermaptemplate.idMapTemplate?c]}</@td>
+                        <@td>${reflist_data_layer[datalayermaptemplate.idDataLayer?c]}</@td>
+                        <@td>${reflist_data_layer_type[datalayermaptemplate.layerType?c]}</@td>
                         <@td>
                             <@aButton href='jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp?view=modifyDataLayerMapTemplate&id=${datalayermaptemplate.id}' title='#i18n{portal.util.labelModify}' buttonIcon='pencil' />
                             <@aButton href='jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp?action=confirmRemoveDataLayerMapTemplate&id=${datalayermaptemplate.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='danger'  />
