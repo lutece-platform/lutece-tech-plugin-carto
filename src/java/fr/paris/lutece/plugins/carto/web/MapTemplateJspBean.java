@@ -58,6 +58,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 
 import fr.paris.lutece.plugins.carto.business.BasemapHome;
+import fr.paris.lutece.plugins.carto.business.DataLayer;
+import fr.paris.lutece.plugins.carto.business.DataLayerMapTemplateHome;
 import fr.paris.lutece.plugins.carto.business.MapTemplate;
 import fr.paris.lutece.plugins.carto.business.MapTemplateHome;
 
@@ -111,6 +113,7 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean <Integer, Map
     
     // Errors
     private static final String ERROR_RESOURCE_NOT_FOUND = "Resource not found";
+    private static final String ERROR_MAP_REMOVED = "carto.manage_maptemplate.MapIsPresent";
     
     // Session variable to store working values
     private MapTemplate _maptemplate;
@@ -261,6 +264,12 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean <Integer, Map
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_MAPTEMPLATE ) );
         
+        List<DataLayer> lstDataLayer = DataLayerMapTemplateHome.getDataLayerListByMapTemplateId( nId );
+        if ( !lstDataLayer.isEmpty( ) )
+        {
+        	addError( ERROR_MAP_REMOVED, getLocale( ) );
+        	return redirectView( request, VIEW_MANAGE_MAPTEMPLATES);
+        }
         
         MapTemplateHome.remove( nId );
         addInfo( INFO_MAPTEMPLATE_REMOVED, getLocale(  ) );

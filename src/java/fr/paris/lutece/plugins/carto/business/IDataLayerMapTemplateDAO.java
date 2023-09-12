@@ -122,4 +122,12 @@ public interface IDataLayerMapTemplateDAO
      * @return The instance of the dataLayerMapTemplate
      */
 	Optional<DataLayerMapTemplate> loadByIdMapIdLayer(int nMapKey, int nDataLayerKey, Plugin plugin);
+
+	/**
+     * Load the data from id data layer
+     * @param nKey The od of the datalayer
+     * @param plugin the Plugin
+     * @return The instance of the dataLayerMapTemplate
+     */
+	Optional<DataLayerMapTemplate> loadByDataLayerId(Plugin plugin, int nKey);
 }

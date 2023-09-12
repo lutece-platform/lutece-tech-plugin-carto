@@ -59,7 +59,8 @@ public final class DataLayerMapTemplateDAO implements IDataLayerMapTemplateDAO
     private static final String SQL_QUERY_SELECTALL_BY_IDS = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate FROM carto_data_layer_map_template WHERE id_data_layer_map_template IN (  ";
     private static final String SQL_QUERY_SELECT_DATA_LAYER_BY_MAP_TEMPLATE_ID = "SELECT id_data_layer FROM carto_data_layer_map_template WHERE id_map_template = ?";
     private static final String SQL_QUERY_SELECT_BY_ID_MAP_ID_LAYER = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate FROM carto_data_layer_map_template WHERE id_map_template = ? AND id_data_layer = ?";
-
+    private static final String SQL_QUERY_SELECT_BY_DATA_LAYER_ID = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate FROM carto_data_layer_map_template WHERE id_data_layer = ?";
+    
     /**
      * {@inheritDoc }
      */
@@ -346,4 +347,36 @@ public final class DataLayerMapTemplateDAO implements IDataLayerMapTemplateDAO
 	        return Optional.ofNullable( dataLayerMapTemplate );
         }
     }
+    
+    /**
+     * {@inheritDoc }
+     */
+	@Override
+	public Optional<DataLayerMapTemplate> loadByDataLayerId(Plugin _plugin, int nKey) {
+		try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_BY_DATA_LAYER_ID, _plugin ) )
+        {
+	        daoUtil.setInt( 1 , nKey );
+	        daoUtil.executeQuery( );
+	        DataLayerMapTemplate dataLayerMapTemplate = null;
+	
+	        if ( daoUtil.next( ) )
+	        {
+	            dataLayerMapTemplate = new DataLayerMapTemplate();
+	            int nIndex = 1;
+	            
+	            dataLayerMapTemplate.setId( daoUtil.getInt( nIndex++ ) );
+			    dataLayerMapTemplate.setIdMapTemplate( daoUtil.getInt( nIndex++ ) );
+			    dataLayerMapTemplate.setIdDataLayer( daoUtil.getInt( nIndex++ ) );
+			    dataLayerMapTemplate.setPictogram( daoUtil.getString( nIndex++ ) );
+			    dataLayerMapTemplate.setZoomMin( daoUtil.getInt( nIndex++ ) );
+			    dataLayerMapTemplate.setZoomMax( daoUtil.getInt( nIndex++ ) );
+			    dataLayerMapTemplate.setLayerType( daoUtil.getInt( nIndex++ ) );
+			    dataLayerMapTemplate.setColor( daoUtil.getString( nIndex++ ) );
+			    dataLayerMapTemplate.setThickness( daoUtil.getInt( nIndex++ ) );
+			    dataLayerMapTemplate.setIdCoordinate( daoUtil.getInt( nIndex ) );
+	        }
+	
+	        return Optional.ofNullable( dataLayerMapTemplate );
+        }
+	}
 }

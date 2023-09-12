@@ -161,6 +161,16 @@ public final class DataLayerMapTemplateHome
     {
         return _dao.loadByIdMapIdLayer( nMapKey, nDataLayerKey, _plugin );
     }
+    
+    /**
+     * Returns an instance of a dataLayerMapTemplate whose identifier is specified in parameter
+     * @param nDataLayerKey The dataLayer primary key
+     * @return an instance of DataLayerMapTemplate
+     */
+    public static Optional<DataLayerMapTemplate> findByIdDataLayerKey( int nDataLayerKey )
+    {
+        return _dao.loadByDataLayerId( _plugin, nDataLayerKey );
+    }
 
 }
 

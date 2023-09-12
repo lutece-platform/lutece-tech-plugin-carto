@@ -56,6 +56,8 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import fr.paris.lutece.plugins.carto.business.DataLayer;
 import fr.paris.lutece.plugins.carto.business.DataLayerHome;
+import fr.paris.lutece.plugins.carto.business.DataLayerMapTemplate;
+import fr.paris.lutece.plugins.carto.business.DataLayerMapTemplateHome;
 import fr.paris.lutece.plugins.carto.business.GeometryType;
 import fr.paris.lutece.plugins.carto.business.GeometryTypeHome;
 
@@ -109,6 +111,7 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean <Integer, DataL
     
     // Errors
     private static final String ERROR_RESOURCE_NOT_FOUND = "Resource not found";
+    private static final String ERROR_DATALAYER_REMOVED = "carto.manage_datalayer.dataLayerIsPresent";
     
     // Session variable to store working values
     private DataLayer _datalayer;
@@ -244,6 +247,13 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean <Integer, DataL
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_DATALAYER ) );
         
+        Optional<DataLayerMapTemplate> dataLayerMapTemplate = DataLayerMapTemplateHome.findByIdDataLayerKey( nId );
+        if ( dataLayerMapTemplate.isPresent( ) )
+        {
+        	addError( ERROR_DATALAYER_REMOVED, getLocale( ) );
+        	return redirect( request, VIEW_MANAGE_DATALAYERS, PARAMETER_ID_DATALAYER, nId);
+        	
+        }
         
         DataLayerHome.remove( nId );
         addInfo( INFO_DATALAYER_REMOVED, getLocale(  ) );
