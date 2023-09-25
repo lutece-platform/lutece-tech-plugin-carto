@@ -1,3 +1,5 @@
+<#include "/admin/plugins/carto/include/commons_markers.html"/>
+<#include "/admin/util/editor/editor.html" />
 <@pageContainer>
 	<@pageColumn>
 		<@pageHeader title='#i18n{carto.modify_datalayer.title}' />
@@ -16,8 +18,15 @@
 				<@formGroup labelFor='geometry' labelKey='#i18n{carto.modify_datalayer.labelGeometry}' mandatory=true>
 					<@select name='geometry' items=list_geo_type id='geometry' default_value='${datalayer.geometryType.id!\'\'}' />
 				</@formGroup>
+				<@formGroup labelFor='texte_popup' labelKey='#i18n{carto.modify_maptemplate.popup}' mandatory=false >
+                    <@input type='textarea' name='popupContent' id='popupContent' rows=15 cols=70 richtext=true> ${datalayer.popupContent!} </@input>
+                </@formGroup>
+                <@columns sm=4>
+					<@marker_descriptions />
+				</@columns>
         		<@actionButtons button1Name="action_modifyDataLayer" button2Name="view_manageDataLayer"/>
    			</@tform>
 		</@div>
 	</@pageColumn>
 </@pageContainer>
+<@initEditor/>

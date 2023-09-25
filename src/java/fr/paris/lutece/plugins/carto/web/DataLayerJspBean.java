@@ -38,6 +38,7 @@ package fr.paris.lutece.plugins.carto.web;
 import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
 import fr.paris.lutece.portal.service.security.SecurityTokenService;
+import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.admin.AccessDeniedException;
 import fr.paris.lutece.portal.service.util.AppException;
 import fr.paris.lutece.portal.util.mvc.admin.annotations.Controller;
@@ -49,6 +50,7 @@ import fr.paris.lutece.util.html.AbstractPaginator;
 
 import java.util.Comparator;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -60,6 +62,8 @@ import fr.paris.lutece.plugins.carto.business.DataLayerMapTemplate;
 import fr.paris.lutece.plugins.carto.business.DataLayerMapTemplateHome;
 import fr.paris.lutece.plugins.carto.business.GeometryType;
 import fr.paris.lutece.plugins.carto.business.GeometryTypeHome;
+import fr.paris.lutece.plugins.carto.provider.IMarkerProvider;
+import fr.paris.lutece.plugins.carto.provider.InfoMarker;
 
 /**
  * This class provides the user interface to manage DataLayer features ( manage, create, modify, remove )
@@ -84,6 +88,7 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean <Integer, DataL
     private static final String MARK_DATALAYER_LIST = "datalayer_list";
     private static final String MARK_DATALAYER = "datalayer";
     private static final String MARK_REF_GEOMETRY_LIST = "list_geo_type";
+    private static final String MARK_SOLR_MARKER_LIST = "list_solr_marker";
 
     private static final String JSP_MANAGE_DATALAYERS = "jsp/admin/plugins/carto/ManageDataLayers.jsp";
 
@@ -279,12 +284,15 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean <Integer, DataL
             _datalayer = optDataLayer.orElseThrow( ( ) -> new AppException(ERROR_RESOURCE_NOT_FOUND ) );
         }
 
-
+        List<IMarkerProvider> lstMarkerSolrList = SpringContextService.getBeansOfType( IMarkerProvider.class );
+        
         ReferenceList refGeometry = GeometryTypeHome.getGeometryTypesReferenceList();
         
         Map<String, Object> model = getModel(  );
         model.put( MARK_REF_GEOMETRY_LIST, refGeometry);
         model.put( MARK_DATALAYER, _datalayer );
+        if ( !lstMarkerSolrList.isEmpty( ) )
+        	model.put( MARK_SOLR_MARKER_LIST , lstMarkerSolrList.get(0).provideMarkerDescriptions( _datalayer.getSolrTag( ), request ) );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_MODIFY_DATALAYER ) );
 
         return getPage( PROPERTY_PAGE_TITLE_MODIFY_DATALAYER, TEMPLATE_MODIFY_DATALAYER, model );

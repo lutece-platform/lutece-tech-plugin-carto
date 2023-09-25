@@ -56,6 +56,8 @@ public class DataLayer implements Serializable
     private int _nGeometry;
     
     private GeometryType _geometryType;
+    
+    private String _strPopupContent;
 
     /**
      * Returns the Id
@@ -147,4 +149,19 @@ public class DataLayer implements Serializable
 		this._geometryType = geometryType;
 	}
     
+	/**
+     * Returns the popup content
+     * @return The popup content
+     */
+	public String getPopupContent() {
+		return _strPopupContent;
+	}
+
+	/**
+     * Sets the popup content
+     * @param strPopupContent The the popup content
+     */ 
+	public void setPopupContent(String strPopupContent) {
+		this._strPopupContent = strPopupContent;
+	}
 }

@@ -44,6 +44,7 @@ id_data_layer int AUTO_INCREMENT,
 title varchar(255) default '' NOT NULL,
 solr_tag varchar(255) default '',
 geometry int default '0',
+popup_content text COLLATE utf8_unicode_ci,
 PRIMARY KEY (id_data_layer)
 );
 
