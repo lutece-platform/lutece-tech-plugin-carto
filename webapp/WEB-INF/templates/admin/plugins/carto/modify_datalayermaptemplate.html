@@ -159,8 +159,7 @@ document.addEventListener( "DOMContentLoaded", function(){
 </#list>
 
 	layers.addEventListener( 'change', ( ev ) => {
-		const layerIdx = ev.target.value - 1
-		const layerType = ev.target[layerIdx].dataset.geometry
+		const layerType = ev.target[ev.target.selectedIndex].dataset.geometry
 		switch( layerType ) {
 			case 'point' :
 				toggleLayerOptions( points, false )
