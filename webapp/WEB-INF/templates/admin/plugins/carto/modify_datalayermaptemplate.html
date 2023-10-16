@@ -85,31 +85,14 @@ loadresource.setAttribute("type", "text/css");
 loadresource.setAttribute("href", "js/plugins/leaflet/leaflet/MarkerCluster.Default.css");
 document.getElementsByTagName("head")[0].appendChild(loadresource);
 
-loadresource = document.createElement('link');
-loadresource.setAttribute("rel", "stylesheet");
-loadresource.setAttribute("type", "text/css");
-loadresource.setAttribute("href", "js/admin/plugins/carto/leaflet.draw.css");
-document.getElementsByTagName("head")[0].appendChild(loadresource);
-
 loadresource = document.createElement('script');
 loadresource.setAttribute("type", "text/javascript");
-loadresource.setAttribute("src", "js/plugins/leaflet/leaflet/leaflet.js" );
+loadresource.setAttribute("src", "js/plugins/carto/leaflet/leaflet.js" );
 loadresource.async = false;
 document.getElementsByTagName("head")[0].appendChild(loadresource);
 loadresource = document.createElement('script');
 loadresource.setAttribute("type", "text/javascript");
-loadresource.setAttribute("src", "js/plugins/leaflet/leaflet/leaflet.markercluster.js" );
-loadresource.async = false;
-document.getElementsByTagName("head")[0].appendChild(loadresource);
-loadresource = document.createElement('script');
-loadresource.setAttribute("type", "text/javascript");
-loadresource.setAttribute("src", "js/admin/plugins/carto/leaflet.draw.js" );
-loadresource.async = false;
-document.getElementsByTagName("head")[0].appendChild(loadresource);
-
-loadresource = document.createElement('script');
-loadresource.setAttribute("type", "text/javascript");
-loadresource.setAttribute("src", "js/admin/plugins/carto/BoundaryCanvas.js" );
+loadresource.setAttribute("src", "js/plugins/carto/leaflet/leaflet.markercluster.js" );
 loadresource.async = false;
 document.getElementsByTagName("head")[0].appendChild(loadresource);
 
@@ -120,8 +103,7 @@ $( window ).on( 'load', function(){
     var osm = new L.TileLayer(osmUrl, {minZoom: 6, maxZoom: 16, attribution: osmAttrib}).addTo(map);
     <#if polygon_inclusion_exclusion??>
 		var polygon_inclusion_exclusion = ${polygon_inclusion_exclusion};
-		var aPolygon = polygon_inclusion_exclusion["geometry"]["coordinates"];
-		var polygon = L.polygon(aPolygon );
+		var polygon = L.geoJSON(polygon_inclusion_exclusion);
 	    polygon.addTo(map);
     </#if>
 	<#list list_data_layer as dataLayer><#if dataLayer.id==datalayermaptemplate.idDataLayer ><#if dataLayer.geometryType.name?lower_case != 'polygone'>document.querySelector('#forms-admin-map').classList.add('d-none')<#break></#if></#if></#list>

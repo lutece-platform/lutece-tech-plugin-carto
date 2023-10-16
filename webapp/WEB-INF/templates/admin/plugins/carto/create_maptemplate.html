@@ -74,8 +74,8 @@ $(window).on( 'load', function () {
     jAdresse.bind( $.suggestPOI.EVT_SELECT, function (event) {
         event.preventDefault();
         jAdresseGeometry.val(event.poi.type);
-        jAdresseY.val(event.poi.y);
-        jAdresseX.val(event.poi.x);
+        jAdresseY.val(event.poi.x);
+        jAdresseX.val(event.poi.y);
         jAdresseId.val(event.poi.id);
         jAdresse.addClass('wssuggest');
         jAdresse.removeClass('is-invalid').next('.invalid-feedback').remove();
