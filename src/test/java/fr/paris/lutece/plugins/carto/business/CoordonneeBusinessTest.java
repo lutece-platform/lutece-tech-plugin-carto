@@ -55,10 +55,14 @@ public class CoordonneeBusinessTest extends LuteceTestCase
     public void testBusiness( )
     {
         // Initialize an object
+    	DataLayer datalayer = new DataLayer( );
+    	datalayer.setId(1);
         Coordonnee coordonnee = new Coordonnee( );
         coordonnee.setAdresse( ADRESSE1 );
         coordonnee.setCoordonneeX( COORDONNEEX1 );
         coordonnee.setCoordonneeY( COORDONNEEY1 );
+        coordonnee.setGeoJson("geojson1");
+        coordonnee.setDataLayer(datalayer);
 
         // Create test
         CoordonneeHome.create( coordonnee );
@@ -72,6 +76,7 @@ public class CoordonneeBusinessTest extends LuteceTestCase
         coordonnee.setAdresse( ADRESSE2 );
         coordonnee.setCoordonneeX( COORDONNEEX2 );
         coordonnee.setCoordonneeY( COORDONNEEY2 );
+        coordonnee.setGeoJson("geojson2");
         CoordonneeHome.update( coordonnee );
         optCoordonneeStored = CoordonneeHome.findByPrimaryKey( coordonnee.getId( ) );
         coordonneeStored = optCoordonneeStored.orElse( new Coordonnee( ) );
