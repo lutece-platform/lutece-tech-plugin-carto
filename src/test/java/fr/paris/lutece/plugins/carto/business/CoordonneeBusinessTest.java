@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2022, City of Paris
+ * Copyright (c) 2002-2023, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,16 +28,14 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *"
+ *
  * License 1.0
  */
-
 package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.test.LuteceTestCase;
 
 import java.util.Optional;
-
 
 /**
  * This is the business class test for the object Coordonnee
@@ -51,13 +49,13 @@ public class CoordonneeBusinessTest extends LuteceTestCase
     private static final Double COORDONNEEY1 = 1.0;
     private static final Double COORDONNEEY2 = 2.0;
 
-	/**
-	* test Coordonnee
-	*/
-    public void testBusiness(  )
+    /**
+     * test Coordonnee
+     */
+    public void testBusiness( )
     {
         // Initialize an object
-        Coordonnee coordonnee = new Coordonnee();
+        Coordonnee coordonnee = new Coordonnee( );
         coordonnee.setAdresse( ADRESSE1 );
         coordonnee.setCoordonneeX( COORDONNEEX1 );
         coordonnee.setCoordonneeY( COORDONNEEY1 );
@@ -65,10 +63,10 @@ public class CoordonneeBusinessTest extends LuteceTestCase
         // Create test
         CoordonneeHome.create( coordonnee );
         Optional<Coordonnee> optCoordonneeStored = CoordonneeHome.findByPrimaryKey( coordonnee.getId( ) );
-        Coordonnee coordonneeStored = optCoordonneeStored.orElse( new Coordonnee ( ) );
-        assertEquals( coordonneeStored.getAdresse( ) , coordonnee.getAdresse( ) );
-        assertEquals( coordonneeStored.getCoordonneeX( ) , coordonnee.getCoordonneeX( ) );
-        assertEquals( coordonneeStored.getCoordonneeY( ) , coordonnee.getCoordonneeY( ) );
+        Coordonnee coordonneeStored = optCoordonneeStored.orElse( new Coordonnee( ) );
+        assertEquals( coordonneeStored.getAdresse( ), coordonnee.getAdresse( ) );
+        assertEquals( coordonneeStored.getCoordonneeX( ), coordonnee.getCoordonneeX( ) );
+        assertEquals( coordonneeStored.getCoordonneeY( ), coordonnee.getCoordonneeY( ) );
 
         // Update test
         coordonnee.setAdresse( ADRESSE2 );
@@ -76,11 +74,11 @@ public class CoordonneeBusinessTest extends LuteceTestCase
         coordonnee.setCoordonneeY( COORDONNEEY2 );
         CoordonneeHome.update( coordonnee );
         optCoordonneeStored = CoordonneeHome.findByPrimaryKey( coordonnee.getId( ) );
-        coordonneeStored = optCoordonneeStored.orElse( new Coordonnee ( ) );
-        
-        assertEquals( coordonneeStored.getAdresse( ) , coordonnee.getAdresse( ) );
-        assertEquals( coordonneeStored.getCoordonneeX( ) , coordonnee.getCoordonneeX( ) );
-        assertEquals( coordonneeStored.getCoordonneeY( ) , coordonnee.getCoordonneeY( ) );
+        coordonneeStored = optCoordonneeStored.orElse( new Coordonnee( ) );
+
+        assertEquals( coordonneeStored.getAdresse( ), coordonnee.getAdresse( ) );
+        assertEquals( coordonneeStored.getCoordonneeX( ), coordonnee.getCoordonneeX( ) );
+        assertEquals( coordonneeStored.getCoordonneeY( ), coordonnee.getCoordonneeY( ) );
 
         // List test
         CoordonneeHome.getCoordonneesList( );
@@ -90,10 +88,7 @@ public class CoordonneeBusinessTest extends LuteceTestCase
         optCoordonneeStored = CoordonneeHome.findByPrimaryKey( coordonnee.getId( ) );
         coordonneeStored = optCoordonneeStored.orElse( null );
         assertNull( coordonneeStored );
-        
+
     }
-    
-    
-     
 
 }

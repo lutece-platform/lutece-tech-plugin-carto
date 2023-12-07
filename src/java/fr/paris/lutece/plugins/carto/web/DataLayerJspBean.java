@@ -31,8 +31,7 @@
  *
  * License 1.0
  */
- 	
- 
+
 package fr.paris.lutece.plugins.carto.web;
 
 import fr.paris.lutece.portal.service.message.AdminMessage;
@@ -69,7 +68,7 @@ import fr.paris.lutece.plugins.carto.provider.InfoMarker;
  * This class provides the user interface to manage DataLayer features ( manage, create, modify, remove )
  */
 @Controller( controllerJsp = "ManageDataLayers.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT" )
-public class DataLayerJspBean extends AbstractManageCartoJspBean <Integer, DataLayer>
+public class DataLayerJspBean extends AbstractManageCartoJspBean<Integer, DataLayer>
 {
     // Templates
     private static final String TEMPLATE_MANAGE_DATALAYERS = "/admin/plugins/carto/manage_datalayers.html";
@@ -113,74 +112,76 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean <Integer, DataL
     private static final String INFO_DATALAYER_CREATED = "carto.info.datalayer.created";
     private static final String INFO_DATALAYER_UPDATED = "carto.info.datalayer.updated";
     private static final String INFO_DATALAYER_REMOVED = "carto.info.datalayer.removed";
-    
+
     // Errors
     private static final String ERROR_RESOURCE_NOT_FOUND = "Resource not found";
     private static final String ERROR_DATALAYER_REMOVED = "carto.manage_datalayer.dataLayerIsPresent";
-    
+
     // Session variable to store working values
     private DataLayer _datalayer;
     private List<Integer> _listIdDataLayers;
-    
+
     /**
      * Build the Manage View
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return The page
      */
     @View( value = VIEW_MANAGE_DATALAYERS, defaultView = true )
     public String getManageDataLayers( HttpServletRequest request )
     {
         _datalayer = null;
-        
-        if ( request.getParameter( AbstractPaginator.PARAMETER_PAGE_INDEX) == null || _listIdDataLayers.isEmpty( ) )
+
+        if ( request.getParameter( AbstractPaginator.PARAMETER_PAGE_INDEX ) == null || _listIdDataLayers.isEmpty( ) )
         {
-        	_listIdDataLayers = DataLayerHome.getIdDataLayersList(  );
+            _listIdDataLayers = DataLayerHome.getIdDataLayersList( );
         }
-        
+
         Map<String, Object> model = getPaginatedListModel( request, MARK_DATALAYER_LIST, _listIdDataLayers, JSP_MANAGE_DATALAYERS );
 
         return getPage( PROPERTY_PAGE_TITLE_MANAGE_DATALAYERS, TEMPLATE_MANAGE_DATALAYERS, model );
     }
 
-	/**
+    /**
      * Get Items from Ids list
+     * 
      * @param listIds
      * @return the populated list of items corresponding to the id List
      */
-	@Override
-	List<DataLayer> getItemsFromIds( List<Integer> listIds ) 
-	{
-		List<DataLayer> listDataLayer = DataLayerHome.getDataLayersListByIds( listIds );
-		
-		// keep original order
-        return listDataLayer.stream()
-                 .sorted(Comparator.comparingInt( notif -> listIds.indexOf( notif.getId())))
-                 .collect(Collectors.toList());
-	}
-    
+    @Override
+    List<DataLayer> getItemsFromIds( List<Integer> listIds )
+    {
+        List<DataLayer> listDataLayer = DataLayerHome.getDataLayersListByIds( listIds );
+
+        // keep original order
+        return listDataLayer.stream( ).sorted( Comparator.comparingInt( notif -> listIds.indexOf( notif.getId( ) ) ) ).collect( Collectors.toList( ) );
+    }
+
     /**
-    * reset the _listIdDataLayers list
-    */
+     * reset the _listIdDataLayers list
+     */
     public void resetListId( )
     {
-    	_listIdDataLayers = new ArrayList<>( );
+        _listIdDataLayers = new ArrayList<>( );
     }
 
     /**
      * Returns the form to create a datalayer
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the html code of the datalayer form
      */
     @View( VIEW_CREATE_DATALAYER )
     public String getCreateDataLayer( HttpServletRequest request )
     {
-        _datalayer = ( _datalayer != null ) ? _datalayer : new DataLayer(  );
+        _datalayer = ( _datalayer != null ) ? _datalayer : new DataLayer( );
 
-        ReferenceList refGeometry = GeometryTypeHome.getGeometryTypesReferenceList();
-        
-        Map<String, Object> model = getModel(  );
-        model.put( MARK_REF_GEOMETRY_LIST, refGeometry);
+        ReferenceList refGeometry = GeometryTypeHome.getGeometryTypesReferenceList( );
+
+        Map<String, Object> model = getModel( );
+        model.put( MARK_REF_GEOMETRY_LIST, refGeometry );
         model.put( MARK_DATALAYER, _datalayer );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_CREATE_DATALAYER ) );
 
@@ -190,7 +191,8 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean <Integer, DataL
     /**
      * Process the data capture form of a new datalayer
      *
-     * @param request The Http Request
+     * @param request
+     *            The Http Request
      * @return The Jsp URL of the process result
      * @throws AccessDeniedException
      */
@@ -199,14 +201,14 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean <Integer, DataL
     {
         populate( _datalayer, request, getLocale( ) );
         Optional<GeometryType> geoType = GeometryTypeHome.findByPrimaryKey( Integer.valueOf( request.getParameter( "geometry" ) ) );
-		if ( geoType.isPresent( ) )
-		{
-			_datalayer.setGeometryType( geoType.get( ) );
-		}
+        if ( geoType.isPresent( ) )
+        {
+            _datalayer.setGeometryType( geoType.get( ) );
+        }
 
         if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_CREATE_DATALAYER ) )
         {
-            throw new AccessDeniedException ( "Invalid security token" );
+            throw new AccessDeniedException( "Invalid security token" );
         }
 
         // Check constraints
@@ -216,17 +218,17 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean <Integer, DataL
         }
 
         DataLayerHome.create( _datalayer );
-        addInfo( INFO_DATALAYER_CREATED, getLocale(  ) );
+        addInfo( INFO_DATALAYER_CREATED, getLocale( ) );
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_DATALAYERS );
     }
 
     /**
-     * Manages the removal form of a datalayer whose identifier is in the http
-     * request
+     * Manages the removal form of a datalayer whose identifier is in the http request
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the html code to confirm
      */
     @Action( ACTION_CONFIRM_REMOVE_DATALAYER )
@@ -236,7 +238,7 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean <Integer, DataL
         UrlItem url = new UrlItem( getActionUrl( ACTION_REMOVE_DATALAYER ) );
         url.addParameter( PARAMETER_ID_DATALAYER, nId );
 
-        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_DATALAYER, url.getUrl(  ), AdminMessage.TYPE_CONFIRMATION );
+        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_DATALAYER, url.getUrl( ), AdminMessage.TYPE_CONFIRMATION );
 
         return redirect( request, strMessageUrl );
     }
@@ -244,24 +246,25 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean <Integer, DataL
     /**
      * Handles the removal form of a datalayer
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the jsp URL to display the form to manage datalayers
      */
     @Action( ACTION_REMOVE_DATALAYER )
     public String doRemoveDataLayer( HttpServletRequest request )
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_DATALAYER ) );
-        
+
         Optional<DataLayerMapTemplate> dataLayerMapTemplate = DataLayerMapTemplateHome.findByIdDataLayerKey( nId );
         if ( dataLayerMapTemplate.isPresent( ) )
         {
-        	addError( ERROR_DATALAYER_REMOVED, getLocale( ) );
-        	return redirect( request, VIEW_MANAGE_DATALAYERS, PARAMETER_ID_DATALAYER, nId);
-        	
+            addError( ERROR_DATALAYER_REMOVED, getLocale( ) );
+            return redirect( request, VIEW_MANAGE_DATALAYERS, PARAMETER_ID_DATALAYER, nId );
+
         }
-        
+
         DataLayerHome.remove( nId );
-        addInfo( INFO_DATALAYER_REMOVED, getLocale(  ) );
+        addInfo( INFO_DATALAYER_REMOVED, getLocale( ) );
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_DATALAYERS );
@@ -270,7 +273,8 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean <Integer, DataL
     /**
      * Returns the form to update info about a datalayer
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return The HTML form to update info
      */
     @View( VIEW_MODIFY_DATALAYER )
@@ -278,21 +282,21 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean <Integer, DataL
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_DATALAYER ) );
 
-        if ( _datalayer == null || ( _datalayer.getId(  ) != nId ) )
+        if ( _datalayer == null || ( _datalayer.getId( ) != nId ) )
         {
             Optional<DataLayer> optDataLayer = DataLayerHome.findByPrimaryKey( nId );
-            _datalayer = optDataLayer.orElseThrow( ( ) -> new AppException(ERROR_RESOURCE_NOT_FOUND ) );
+            _datalayer = optDataLayer.orElseThrow( ( ) -> new AppException( ERROR_RESOURCE_NOT_FOUND ) );
         }
 
         List<IMarkerProvider> lstMarkerSolrList = SpringContextService.getBeansOfType( IMarkerProvider.class );
-        
-        ReferenceList refGeometry = GeometryTypeHome.getGeometryTypesReferenceList();
-        
-        Map<String, Object> model = getModel(  );
-        model.put( MARK_REF_GEOMETRY_LIST, refGeometry);
+
+        ReferenceList refGeometry = GeometryTypeHome.getGeometryTypesReferenceList( );
+
+        Map<String, Object> model = getModel( );
+        model.put( MARK_REF_GEOMETRY_LIST, refGeometry );
         model.put( MARK_DATALAYER, _datalayer );
         if ( !lstMarkerSolrList.isEmpty( ) )
-        	model.put( MARK_SOLR_MARKER_LIST , lstMarkerSolrList.get(0).provideMarkerDescriptions( _datalayer.getSolrTag( ), request ) );
+            model.put( MARK_SOLR_MARKER_LIST, lstMarkerSolrList.get( 0 ).provideMarkerDescriptions( _datalayer.getSolrTag( ), request ) );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_MODIFY_DATALAYER ) );
 
         return getPage( PROPERTY_PAGE_TITLE_MODIFY_DATALAYER, TEMPLATE_MODIFY_DATALAYER, model );
@@ -301,23 +305,24 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean <Integer, DataL
     /**
      * Process the change form of a datalayer
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return The Jsp URL of the process result
      * @throws AccessDeniedException
      */
     @Action( ACTION_MODIFY_DATALAYER )
     public String doModifyDataLayer( HttpServletRequest request ) throws AccessDeniedException
-    {   
+    {
         populate( _datalayer, request, getLocale( ) );
         Optional<GeometryType> geoType = GeometryTypeHome.findByPrimaryKey( Integer.valueOf( request.getParameter( "geometry" ) ) );
-		if ( geoType.isPresent( ) )
-		{
-			_datalayer.setGeometryType( geoType.get( ) );
-		}
-		
+        if ( geoType.isPresent( ) )
+        {
+            _datalayer.setGeometryType( geoType.get( ) );
+        }
+
         if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_MODIFY_DATALAYER ) )
         {
-            throw new AccessDeniedException ( "Invalid security token" );
+            throw new AccessDeniedException( "Invalid security token" );
         }
 
         // Check constraints
@@ -327,7 +332,7 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean <Integer, DataL
         }
 
         DataLayerHome.update( _datalayer );
-        addInfo( INFO_DATALAYER_UPDATED, getLocale(  ) );
+        addInfo( INFO_DATALAYER_UPDATED, getLocale( ) );
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_DATALAYERS );

@@ -31,8 +31,7 @@
  *
  * License 1.0
  */
- 	
- 
+
 package fr.paris.lutece.plugins.carto.web;
 
 import fr.paris.lutece.portal.service.message.AdminMessage;
@@ -60,7 +59,7 @@ import fr.paris.lutece.plugins.carto.business.DataLayerTypeHome;
  * This class provides the user interface to manage DataLayerType features ( manage, create, modify, remove )
  */
 @Controller( controllerJsp = "ManageDataLayerTypes.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT_REFERENTIEL" )
-public class DataLayerTypeJspBean extends AbstractManageCartoJspBean <Integer, DataLayerType>
+public class DataLayerTypeJspBean extends AbstractManageCartoJspBean<Integer, DataLayerType>
 {
     // Templates
     private static final String TEMPLATE_MANAGE_DATALAYERTYPES = "/admin/plugins/carto/manage_datalayertypes.html";
@@ -102,70 +101,72 @@ public class DataLayerTypeJspBean extends AbstractManageCartoJspBean <Integer, D
     private static final String INFO_DATALAYERTYPE_CREATED = "carto.info.datalayertype.created";
     private static final String INFO_DATALAYERTYPE_UPDATED = "carto.info.datalayertype.updated";
     private static final String INFO_DATALAYERTYPE_REMOVED = "carto.info.datalayertype.removed";
-    
+
     // Errors
     private static final String ERROR_RESOURCE_NOT_FOUND = "Resource not found";
-    
+
     // Session variable to store working values
     private DataLayerType _datalayertype;
     private List<Integer> _listIdDataLayerTypes;
-    
+
     /**
      * Build the Manage View
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return The page
      */
     @View( value = VIEW_MANAGE_DATALAYERTYPES, defaultView = true )
     public String getManageDataLayerTypes( HttpServletRequest request )
     {
         _datalayertype = null;
-        
-        if ( request.getParameter( AbstractPaginator.PARAMETER_PAGE_INDEX) == null || _listIdDataLayerTypes.isEmpty( ) )
+
+        if ( request.getParameter( AbstractPaginator.PARAMETER_PAGE_INDEX ) == null || _listIdDataLayerTypes.isEmpty( ) )
         {
-        	_listIdDataLayerTypes = DataLayerTypeHome.getIdDataLayerTypesList(  );
+            _listIdDataLayerTypes = DataLayerTypeHome.getIdDataLayerTypesList( );
         }
-        
+
         Map<String, Object> model = getPaginatedListModel( request, MARK_DATALAYERTYPE_LIST, _listIdDataLayerTypes, JSP_MANAGE_DATALAYERTYPES );
 
         return getPage( PROPERTY_PAGE_TITLE_MANAGE_DATALAYERTYPES, TEMPLATE_MANAGE_DATALAYERTYPES, model );
     }
 
-	/**
+    /**
      * Get Items from Ids list
+     * 
      * @param listIds
      * @return the populated list of items corresponding to the id List
      */
-	@Override
-	List<DataLayerType> getItemsFromIds( List<Integer> listIds ) 
-	{
-		List<DataLayerType> listDataLayerType = DataLayerTypeHome.getDataLayerTypesListByIds( listIds );
-		
-		// keep original order
-        return listDataLayerType.stream()
-                 .sorted(Comparator.comparingInt( notif -> listIds.indexOf( notif.getId())))
-                 .collect(Collectors.toList());
-	}
-    
+    @Override
+    List<DataLayerType> getItemsFromIds( List<Integer> listIds )
+    {
+        List<DataLayerType> listDataLayerType = DataLayerTypeHome.getDataLayerTypesListByIds( listIds );
+
+        // keep original order
+        return listDataLayerType.stream( ).sorted( Comparator.comparingInt( notif -> listIds.indexOf( notif.getId( ) ) ) ).collect( Collectors.toList( ) );
+    }
+
     /**
-    * reset the _listIdDataLayerTypes list
-    */
+     * reset the _listIdDataLayerTypes list
+     */
     public void resetListId( )
     {
-    	_listIdDataLayerTypes = new ArrayList<>( );
+        _listIdDataLayerTypes = new ArrayList<>( );
     }
 
     /**
      * Returns the form to create a datalayertype
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the html code of the datalayertype form
      */
     @View( VIEW_CREATE_DATALAYERTYPE )
     public String getCreateDataLayerType( HttpServletRequest request )
     {
-        _datalayertype = ( _datalayertype != null ) ? _datalayertype : new DataLayerType(  );
+        _datalayertype = ( _datalayertype != null ) ? _datalayertype : new DataLayerType( );
 
-        Map<String, Object> model = getModel(  );
+        Map<String, Object> model = getModel( );
         model.put( MARK_DATALAYERTYPE, _datalayertype );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_CREATE_DATALAYERTYPE ) );
 
@@ -175,7 +176,8 @@ public class DataLayerTypeJspBean extends AbstractManageCartoJspBean <Integer, D
     /**
      * Process the data capture form of a new datalayertype
      *
-     * @param request The Http Request
+     * @param request
+     *            The Http Request
      * @return The Jsp URL of the process result
      * @throws AccessDeniedException
      */
@@ -183,11 +185,10 @@ public class DataLayerTypeJspBean extends AbstractManageCartoJspBean <Integer, D
     public String doCreateDataLayerType( HttpServletRequest request ) throws AccessDeniedException
     {
         populate( _datalayertype, request, getLocale( ) );
-        
 
         if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_CREATE_DATALAYERTYPE ) )
         {
-            throw new AccessDeniedException ( "Invalid security token" );
+            throw new AccessDeniedException( "Invalid security token" );
         }
 
         // Check constraints
@@ -197,17 +198,17 @@ public class DataLayerTypeJspBean extends AbstractManageCartoJspBean <Integer, D
         }
 
         DataLayerTypeHome.create( _datalayertype );
-        addInfo( INFO_DATALAYERTYPE_CREATED, getLocale(  ) );
+        addInfo( INFO_DATALAYERTYPE_CREATED, getLocale( ) );
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_DATALAYERTYPES );
     }
 
     /**
-     * Manages the removal form of a datalayertype whose identifier is in the http
-     * request
+     * Manages the removal form of a datalayertype whose identifier is in the http request
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the html code to confirm
      */
     @Action( ACTION_CONFIRM_REMOVE_DATALAYERTYPE )
@@ -217,7 +218,8 @@ public class DataLayerTypeJspBean extends AbstractManageCartoJspBean <Integer, D
         UrlItem url = new UrlItem( getActionUrl( ACTION_REMOVE_DATALAYERTYPE ) );
         url.addParameter( PARAMETER_ID_DATALAYERTYPE, nId );
 
-        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_DATALAYERTYPE, url.getUrl(  ), AdminMessage.TYPE_CONFIRMATION );
+        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_DATALAYERTYPE, url.getUrl( ),
+                AdminMessage.TYPE_CONFIRMATION );
 
         return redirect( request, strMessageUrl );
     }
@@ -225,17 +227,17 @@ public class DataLayerTypeJspBean extends AbstractManageCartoJspBean <Integer, D
     /**
      * Handles the removal form of a datalayertype
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the jsp URL to display the form to manage datalayertypes
      */
     @Action( ACTION_REMOVE_DATALAYERTYPE )
     public String doRemoveDataLayerType( HttpServletRequest request )
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_DATALAYERTYPE ) );
-        
-        
+
         DataLayerTypeHome.remove( nId );
-        addInfo( INFO_DATALAYERTYPE_REMOVED, getLocale(  ) );
+        addInfo( INFO_DATALAYERTYPE_REMOVED, getLocale( ) );
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_DATALAYERTYPES );
@@ -244,7 +246,8 @@ public class DataLayerTypeJspBean extends AbstractManageCartoJspBean <Integer, D
     /**
      * Returns the form to update info about a datalayertype
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return The HTML form to update info
      */
     @View( VIEW_MODIFY_DATALAYERTYPE )
@@ -252,14 +255,13 @@ public class DataLayerTypeJspBean extends AbstractManageCartoJspBean <Integer, D
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_DATALAYERTYPE ) );
 
-        if ( _datalayertype == null || ( _datalayertype.getId(  ) != nId ) )
+        if ( _datalayertype == null || ( _datalayertype.getId( ) != nId ) )
         {
             Optional<DataLayerType> optDataLayerType = DataLayerTypeHome.findByPrimaryKey( nId );
-            _datalayertype = optDataLayerType.orElseThrow( ( ) -> new AppException(ERROR_RESOURCE_NOT_FOUND ) );
+            _datalayertype = optDataLayerType.orElseThrow( ( ) -> new AppException( ERROR_RESOURCE_NOT_FOUND ) );
         }
 
-
-        Map<String, Object> model = getModel(  );
+        Map<String, Object> model = getModel( );
         model.put( MARK_DATALAYERTYPE, _datalayertype );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_MODIFY_DATALAYERTYPE ) );
 
@@ -269,19 +271,19 @@ public class DataLayerTypeJspBean extends AbstractManageCartoJspBean <Integer, D
     /**
      * Process the change form of a datalayertype
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return The Jsp URL of the process result
      * @throws AccessDeniedException
      */
     @Action( ACTION_MODIFY_DATALAYERTYPE )
     public String doModifyDataLayerType( HttpServletRequest request ) throws AccessDeniedException
-    {   
+    {
         populate( _datalayertype, request, getLocale( ) );
-		
-		
+
         if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_MODIFY_DATALAYERTYPE ) )
         {
-            throw new AccessDeniedException ( "Invalid security token" );
+            throw new AccessDeniedException( "Invalid security token" );
         }
 
         // Check constraints
@@ -291,7 +293,7 @@ public class DataLayerTypeJspBean extends AbstractManageCartoJspBean <Integer, D
         }
 
         DataLayerTypeHome.update( _datalayertype );
-        addInfo( INFO_DATALAYERTYPE_UPDATED, getLocale(  ) );
+        addInfo( INFO_DATALAYERTYPE_UPDATED, getLocale( ) );
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_DATALAYERTYPES );

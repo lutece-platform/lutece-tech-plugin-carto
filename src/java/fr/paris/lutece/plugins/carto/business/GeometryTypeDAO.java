@@ -32,7 +32,6 @@
  * License 1.0
  */
 
-
 package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
@@ -64,19 +63,19 @@ public final class GeometryTypeDAO implements IGeometryTypeDAO
     @Override
     public void insert( GeometryType geometryType, Plugin plugin )
     {
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, Statement.RETURN_GENERATED_KEYS, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, Statement.RETURN_GENERATED_KEYS, plugin ) )
         {
             int nIndex = 1;
-            daoUtil.setString( nIndex++ , geometryType.getName( ) );
-            daoUtil.setString( nIndex++ , geometryType.getTechnicalName( ) );
-            
+            daoUtil.setString( nIndex++, geometryType.getName( ) );
+            daoUtil.setString( nIndex++, geometryType.getTechnicalName( ) );
+
             daoUtil.executeUpdate( );
-            if ( daoUtil.nextGeneratedKey( ) ) 
+            if ( daoUtil.nextGeneratedKey( ) )
             {
                 geometryType.setId( daoUtil.getGeneratedKeyInt( 1 ) );
             }
         }
-        
+
     }
 
     /**
@@ -85,23 +84,23 @@ public final class GeometryTypeDAO implements IGeometryTypeDAO
     @Override
     public Optional<GeometryType> load( int nKey, Plugin plugin )
     {
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin ) )
         {
-	        daoUtil.setInt( 1 , nKey );
-	        daoUtil.executeQuery( );
-	        GeometryType geometryType = null;
-	
-	        if ( daoUtil.next( ) )
-	        {
-	            geometryType = new GeometryType();
-	            int nIndex = 1;
-	            
-	            geometryType.setId( daoUtil.getInt( nIndex++ ) );
-			    geometryType.setName( daoUtil.getString( nIndex++ ) );
-			    geometryType.setTechnicalName( daoUtil.getString( nIndex ) );
-	        }
-	
-	        return Optional.ofNullable( geometryType );
+            daoUtil.setInt( 1, nKey );
+            daoUtil.executeQuery( );
+            GeometryType geometryType = null;
+
+            if ( daoUtil.next( ) )
+            {
+                geometryType = new GeometryType( );
+                int nIndex = 1;
+
+                geometryType.setId( daoUtil.getInt( nIndex++ ) );
+                geometryType.setName( daoUtil.getString( nIndex++ ) );
+                geometryType.setTechnicalName( daoUtil.getString( nIndex ) );
+            }
+
+            return Optional.ofNullable( geometryType );
         }
     }
 
@@ -111,10 +110,10 @@ public final class GeometryTypeDAO implements IGeometryTypeDAO
     @Override
     public void delete( int nKey, Plugin plugin )
     {
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin ) )
         {
-	        daoUtil.setInt( 1 , nKey );
-	        daoUtil.executeUpdate( );
+            daoUtil.setInt( 1, nKey );
+            daoUtil.executeUpdate( );
         }
     }
 
@@ -124,15 +123,15 @@ public final class GeometryTypeDAO implements IGeometryTypeDAO
     @Override
     public void store( GeometryType geometryType, Plugin plugin )
     {
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin ) )
         {
-	        int nIndex = 1;
-	        
-            	daoUtil.setString( nIndex++ , geometryType.getName( ) );
-            	daoUtil.setString( nIndex++ , geometryType.getTechnicalName( ) );
-	        daoUtil.setInt( nIndex , geometryType.getId( ) );
-	
-	        daoUtil.executeUpdate( );
+            int nIndex = 1;
+
+            daoUtil.setString( nIndex++, geometryType.getName( ) );
+            daoUtil.setString( nIndex++, geometryType.getTechnicalName( ) );
+            daoUtil.setInt( nIndex, geometryType.getId( ) );
+
+            daoUtil.executeUpdate( );
         }
     }
 
@@ -142,27 +141,27 @@ public final class GeometryTypeDAO implements IGeometryTypeDAO
     @Override
     public List<GeometryType> selectGeometryTypesList( Plugin plugin )
     {
-        List<GeometryType> geometryTypeList = new ArrayList<>(  );
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
+        List<GeometryType> geometryTypeList = new ArrayList<>( );
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
         {
-	        daoUtil.executeQuery(  );
-	
-	        while ( daoUtil.next(  ) )
-	        {
-	            GeometryType geometryType = new GeometryType(  );
-	            int nIndex = 1;
-	            
-	            geometryType.setId( daoUtil.getInt( nIndex++ ) );
-			    geometryType.setName( daoUtil.getString( nIndex++ ) );
-			    geometryType.setTechnicalName( daoUtil.getString( nIndex ) );
-	
-	            geometryTypeList.add( geometryType );
-	        }
-	
-	        return geometryTypeList;
+            daoUtil.executeQuery( );
+
+            while ( daoUtil.next( ) )
+            {
+                GeometryType geometryType = new GeometryType( );
+                int nIndex = 1;
+
+                geometryType.setId( daoUtil.getInt( nIndex++ ) );
+                geometryType.setName( daoUtil.getString( nIndex++ ) );
+                geometryType.setTechnicalName( daoUtil.getString( nIndex ) );
+
+                geometryTypeList.add( geometryType );
+            }
+
+            return geometryTypeList;
         }
     }
-    
+
     /**
      * {@inheritDoc }
      */
@@ -170,83 +169,85 @@ public final class GeometryTypeDAO implements IGeometryTypeDAO
     public List<Integer> selectIdGeometryTypesList( Plugin plugin )
     {
         List<Integer> geometryTypeList = new ArrayList<>( );
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL_ID, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL_ID, plugin ) )
         {
-	        daoUtil.executeQuery(  );
-	
-	        while ( daoUtil.next(  ) )
-	        {
-	            geometryTypeList.add( daoUtil.getInt( 1 ) );
-	        }
-	
-	        return geometryTypeList;
+            daoUtil.executeQuery( );
+
+            while ( daoUtil.next( ) )
+            {
+                geometryTypeList.add( daoUtil.getInt( 1 ) );
+            }
+
+            return geometryTypeList;
         }
     }
-    
+
     /**
      * {@inheritDoc }
      */
     @Override
     public ReferenceList selectGeometryTypesReferenceList( Plugin plugin )
     {
-        ReferenceList geometryTypeList = new ReferenceList();
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
+        ReferenceList geometryTypeList = new ReferenceList( );
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
         {
-	        daoUtil.executeQuery(  );
-	
-	        while ( daoUtil.next(  ) )
-	        {
-	            geometryTypeList.addItem( daoUtil.getInt( 1 ) , daoUtil.getString( 2 ) );
-	        }
-	
-	        return geometryTypeList;
-    	}
+            daoUtil.executeQuery( );
+
+            while ( daoUtil.next( ) )
+            {
+                geometryTypeList.addItem( daoUtil.getInt( 1 ), daoUtil.getString( 2 ) );
+            }
+
+            return geometryTypeList;
+        }
     }
-    
+
     /**
      * {@inheritDoc }
      */
-	@Override
-	public List<GeometryType> selectGeometryTypesListByIds( Plugin plugin, List<Integer> listIds ) {
-		List<GeometryType> geometryTypeList = new ArrayList<>(  );
-		
-		StringBuilder builder = new StringBuilder( );
+    @Override
+    public List<GeometryType> selectGeometryTypesListByIds( Plugin plugin, List<Integer> listIds )
+    {
+        List<GeometryType> geometryTypeList = new ArrayList<>( );
 
-		if ( !listIds.isEmpty( ) )
-		{
-			for( int i = 0 ; i < listIds.size(); i++ ) {
-			    builder.append( "?," );
-			}
-	
-			String placeHolders =  builder.deleteCharAt( builder.length( ) -1 ).toString( );
-			String stmt = SQL_QUERY_SELECTALL_BY_IDS + placeHolders + ")";
-			
-			
-	        try ( DAOUtil daoUtil = new DAOUtil( stmt, plugin ) )
-	        {
-	        	int index = 1;
-				for( Integer n : listIds ) {
-					daoUtil.setInt(  index++, n ); 
-				}
-	        	
-	        	daoUtil.executeQuery(  );
-	        	while ( daoUtil.next(  ) )
-		        {
-		        	GeometryType geometryType = new GeometryType(  );
-		            int nIndex = 1;
-		            
-		            geometryType.setId( daoUtil.getInt( nIndex++ ) );
-				    geometryType.setName( daoUtil.getString( nIndex++ ) );
-				    geometryType.setTechnicalName( daoUtil.getString( nIndex ) );
-		            
-		            geometryTypeList.add( geometryType );
-		        }
-		
-		        daoUtil.free( );
-		        
-	        }
-	    }
-		return geometryTypeList;
-		
-	}
+        StringBuilder builder = new StringBuilder( );
+
+        if ( !listIds.isEmpty( ) )
+        {
+            for ( int i = 0; i < listIds.size( ); i++ )
+            {
+                builder.append( "?," );
+            }
+
+            String placeHolders = builder.deleteCharAt( builder.length( ) - 1 ).toString( );
+            String stmt = SQL_QUERY_SELECTALL_BY_IDS + placeHolders + ")";
+
+            try ( DAOUtil daoUtil = new DAOUtil( stmt, plugin ) )
+            {
+                int index = 1;
+                for ( Integer n : listIds )
+                {
+                    daoUtil.setInt( index++, n );
+                }
+
+                daoUtil.executeQuery( );
+                while ( daoUtil.next( ) )
+                {
+                    GeometryType geometryType = new GeometryType( );
+                    int nIndex = 1;
+
+                    geometryType.setId( daoUtil.getInt( nIndex++ ) );
+                    geometryType.setName( daoUtil.getString( nIndex++ ) );
+                    geometryType.setTechnicalName( daoUtil.getString( nIndex ) );
+
+                    geometryTypeList.add( geometryType );
+                }
+
+                daoUtil.free( );
+
+            }
+        }
+        return geometryTypeList;
+
+    }
 }

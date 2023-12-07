@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2022, City of Paris
+ * Copyright (c) 2002-2023, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,30 +36,32 @@ package fr.paris.lutece.plugins.carto.business;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+
 /**
  * This is the business class for the object Coordonnee
- */ 
+ */
 public class Coordonnee implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    // Variables declarations 
+    // Variables declarations
     private int _nId;
-    
+
     @NotEmpty( message = "#i18n{carto.validation.coordonnee.Adresse.notEmpty}" )
-    @Size( max = 255 , message = "#i18n{carto.validation.coordonnee.Adresse.size}" ) 
+    @Size( max = 255, message = "#i18n{carto.validation.coordonnee.Adresse.size}" )
     private String _strAdresse;
-    
+
     private Double _nCoordonneeX;
-    
+
     private Double _nCoordonneeY;
-    
+
     private String _strGeoJson;
-    
+
     private DataLayer _dataLayer;
 
     /**
      * Returns the Id
+     * 
      * @return The Id
      */
     public int getId( )
@@ -69,15 +71,18 @@ public class Coordonnee implements Serializable
 
     /**
      * Sets the Id
-     * @param nId The Id
-     */ 
+     * 
+     * @param nId
+     *            The Id
+     */
     public void setId( int nId )
     {
         _nId = nId;
     }
-    
+
     /**
      * Returns the Adresse
+     * 
      * @return The Adresse
      */
     public String getAdresse( )
@@ -87,16 +92,18 @@ public class Coordonnee implements Serializable
 
     /**
      * Sets the Adresse
-     * @param strAdresse The Adresse
-     */ 
+     * 
+     * @param strAdresse
+     *            The Adresse
+     */
     public void setAdresse( String strAdresse )
     {
         _strAdresse = strAdresse;
     }
-    
-    
+
     /**
      * Returns the CoordonneeX
+     * 
      * @return The CoordonneeX
      */
     public double getCoordonneeX( )
@@ -106,16 +113,18 @@ public class Coordonnee implements Serializable
 
     /**
      * Sets the CoordonneeX
-     * @param nCoordonneeX The CoordonneeX
-     */ 
+     * 
+     * @param nCoordonneeX
+     *            The CoordonneeX
+     */
     public void setCoordonneeX( Double nCoordonneeX )
     {
         _nCoordonneeX = nCoordonneeX;
     }
-    
-    
+
     /**
      * Returns the CoordonneeY
+     * 
      * @return The CoordonneeY
      */
     public double getCoordonneeY( )
@@ -125,27 +134,33 @@ public class Coordonnee implements Serializable
 
     /**
      * Sets the CoordonneeY
-     * @param nCoordonneeY The CoordonneeY
-     */ 
+     * 
+     * @param nCoordonneeY
+     *            The CoordonneeY
+     */
     public void setCoordonneeY( Double nCoordonneeY )
     {
         _nCoordonneeY = nCoordonneeY;
     }
 
-	public String getGeoJson() {
-		return _strGeoJson;
-	}
+    public String getGeoJson( )
+    {
+        return _strGeoJson;
+    }
 
-	public void setGeoJson(String _strGeoJson) {
-		this._strGeoJson = _strGeoJson;
-	}
+    public void setGeoJson( String _strGeoJson )
+    {
+        this._strGeoJson = _strGeoJson;
+    }
 
-	public DataLayer getDataLayer() {
-		return _dataLayer;
-	}
+    public DataLayer getDataLayer( )
+    {
+        return _dataLayer;
+    }
 
-	public void setDataLayer(DataLayer _dataLayer) {
-		this._dataLayer = _dataLayer;
-	}
-    
+    public void setDataLayer( DataLayer _dataLayer )
+    {
+        this._dataLayer = _dataLayer;
+    }
+
 }

@@ -36,26 +36,28 @@ package fr.paris.lutece.plugins.carto.business;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+
 /**
  * This is the business class for the object GeometryType
- */ 
+ */
 public class GeometryType implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    // Variables declarations 
+    // Variables declarations
     private int _nId;
-    
+
     @NotEmpty( message = "#i18n{carto.validation.geometrytype.Name.notEmpty}" )
-    @Size( max = 255 , message = "#i18n{carto.validation.geometrytype.Name.size}" ) 
+    @Size( max = 255, message = "#i18n{carto.validation.geometrytype.Name.size}" )
     private String _strName;
-    
+
     @NotEmpty( message = "#i18n{carto.validation.geometrytype.TechnicalName.notEmpty}" )
-    @Size( max = 255 , message = "#i18n{carto.validation.geometrytype.TechnicalName.size}" ) 
+    @Size( max = 255, message = "#i18n{carto.validation.geometrytype.TechnicalName.size}" )
     private String _strTechnicalName;
 
     /**
      * Returns the Id
+     * 
      * @return The Id
      */
     public int getId( )
@@ -65,15 +67,18 @@ public class GeometryType implements Serializable
 
     /**
      * Sets the Id
-     * @param nId The Id
-     */ 
+     * 
+     * @param nId
+     *            The Id
+     */
     public void setId( int nId )
     {
         _nId = nId;
     }
-    
+
     /**
      * Returns the Name
+     * 
      * @return The Name
      */
     public String getName( )
@@ -83,16 +88,18 @@ public class GeometryType implements Serializable
 
     /**
      * Sets the Name
-     * @param strName The Name
-     */ 
+     * 
+     * @param strName
+     *            The Name
+     */
     public void setName( String strName )
     {
         _strName = strName;
     }
-    
-    
+
     /**
      * Returns the TechnicalName
+     * 
      * @return The TechnicalName
      */
     public String getTechnicalName( )
@@ -102,11 +109,13 @@ public class GeometryType implements Serializable
 
     /**
      * Sets the TechnicalName
-     * @param strTechnicalName The TechnicalName
-     */ 
+     * 
+     * @param strTechnicalName
+     *            The TechnicalName
+     */
     public void setTechnicalName( String strTechnicalName )
     {
         _strTechnicalName = strTechnicalName;
     }
-    
+
 }

@@ -36,38 +36,40 @@ package fr.paris.lutece.plugins.carto.business;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+
 /**
  * This is the business class for the object DataLayerMapTemplate
- */ 
+ */
 public class DataLayerMapTemplate implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    // Variables declarations 
+    // Variables declarations
     private int _nId;
-    
+
     private int _nIdMapTemplate;
-    
+
     private int _nIdDataLayer;
-    
-    @Size( max = 50 , message = "#i18n{carto.validation.datalayermaptemplate.Pictogram.size}" ) 
+
+    @Size( max = 50, message = "#i18n{carto.validation.datalayermaptemplate.Pictogram.size}" )
     private String _strPictogram;
-    
+
     private int _nZoomMin;
-    
+
     private int _nZoomMax;
-    
+
     private int _nLayerType;
-    
-    @Size( max = 50 , message = "#i18n{carto.validation.datalayermaptemplate.Color.size}" ) 
+
+    @Size( max = 50, message = "#i18n{carto.validation.datalayermaptemplate.Color.size}" )
     private String _strColor;
-    
+
     private int _nThickness;
-    
+
     private int _idCoordinate;
 
     /**
      * Returns the Id
+     * 
      * @return The Id
      */
     public int getId( )
@@ -77,15 +79,18 @@ public class DataLayerMapTemplate implements Serializable
 
     /**
      * Sets the Id
-     * @param nId The Id
-     */ 
+     * 
+     * @param nId
+     *            The Id
+     */
     public void setId( int nId )
     {
         _nId = nId;
     }
-    
+
     /**
      * Returns the IdMapTemplate
+     * 
      * @return The IdMapTemplate
      */
     public int getIdMapTemplate( )
@@ -95,16 +100,18 @@ public class DataLayerMapTemplate implements Serializable
 
     /**
      * Sets the IdMapTemplate
-     * @param nIdMapTemplate The IdMapTemplate
-     */ 
+     * 
+     * @param nIdMapTemplate
+     *            The IdMapTemplate
+     */
     public void setIdMapTemplate( int nIdMapTemplate )
     {
         _nIdMapTemplate = nIdMapTemplate;
     }
-    
-    
+
     /**
      * Returns the IdDataLayer
+     * 
      * @return The IdDataLayer
      */
     public int getIdDataLayer( )
@@ -114,16 +121,18 @@ public class DataLayerMapTemplate implements Serializable
 
     /**
      * Sets the IdDataLayer
-     * @param nIdDataLayer The IdDataLayer
-     */ 
+     * 
+     * @param nIdDataLayer
+     *            The IdDataLayer
+     */
     public void setIdDataLayer( int nIdDataLayer )
     {
         _nIdDataLayer = nIdDataLayer;
     }
-    
-    
+
     /**
      * Returns the Pictogram
+     * 
      * @return The Pictogram
      */
     public String getPictogram( )
@@ -133,16 +142,18 @@ public class DataLayerMapTemplate implements Serializable
 
     /**
      * Sets the Pictogram
-     * @param strPictogram The Pictogram
-     */ 
+     * 
+     * @param strPictogram
+     *            The Pictogram
+     */
     public void setPictogram( String strPictogram )
     {
         _strPictogram = strPictogram;
     }
-    
-    
+
     /**
      * Returns the ZoomMin
+     * 
      * @return The ZoomMin
      */
     public int getZoomMin( )
@@ -152,16 +163,18 @@ public class DataLayerMapTemplate implements Serializable
 
     /**
      * Sets the ZoomMin
-     * @param nZoomMin The ZoomMin
-     */ 
+     * 
+     * @param nZoomMin
+     *            The ZoomMin
+     */
     public void setZoomMin( int nZoomMin )
     {
         _nZoomMin = nZoomMin;
     }
-    
-    
+
     /**
      * Returns the ZoomMax
+     * 
      * @return The ZoomMax
      */
     public int getZoomMax( )
@@ -171,16 +184,18 @@ public class DataLayerMapTemplate implements Serializable
 
     /**
      * Sets the ZoomMax
-     * @param nZoomMax The ZoomMax
-     */ 
+     * 
+     * @param nZoomMax
+     *            The ZoomMax
+     */
     public void setZoomMax( int nZoomMax )
     {
         _nZoomMax = nZoomMax;
     }
-    
-    
+
     /**
      * Returns the LayerType
+     * 
      * @return The LayerType
      */
     public int getLayerType( )
@@ -190,16 +205,18 @@ public class DataLayerMapTemplate implements Serializable
 
     /**
      * Sets the LayerType
-     * @param nLayerType The LayerType
-     */ 
+     * 
+     * @param nLayerType
+     *            The LayerType
+     */
     public void setLayerType( int nLayerType )
     {
         _nLayerType = nLayerType;
     }
-    
-    
+
     /**
      * Returns the Color
+     * 
      * @return The Color
      */
     public String getColor( )
@@ -209,16 +226,18 @@ public class DataLayerMapTemplate implements Serializable
 
     /**
      * Sets the Color
-     * @param strColor The Color
-     */ 
+     * 
+     * @param strColor
+     *            The Color
+     */
     public void setColor( String strColor )
     {
         _strColor = strColor;
     }
-    
-    
+
     /**
      * Returns the Thickness
+     * 
      * @return The Thickness
      */
     public int getThickness( )
@@ -228,8 +247,10 @@ public class DataLayerMapTemplate implements Serializable
 
     /**
      * Sets the Thickness
-     * @param nThickness The Thickness
-     */ 
+     * 
+     * @param nThickness
+     *            The Thickness
+     */
     public void setThickness( int nThickness )
     {
         _nThickness = nThickness;
@@ -237,18 +258,23 @@ public class DataLayerMapTemplate implements Serializable
 
     /**
      * Returns the IdCoordinate
+     * 
      * @return The IdCoordinate
      */
-	public int getIdCoordinate() {
-		return _idCoordinate;
-	}
+    public int getIdCoordinate( )
+    {
+        return _idCoordinate;
+    }
 
-	/**
+    /**
      * Sets the IdCoordinate
-     * @param _fkIdCoordinate The IdCoordinate
-     */ 
-	public void setIdCoordinate(int _fkIdCoordinate) {
-		this._idCoordinate = _fkIdCoordinate;
-	}
-    
+     * 
+     * @param _fkIdCoordinate
+     *            The IdCoordinate
+     */
+    public void setIdCoordinate( int _fkIdCoordinate )
+    {
+        this._idCoordinate = _fkIdCoordinate;
+    }
+
 }

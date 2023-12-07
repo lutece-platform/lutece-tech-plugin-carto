@@ -31,7 +31,7 @@
  *
  * License 1.0
  */
- 
+
 package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
@@ -46,22 +46,31 @@ public interface IDataLayerDAO
 {
     /**
      * Insert a new record in the table.
-     * @param dataLayer instance of the DataLayer object to insert
-     * @param plugin the Plugin
+     * 
+     * @param dataLayer
+     *            instance of the DataLayer object to insert
+     * @param plugin
+     *            the Plugin
      */
     void insert( DataLayer dataLayer, Plugin plugin );
 
     /**
      * Update the record in the table
-     * @param dataLayer the reference of the DataLayer
-     * @param plugin the Plugin
+     * 
+     * @param dataLayer
+     *            the reference of the DataLayer
+     * @param plugin
+     *            the Plugin
      */
     void store( DataLayer dataLayer, Plugin plugin );
 
     /**
      * Delete a record from the table
-     * @param nKey The identifier of the DataLayer to delete
-     * @param plugin the Plugin
+     * 
+     * @param nKey
+     *            The identifier of the DataLayer to delete
+     * @param plugin
+     *            the Plugin
      */
     void delete( int nKey, Plugin plugin );
 
@@ -70,49 +79,67 @@ public interface IDataLayerDAO
 
     /**
      * Load the data from the table
-     * @param nKey The identifier of the dataLayer
-     * @param plugin the Plugin
+     * 
+     * @param nKey
+     *            The identifier of the dataLayer
+     * @param plugin
+     *            the Plugin
      * @return The instance of the dataLayer
      */
     Optional<DataLayer> load( int nKey, Plugin plugin );
 
     /**
      * Load the data of all the dataLayer objects and returns them as a list
-     * @param plugin the Plugin
+     * 
+     * @param plugin
+     *            the Plugin
      * @return The list which contains the data of all the dataLayer objects
      */
     List<DataLayer> selectDataLayersList( Plugin plugin );
-    
+
     /**
      * Load the id of all the dataLayer objects and returns them as a list
-     * @param plugin the Plugin
+     * 
+     * @param plugin
+     *            the Plugin
      * @return The list which contains the id of all the dataLayer objects
      */
     List<Integer> selectIdDataLayersList( Plugin plugin );
-    
+
     /**
      * Load the data of all the dataLayer objects and returns them as a referenceList
-     * @param plugin the Plugin
+     * 
+     * @param plugin
+     *            the Plugin
      * @return The referenceList which contains the data of all the dataLayer objects
      */
     ReferenceList selectDataLayersReferenceList( Plugin plugin );
-    
+
     /**
      * Load the data of all the avant objects and returns them as a list
-     * @param plugin the Plugin
-     * @param listIds liste of ids
+     * 
+     * @param plugin
+     *            the Plugin
+     * @param listIds
+     *            liste of ids
      * @return The list which contains the data of all the avant objects
      */
-	List<DataLayer> selectDataLayersListByIds( Plugin _plugin, List<Integer> listIds );
+    List<DataLayer> selectDataLayersListByIds( Plugin _plugin, List<Integer> listIds );
 
-	/**
+    /**
      * Load the data from the table
-     * @param nKey The identifier of the map
-     * @param editable dataLayer editable
-     * @param inclusion dataLayer inclusion
-     * @param exclusion dataLayer exclusion
-     * @param plugin the Plugin
+     * 
+     * @param nKey
+     *            The identifier of the map
+     * @param editable
+     *            dataLayer editable
+     * @param inclusion
+     *            dataLayer inclusion
+     * @param exclusion
+     *            dataLayer exclusion
+     * @param plugin
+     *            the Plugin
      * @return The instance of the dataLayer
      */
-	Optional<DataLayer> loadDataLayerWithOptions( int nKey, boolean editable, boolean inclusion, boolean exclusion, Plugin plugin );
+    Optional<DataLayer> loadDataLayerWithOptions( int nKey, boolean editable, boolean inclusion, boolean exclusion, Plugin plugin );
 }

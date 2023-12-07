@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2022, City of Paris
+ * Copyright (c) 2002-2023, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,6 @@
  *
  * License 1.0
  */
- 
 package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
@@ -46,22 +45,31 @@ public interface ICoordonneeDAO
 {
     /**
      * Insert a new record in the table.
-     * @param coordonnee instance of the Coordonnee object to insert
-     * @param plugin the Plugin
+     * 
+     * @param coordonnee
+     *            instance of the Coordonnee object to insert
+     * @param plugin
+     *            the Plugin
      */
     void insert( Coordonnee coordonnee, Plugin plugin );
 
     /**
      * Update the record in the table
-     * @param coordonnee the reference of the Coordonnee
-     * @param plugin the Plugin
+     * 
+     * @param coordonnee
+     *            the reference of the Coordonnee
+     * @param plugin
+     *            the Plugin
      */
     void store( Coordonnee coordonnee, Plugin plugin );
 
     /**
      * Delete a record from the table
-     * @param nKey The identifier of the Coordonnee to delete
-     * @param plugin the Plugin
+     * 
+     * @param nKey
+     *            The identifier of the Coordonnee to delete
+     * @param plugin
+     *            the Plugin
      */
     void delete( int nKey, Plugin plugin );
 
@@ -70,38 +78,50 @@ public interface ICoordonneeDAO
 
     /**
      * Load the data from the table
-     * @param nKey The identifier of the coordonnee
-     * @param plugin the Plugin
+     * 
+     * @param nKey
+     *            The identifier of the coordonnee
+     * @param plugin
+     *            the Plugin
      * @return The instance of the coordonnee
      */
     Optional<Coordonnee> load( int nKey, Plugin plugin );
 
     /**
      * Load the data of all the coordonnee objects and returns them as a list
-     * @param plugin the Plugin
+     * 
+     * @param plugin
+     *            the Plugin
      * @return The list which contains the data of all the coordonnee objects
      */
     List<Coordonnee> selectCoordonneesList( Plugin plugin );
-    
+
     /**
      * Load the id of all the coordonnee objects and returns them as a list
-     * @param plugin the Plugin
+     * 
+     * @param plugin
+     *            the Plugin
      * @return The list which contains the id of all the coordonnee objects
      */
     List<Integer> selectIdCoordonneesList( Plugin plugin );
-    
+
     /**
      * Load the data of all the coordonnee objects and returns them as a referenceList
-     * @param plugin the Plugin
+     * 
+     * @param plugin
+     *            the Plugin
      * @return The referenceList which contains the data of all the coordonnee objects
      */
     ReferenceList selectCoordonneesReferenceList( Plugin plugin );
-    
+
     /**
      * Load the data of all the avant objects and returns them as a list
-     * @param plugin the Plugin
-     * @param listIds liste of ids
+     * 
+     * @param plugin
+     *            the Plugin
+     * @param listIds
+     *            liste of ids
      * @return The list which contains the data of all the avant objects
      */
-	List<Coordonnee> selectCoordonneesListByIds( Plugin _plugin, List<Integer> listIds );
+    List<Coordonnee> selectCoordonneesListByIds( Plugin _plugin, List<Integer> listIds );
 }

@@ -28,16 +28,14 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *"
+ *
  * License 1.0
  */
-
 package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.test.LuteceTestCase;
 
 import java.util.Optional;
-
 
 /**
  * This is the business class test for the object MapTemplate
@@ -63,13 +61,13 @@ public class MapTemplateBusinessTest extends LuteceTestCase
     private static final Double CENTERMAPY1 = 1.0;
     private static final Double CENTERMAPY2 = 2.0;
 
-	/**
-	* test MapTemplate
-	*/
-    public void testBusiness(  )
+    /**
+     * test MapTemplate
+     */
+    public void testBusiness( )
     {
         // Initialize an object
-        MapTemplate mapTemplate = new MapTemplate();
+        MapTemplate mapTemplate = new MapTemplate( );
         mapTemplate.setTitle( TITLE1 );
         mapTemplate.setDescription( DESCRIPTION1 );
         mapTemplate.setMapBackground( MAPBACKGROUND1 );
@@ -83,16 +81,16 @@ public class MapTemplateBusinessTest extends LuteceTestCase
         // Create test
         MapTemplateHome.create( mapTemplate );
         Optional<MapTemplate> optMapTemplateStored = MapTemplateHome.findByPrimaryKey( mapTemplate.getId( ) );
-        MapTemplate mapTemplateStored = optMapTemplateStored.orElse( new MapTemplate ( ) );
-        assertEquals( mapTemplateStored.getTitle( ) , mapTemplate.getTitle( ) );
-        assertEquals( mapTemplateStored.getDescription( ) , mapTemplate.getDescription( ) );
-        assertEquals( mapTemplateStored.getMapBackground( ) , mapTemplate.getMapBackground( ) );
-        assertEquals( mapTemplateStored.getDefaultZoom( ) , mapTemplate.getDefaultZoom( ) );
-        assertEquals( mapTemplateStored.getZoomMin( ) , mapTemplate.getZoomMin( ) );
-        assertEquals( mapTemplateStored.getZoomMax( ) , mapTemplate.getZoomMax( ) );
-        assertEquals( mapTemplateStored.getCenterMap( ) , mapTemplate.getCenterMap( ) );
-        assertEquals( mapTemplateStored.getCenterMapX( ) , mapTemplate.getCenterMapX( ) );
-        assertEquals( mapTemplateStored.getCenterMapY( ) , mapTemplate.getCenterMapY( ) );
+        MapTemplate mapTemplateStored = optMapTemplateStored.orElse( new MapTemplate( ) );
+        assertEquals( mapTemplateStored.getTitle( ), mapTemplate.getTitle( ) );
+        assertEquals( mapTemplateStored.getDescription( ), mapTemplate.getDescription( ) );
+        assertEquals( mapTemplateStored.getMapBackground( ), mapTemplate.getMapBackground( ) );
+        assertEquals( mapTemplateStored.getDefaultZoom( ), mapTemplate.getDefaultZoom( ) );
+        assertEquals( mapTemplateStored.getZoomMin( ), mapTemplate.getZoomMin( ) );
+        assertEquals( mapTemplateStored.getZoomMax( ), mapTemplate.getZoomMax( ) );
+        assertEquals( mapTemplateStored.getCenterMap( ), mapTemplate.getCenterMap( ) );
+        assertEquals( mapTemplateStored.getCenterMapX( ), mapTemplate.getCenterMapX( ) );
+        assertEquals( mapTemplateStored.getCenterMapY( ), mapTemplate.getCenterMapY( ) );
 
         // Update test
         mapTemplate.setTitle( TITLE2 );
@@ -106,17 +104,17 @@ public class MapTemplateBusinessTest extends LuteceTestCase
         mapTemplate.setCenterMapY( CENTERMAPY2 );
         MapTemplateHome.update( mapTemplate );
         optMapTemplateStored = MapTemplateHome.findByPrimaryKey( mapTemplate.getId( ) );
-        mapTemplateStored = optMapTemplateStored.orElse( new MapTemplate ( ) );
-        
-        assertEquals( mapTemplateStored.getTitle( ) , mapTemplate.getTitle( ) );
-        assertEquals( mapTemplateStored.getDescription( ) , mapTemplate.getDescription( ) );
-        assertEquals( mapTemplateStored.getMapBackground( ) , mapTemplate.getMapBackground( ) );
-        assertEquals( mapTemplateStored.getDefaultZoom( ) , mapTemplate.getDefaultZoom( ) );
-        assertEquals( mapTemplateStored.getZoomMin( ) , mapTemplate.getZoomMin( ) );
-        assertEquals( mapTemplateStored.getZoomMax( ) , mapTemplate.getZoomMax( ) );
-        assertEquals( mapTemplateStored.getCenterMap( ) , mapTemplate.getCenterMap( ) );
-        assertEquals( mapTemplateStored.getCenterMapX( ) , mapTemplate.getCenterMapX( ) );
-        assertEquals( mapTemplateStored.getCenterMapY( ) , mapTemplate.getCenterMapY( ) );
+        mapTemplateStored = optMapTemplateStored.orElse( new MapTemplate( ) );
+
+        assertEquals( mapTemplateStored.getTitle( ), mapTemplate.getTitle( ) );
+        assertEquals( mapTemplateStored.getDescription( ), mapTemplate.getDescription( ) );
+        assertEquals( mapTemplateStored.getMapBackground( ), mapTemplate.getMapBackground( ) );
+        assertEquals( mapTemplateStored.getDefaultZoom( ), mapTemplate.getDefaultZoom( ) );
+        assertEquals( mapTemplateStored.getZoomMin( ), mapTemplate.getZoomMin( ) );
+        assertEquals( mapTemplateStored.getZoomMax( ), mapTemplate.getZoomMax( ) );
+        assertEquals( mapTemplateStored.getCenterMap( ), mapTemplate.getCenterMap( ) );
+        assertEquals( mapTemplateStored.getCenterMapX( ), mapTemplate.getCenterMapX( ) );
+        assertEquals( mapTemplateStored.getCenterMapY( ), mapTemplate.getCenterMapY( ) );
 
         // List test
         MapTemplateHome.getMapTemplatesList( );
@@ -126,10 +124,7 @@ public class MapTemplateBusinessTest extends LuteceTestCase
         optMapTemplateStored = MapTemplateHome.findByPrimaryKey( mapTemplate.getId( ) );
         mapTemplateStored = optMapTemplateStored.orElse( null );
         assertNull( mapTemplateStored );
-        
+
     }
-    
-    
-     
 
 }

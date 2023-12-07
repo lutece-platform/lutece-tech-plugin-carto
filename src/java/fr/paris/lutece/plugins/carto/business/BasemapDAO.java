@@ -32,7 +32,6 @@
  * License 1.0
  */
 
-
 package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
@@ -64,19 +63,19 @@ public final class BasemapDAO implements IBasemapDAO
     @Override
     public void insert( Basemap basemap, Plugin plugin )
     {
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, Statement.RETURN_GENERATED_KEYS, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, Statement.RETURN_GENERATED_KEYS, plugin ) )
         {
             int nIndex = 1;
-            daoUtil.setString( nIndex++ , basemap.getTitle( ) );
-            daoUtil.setString( nIndex++ , basemap.getUrl( ) );
-            
+            daoUtil.setString( nIndex++, basemap.getTitle( ) );
+            daoUtil.setString( nIndex++, basemap.getUrl( ) );
+
             daoUtil.executeUpdate( );
-            if ( daoUtil.nextGeneratedKey( ) ) 
+            if ( daoUtil.nextGeneratedKey( ) )
             {
                 basemap.setId( daoUtil.getGeneratedKeyInt( 1 ) );
             }
         }
-        
+
     }
 
     /**
@@ -85,23 +84,23 @@ public final class BasemapDAO implements IBasemapDAO
     @Override
     public Optional<Basemap> load( int nKey, Plugin plugin )
     {
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin ) )
         {
-	        daoUtil.setInt( 1 , nKey );
-	        daoUtil.executeQuery( );
-	        Basemap basemap = null;
-	
-	        if ( daoUtil.next( ) )
-	        {
-	            basemap = new Basemap();
-	            int nIndex = 1;
-	            
-	            basemap.setId( daoUtil.getInt( nIndex++ ) );
-			    basemap.setTitle( daoUtil.getString( nIndex++ ) );
-			    basemap.setUrl( daoUtil.getString( nIndex ) );
-	        }
-	
-	        return Optional.ofNullable( basemap );
+            daoUtil.setInt( 1, nKey );
+            daoUtil.executeQuery( );
+            Basemap basemap = null;
+
+            if ( daoUtil.next( ) )
+            {
+                basemap = new Basemap( );
+                int nIndex = 1;
+
+                basemap.setId( daoUtil.getInt( nIndex++ ) );
+                basemap.setTitle( daoUtil.getString( nIndex++ ) );
+                basemap.setUrl( daoUtil.getString( nIndex ) );
+            }
+
+            return Optional.ofNullable( basemap );
         }
     }
 
@@ -111,10 +110,10 @@ public final class BasemapDAO implements IBasemapDAO
     @Override
     public void delete( int nKey, Plugin plugin )
     {
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin ) )
         {
-	        daoUtil.setInt( 1 , nKey );
-	        daoUtil.executeUpdate( );
+            daoUtil.setInt( 1, nKey );
+            daoUtil.executeUpdate( );
         }
     }
 
@@ -124,15 +123,15 @@ public final class BasemapDAO implements IBasemapDAO
     @Override
     public void store( Basemap basemap, Plugin plugin )
     {
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin ) )
         {
-	        int nIndex = 1;
-	        
-            	daoUtil.setString( nIndex++ , basemap.getTitle( ) );
-            	daoUtil.setString( nIndex++ , basemap.getUrl( ) );
-	        daoUtil.setInt( nIndex , basemap.getId( ) );
-	
-	        daoUtil.executeUpdate( );
+            int nIndex = 1;
+
+            daoUtil.setString( nIndex++, basemap.getTitle( ) );
+            daoUtil.setString( nIndex++, basemap.getUrl( ) );
+            daoUtil.setInt( nIndex, basemap.getId( ) );
+
+            daoUtil.executeUpdate( );
         }
     }
 
@@ -142,27 +141,27 @@ public final class BasemapDAO implements IBasemapDAO
     @Override
     public List<Basemap> selectBasemapsList( Plugin plugin )
     {
-        List<Basemap> basemapList = new ArrayList<>(  );
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
+        List<Basemap> basemapList = new ArrayList<>( );
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
         {
-	        daoUtil.executeQuery(  );
-	
-	        while ( daoUtil.next(  ) )
-	        {
-	            Basemap basemap = new Basemap(  );
-	            int nIndex = 1;
-	            
-	            basemap.setId( daoUtil.getInt( nIndex++ ) );
-			    basemap.setTitle( daoUtil.getString( nIndex++ ) );
-			    basemap.setUrl( daoUtil.getString( nIndex ) );
-	
-	            basemapList.add( basemap );
-	        }
-	
-	        return basemapList;
+            daoUtil.executeQuery( );
+
+            while ( daoUtil.next( ) )
+            {
+                Basemap basemap = new Basemap( );
+                int nIndex = 1;
+
+                basemap.setId( daoUtil.getInt( nIndex++ ) );
+                basemap.setTitle( daoUtil.getString( nIndex++ ) );
+                basemap.setUrl( daoUtil.getString( nIndex ) );
+
+                basemapList.add( basemap );
+            }
+
+            return basemapList;
         }
     }
-    
+
     /**
      * {@inheritDoc }
      */
@@ -170,83 +169,85 @@ public final class BasemapDAO implements IBasemapDAO
     public List<Integer> selectIdBasemapsList( Plugin plugin )
     {
         List<Integer> basemapList = new ArrayList<>( );
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL_ID, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL_ID, plugin ) )
         {
-	        daoUtil.executeQuery(  );
-	
-	        while ( daoUtil.next(  ) )
-	        {
-	            basemapList.add( daoUtil.getInt( 1 ) );
-	        }
-	
-	        return basemapList;
+            daoUtil.executeQuery( );
+
+            while ( daoUtil.next( ) )
+            {
+                basemapList.add( daoUtil.getInt( 1 ) );
+            }
+
+            return basemapList;
         }
     }
-    
+
     /**
      * {@inheritDoc }
      */
     @Override
     public ReferenceList selectBasemapsReferenceList( Plugin plugin )
     {
-        ReferenceList basemapList = new ReferenceList();
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
+        ReferenceList basemapList = new ReferenceList( );
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
         {
-	        daoUtil.executeQuery(  );
-	
-	        while ( daoUtil.next(  ) )
-	        {
-	            basemapList.addItem( daoUtil.getInt( 1 ) , daoUtil.getString( 2 ) );
-	        }
-	
-	        return basemapList;
-    	}
+            daoUtil.executeQuery( );
+
+            while ( daoUtil.next( ) )
+            {
+                basemapList.addItem( daoUtil.getInt( 1 ), daoUtil.getString( 2 ) );
+            }
+
+            return basemapList;
+        }
     }
-    
+
     /**
      * {@inheritDoc }
      */
-	@Override
-	public List<Basemap> selectBasemapsListByIds( Plugin plugin, List<Integer> listIds ) {
-		List<Basemap> basemapList = new ArrayList<>(  );
-		
-		StringBuilder builder = new StringBuilder( );
+    @Override
+    public List<Basemap> selectBasemapsListByIds( Plugin plugin, List<Integer> listIds )
+    {
+        List<Basemap> basemapList = new ArrayList<>( );
 
-		if ( !listIds.isEmpty( ) )
-		{
-			for( int i = 0 ; i < listIds.size(); i++ ) {
-			    builder.append( "?," );
-			}
-	
-			String placeHolders =  builder.deleteCharAt( builder.length( ) -1 ).toString( );
-			String stmt = SQL_QUERY_SELECTALL_BY_IDS + placeHolders + ")";
-			
-			
-	        try ( DAOUtil daoUtil = new DAOUtil( stmt, plugin ) )
-	        {
-	        	int index = 1;
-				for( Integer n : listIds ) {
-					daoUtil.setInt(  index++, n ); 
-				}
-	        	
-	        	daoUtil.executeQuery(  );
-	        	while ( daoUtil.next(  ) )
-		        {
-		        	Basemap basemap = new Basemap(  );
-		            int nIndex = 1;
-		            
-		            basemap.setId( daoUtil.getInt( nIndex++ ) );
-				    basemap.setTitle( daoUtil.getString( nIndex++ ) );
-				    basemap.setUrl( daoUtil.getString( nIndex ) );
-		            
-		            basemapList.add( basemap );
-		        }
-		
-		        daoUtil.free( );
-		        
-	        }
-	    }
-		return basemapList;
-		
-	}
+        StringBuilder builder = new StringBuilder( );
+
+        if ( !listIds.isEmpty( ) )
+        {
+            for ( int i = 0; i < listIds.size( ); i++ )
+            {
+                builder.append( "?," );
+            }
+
+            String placeHolders = builder.deleteCharAt( builder.length( ) - 1 ).toString( );
+            String stmt = SQL_QUERY_SELECTALL_BY_IDS + placeHolders + ")";
+
+            try ( DAOUtil daoUtil = new DAOUtil( stmt, plugin ) )
+            {
+                int index = 1;
+                for ( Integer n : listIds )
+                {
+                    daoUtil.setInt( index++, n );
+                }
+
+                daoUtil.executeQuery( );
+                while ( daoUtil.next( ) )
+                {
+                    Basemap basemap = new Basemap( );
+                    int nIndex = 1;
+
+                    basemap.setId( daoUtil.getInt( nIndex++ ) );
+                    basemap.setTitle( daoUtil.getString( nIndex++ ) );
+                    basemap.setUrl( daoUtil.getString( nIndex ) );
+
+                    basemapList.add( basemap );
+                }
+
+                daoUtil.free( );
+
+            }
+        }
+        return basemapList;
+
+    }
 }

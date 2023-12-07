@@ -32,14 +32,12 @@
  * License 1.0
  */
 
-
- package fr.paris.lutece.plugins.carto.business;
+package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.util.ReferenceList;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -56,14 +54,16 @@ public final class DataLayerHome
     /**
      * Private constructor - this class need not be instantiated
      */
-    private DataLayerHome(  )
+    private DataLayerHome( )
     {
     }
 
     /**
      * Create an instance of the dataLayer class
-     * @param dataLayer The instance of the DataLayer which contains the informations to store
-     * @return The  instance of dataLayer which has been created with its primary key.
+     * 
+     * @param dataLayer
+     *            The instance of the DataLayer which contains the informations to store
+     * @return The instance of dataLayer which has been created with its primary key.
      */
     public static DataLayer create( DataLayer dataLayer )
     {
@@ -74,8 +74,10 @@ public final class DataLayerHome
 
     /**
      * Update of the dataLayer which is specified in parameter
-     * @param dataLayer The instance of the DataLayer which contains the data to store
-     * @return The instance of the  dataLayer which has been updated
+     * 
+     * @param dataLayer
+     *            The instance of the DataLayer which contains the data to store
+     * @return The instance of the dataLayer which has been updated
      */
     public static DataLayer update( DataLayer dataLayer )
     {
@@ -86,7 +88,9 @@ public final class DataLayerHome
 
     /**
      * Remove the dataLayer whose identifier is specified in parameter
-     * @param nKey The dataLayer Id
+     * 
+     * @param nKey
+     *            The dataLayer Id
      */
     public static void remove( int nKey )
     {
@@ -95,7 +99,9 @@ public final class DataLayerHome
 
     /**
      * Returns an instance of a dataLayer whose identifier is specified in parameter
-     * @param nKey The dataLayer primary key
+     * 
+     * @param nKey
+     *            The dataLayer primary key
      * @return an instance of DataLayer
      */
     public static Optional<DataLayer> findByPrimaryKey( int nKey )
@@ -105,45 +111,51 @@ public final class DataLayerHome
 
     /**
      * Load the data of all the dataLayer objects and returns them as a list
+     * 
      * @return the list which contains the data of all the dataLayer objects
      */
     public static List<DataLayer> getDataLayersList( )
     {
         return _dao.selectDataLayersList( _plugin );
     }
-    
+
     /**
      * Load the id of all the dataLayer objects and returns them as a list
+     * 
      * @return the list which contains the id of all the dataLayer objects
      */
     public static List<Integer> getIdDataLayersList( )
     {
         return _dao.selectIdDataLayersList( _plugin );
     }
-    
+
     /**
      * Load the data of all the dataLayer objects and returns them as a referenceList
+     * 
      * @return the referenceList which contains the data of all the dataLayer objects
      */
     public static ReferenceList getDataLayersReferenceList( )
     {
         return _dao.selectDataLayersReferenceList( _plugin );
     }
-    
-	
+
     /**
      * Load the data of all the avant objects and returns them as a list
-     * @param listIds liste of ids
+     * 
+     * @param listIds
+     *            liste of ids
      * @return the list which contains the data of all the avant objects
      */
     public static List<DataLayer> getDataLayersListByIds( List<Integer> listIds )
     {
         return _dao.selectDataLayersListByIds( _plugin, listIds );
     }
-    
+
     /**
      * Returns an instance of a dataLayer whose is editable for a specific map
-     * @param nKey The MapTemplate primary key
+     * 
+     * @param nKey
+     *            The MapTemplate primary key
      * @return an instance of DataLayer
      */
     public static Optional<DataLayer> findDataLayerFromMapId( int nKey, boolean editable, boolean inclusion, boolean exclusion )
@@ -152,4 +164,3 @@ public final class DataLayerHome
     }
 
 }
-

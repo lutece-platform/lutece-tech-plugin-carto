@@ -32,14 +32,12 @@
  * License 1.0
  */
 
-
- package fr.paris.lutece.plugins.carto.business;
+package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.util.ReferenceList;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -56,14 +54,16 @@ public final class GeometryTypeHome
     /**
      * Private constructor - this class need not be instantiated
      */
-    private GeometryTypeHome(  )
+    private GeometryTypeHome( )
     {
     }
 
     /**
      * Create an instance of the geometryType class
-     * @param geometryType The instance of the GeometryType which contains the informations to store
-     * @return The  instance of geometryType which has been created with its primary key.
+     * 
+     * @param geometryType
+     *            The instance of the GeometryType which contains the informations to store
+     * @return The instance of geometryType which has been created with its primary key.
      */
     public static GeometryType create( GeometryType geometryType )
     {
@@ -74,8 +74,10 @@ public final class GeometryTypeHome
 
     /**
      * Update of the geometryType which is specified in parameter
-     * @param geometryType The instance of the GeometryType which contains the data to store
-     * @return The instance of the  geometryType which has been updated
+     * 
+     * @param geometryType
+     *            The instance of the GeometryType which contains the data to store
+     * @return The instance of the geometryType which has been updated
      */
     public static GeometryType update( GeometryType geometryType )
     {
@@ -86,7 +88,9 @@ public final class GeometryTypeHome
 
     /**
      * Remove the geometryType whose identifier is specified in parameter
-     * @param nKey The geometryType Id
+     * 
+     * @param nKey
+     *            The geometryType Id
      */
     public static void remove( int nKey )
     {
@@ -95,7 +99,9 @@ public final class GeometryTypeHome
 
     /**
      * Returns an instance of a geometryType whose identifier is specified in parameter
-     * @param nKey The geometryType primary key
+     * 
+     * @param nKey
+     *            The geometryType primary key
      * @return an instance of GeometryType
      */
     public static Optional<GeometryType> findByPrimaryKey( int nKey )
@@ -105,35 +111,39 @@ public final class GeometryTypeHome
 
     /**
      * Load the data of all the geometryType objects and returns them as a list
+     * 
      * @return the list which contains the data of all the geometryType objects
      */
     public static List<GeometryType> getGeometryTypesList( )
     {
         return _dao.selectGeometryTypesList( _plugin );
     }
-    
+
     /**
      * Load the id of all the geometryType objects and returns them as a list
+     * 
      * @return the list which contains the id of all the geometryType objects
      */
     public static List<Integer> getIdGeometryTypesList( )
     {
         return _dao.selectIdGeometryTypesList( _plugin );
     }
-    
+
     /**
      * Load the data of all the geometryType objects and returns them as a referenceList
+     * 
      * @return the referenceList which contains the data of all the geometryType objects
      */
     public static ReferenceList getGeometryTypesReferenceList( )
     {
         return _dao.selectGeometryTypesReferenceList( _plugin );
     }
-    
-	
+
     /**
      * Load the data of all the avant objects and returns them as a list
-     * @param listIds liste of ids
+     * 
+     * @param listIds
+     *            liste of ids
      * @return the list which contains the data of all the avant objects
      */
     public static List<GeometryType> getGeometryTypesListByIds( List<Integer> listIds )
@@ -142,4 +152,3 @@ public final class GeometryTypeHome
     }
 
 }
-

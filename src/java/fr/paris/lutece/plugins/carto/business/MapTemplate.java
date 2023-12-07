@@ -36,42 +36,44 @@ package fr.paris.lutece.plugins.carto.business;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+
 /**
  * This is the business class for the object MapTemplate
- */ 
+ */
 public class MapTemplate implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    // Variables declarations 
+    // Variables declarations
     private int _nId;
-    
+
     @NotEmpty( message = "#i18n{carto.validation.maptemplate.Title.notEmpty}" )
-    @Size( max = 255 , message = "#i18n{carto.validation.maptemplate.Title.size}" ) 
+    @Size( max = 255, message = "#i18n{carto.validation.maptemplate.Title.size}" )
     private String _strTitle;
-    
+
     private String _strDescription;
-    
-    @Size( max = 255 , message = "#i18n{carto.validation.maptemplate.MapBackground.size}" ) 
+
+    @Size( max = 255, message = "#i18n{carto.validation.maptemplate.MapBackground.size}" )
     private String _strMapBackground;
-    
+
     private int _nDefaultZoom;
-    
+
     private int _nZoomMin;
-    
+
     private int _nZoomMax;
-    
-    @Size( max = 255 , message = "#i18n{carto.validation.maptemplate.CenterMap.size}" ) 
+
+    @Size( max = 255, message = "#i18n{carto.validation.maptemplate.CenterMap.size}" )
     private String _strCenterMap;
-    
+
     private Double _nCenterMapX;
-    
+
     private Double _nCenterMapY;
-    
+
     private boolean _bFrontOffice;
 
     /**
      * Returns the Id
+     * 
      * @return The Id
      */
     public int getId( )
@@ -81,15 +83,18 @@ public class MapTemplate implements Serializable
 
     /**
      * Sets the Id
-     * @param nId The Id
-     */ 
+     * 
+     * @param nId
+     *            The Id
+     */
     public void setId( int nId )
     {
         _nId = nId;
     }
-    
+
     /**
      * Returns the Title
+     * 
      * @return The Title
      */
     public String getTitle( )
@@ -99,16 +104,18 @@ public class MapTemplate implements Serializable
 
     /**
      * Sets the Title
-     * @param strTitle The Title
-     */ 
+     * 
+     * @param strTitle
+     *            The Title
+     */
     public void setTitle( String strTitle )
     {
         _strTitle = strTitle;
     }
-    
-    
+
     /**
      * Returns the Description
+     * 
      * @return The Description
      */
     public String getDescription( )
@@ -118,16 +125,18 @@ public class MapTemplate implements Serializable
 
     /**
      * Sets the Description
-     * @param strDescription The Description
-     */ 
+     * 
+     * @param strDescription
+     *            The Description
+     */
     public void setDescription( String strDescription )
     {
         _strDescription = strDescription;
     }
-    
-    
+
     /**
      * Returns the MapBackground
+     * 
      * @return The MapBackground
      */
     public String getMapBackground( )
@@ -137,16 +146,18 @@ public class MapTemplate implements Serializable
 
     /**
      * Sets the MapBackground
-     * @param strMapBackground The MapBackground
-     */ 
+     * 
+     * @param strMapBackground
+     *            The MapBackground
+     */
     public void setMapBackground( String strMapBackground )
     {
         _strMapBackground = strMapBackground;
     }
-    
-    
+
     /**
      * Returns the DefaultZoom
+     * 
      * @return The DefaultZoom
      */
     public int getDefaultZoom( )
@@ -156,16 +167,18 @@ public class MapTemplate implements Serializable
 
     /**
      * Sets the DefaultZoom
-     * @param nDefaultZoom The DefaultZoom
-     */ 
+     * 
+     * @param nDefaultZoom
+     *            The DefaultZoom
+     */
     public void setDefaultZoom( int nDefaultZoom )
     {
         _nDefaultZoom = nDefaultZoom;
     }
-    
-    
+
     /**
      * Returns the ZoomMin
+     * 
      * @return The ZoomMin
      */
     public int getZoomMin( )
@@ -175,16 +188,18 @@ public class MapTemplate implements Serializable
 
     /**
      * Sets the ZoomMin
-     * @param nZoomMin The ZoomMin
-     */ 
+     * 
+     * @param nZoomMin
+     *            The ZoomMin
+     */
     public void setZoomMin( int nZoomMin )
     {
         _nZoomMin = nZoomMin;
     }
-    
-    
+
     /**
      * Returns the ZoomMax
+     * 
      * @return The ZoomMax
      */
     public int getZoomMax( )
@@ -194,16 +209,18 @@ public class MapTemplate implements Serializable
 
     /**
      * Sets the ZoomMax
-     * @param nZoomMax The ZoomMax
-     */ 
+     * 
+     * @param nZoomMax
+     *            The ZoomMax
+     */
     public void setZoomMax( int nZoomMax )
     {
         _nZoomMax = nZoomMax;
     }
-    
-    
+
     /**
      * Returns the CenterMap
+     * 
      * @return The CenterMap
      */
     public String getCenterMap( )
@@ -213,8 +230,10 @@ public class MapTemplate implements Serializable
 
     /**
      * Sets the CenterMap
-     * @param strCenterMap The CenterMap
-     */ 
+     * 
+     * @param strCenterMap
+     *            The CenterMap
+     */
     public void setCenterMap( String strCenterMap )
     {
         _strCenterMap = strCenterMap;
@@ -222,22 +241,28 @@ public class MapTemplate implements Serializable
 
     /**
      * Returns the CenterMapX
+     * 
      * @return The CenterMapX
      */
-	public Double getCenterMapX() {
-		return _nCenterMapX;
-	}
+    public Double getCenterMapX( )
+    {
+        return _nCenterMapX;
+    }
 
-	/**
+    /**
      * Sets the CenterMapX
-     * @param nCenterMapX The CenterMapX
-     */ 
-	public void setCenterMapX(Double nCenterMapX) {
-		this._nCenterMapX = nCenterMapX;
-	}
+     * 
+     * @param nCenterMapX
+     *            The CenterMapX
+     */
+    public void setCenterMapX( Double nCenterMapX )
+    {
+        this._nCenterMapX = nCenterMapX;
+    }
 
-	/**
+    /**
      * Returns the CenterMapY
+     * 
      * @return The CenterMapY
      */
     public Double getCenterMapY( )
@@ -247,15 +272,18 @@ public class MapTemplate implements Serializable
 
     /**
      * Sets the CenterMapY
-     * @param nCenterMapY The CenterMapY
-     */ 
+     * 
+     * @param nCenterMapY
+     *            The CenterMapY
+     */
     public void setCenterMapY( Double nCenterMapY )
     {
         _nCenterMapY = nCenterMapY;
     }
-    
+
     /**
      * Returns the FrontOffice
+     * 
      * @return The FrontOffice
      */
     public boolean getFrontOffice( )
@@ -265,11 +293,13 @@ public class MapTemplate implements Serializable
 
     /**
      * Sets the FrontOffice
-     * @param bFrontOffice The FrontOffice
-     */ 
+     * 
+     * @param bFrontOffice
+     *            The FrontOffice
+     */
     public void setFrontOffice( boolean bFrontOffice )
     {
         _bFrontOffice = bFrontOffice;
     }
-    
+
 }

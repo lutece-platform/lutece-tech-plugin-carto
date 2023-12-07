@@ -31,8 +31,7 @@
  *
  * License 1.0
  */
- 	
- 
+
 package fr.paris.lutece.plugins.carto.web;
 
 import fr.paris.lutece.portal.service.message.AdminMessage;
@@ -60,7 +59,7 @@ import fr.paris.lutece.plugins.carto.business.BasemapHome;
  * This class provides the user interface to manage Basemap features ( manage, create, modify, remove )
  */
 @Controller( controllerJsp = "ManageBasemaps.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT_REFERENTIEL" )
-public class BasemapJspBean extends AbstractManageCartoJspBean <Integer, Basemap>
+public class BasemapJspBean extends AbstractManageCartoJspBean<Integer, Basemap>
 {
     // Templates
     private static final String TEMPLATE_MANAGE_BASEMAPS = "/admin/plugins/carto/manage_basemaps.html";
@@ -102,70 +101,72 @@ public class BasemapJspBean extends AbstractManageCartoJspBean <Integer, Basemap
     private static final String INFO_BASEMAP_CREATED = "carto.info.basemap.created";
     private static final String INFO_BASEMAP_UPDATED = "carto.info.basemap.updated";
     private static final String INFO_BASEMAP_REMOVED = "carto.info.basemap.removed";
-    
+
     // Errors
     private static final String ERROR_RESOURCE_NOT_FOUND = "Resource not found";
-    
+
     // Session variable to store working values
     private Basemap _basemap;
     private List<Integer> _listIdBasemaps;
-    
+
     /**
      * Build the Manage View
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return The page
      */
     @View( value = VIEW_MANAGE_BASEMAPS, defaultView = true )
     public String getManageBasemaps( HttpServletRequest request )
     {
         _basemap = null;
-        
-        if ( request.getParameter( AbstractPaginator.PARAMETER_PAGE_INDEX) == null || _listIdBasemaps.isEmpty( ) )
+
+        if ( request.getParameter( AbstractPaginator.PARAMETER_PAGE_INDEX ) == null || _listIdBasemaps.isEmpty( ) )
         {
-        	_listIdBasemaps = BasemapHome.getIdBasemapsList(  );
+            _listIdBasemaps = BasemapHome.getIdBasemapsList( );
         }
-        
+
         Map<String, Object> model = getPaginatedListModel( request, MARK_BASEMAP_LIST, _listIdBasemaps, JSP_MANAGE_BASEMAPS );
 
         return getPage( PROPERTY_PAGE_TITLE_MANAGE_BASEMAPS, TEMPLATE_MANAGE_BASEMAPS, model );
     }
 
-	/**
+    /**
      * Get Items from Ids list
+     * 
      * @param listIds
      * @return the populated list of items corresponding to the id List
      */
-	@Override
-	List<Basemap> getItemsFromIds( List<Integer> listIds ) 
-	{
-		List<Basemap> listBasemap = BasemapHome.getBasemapsListByIds( listIds );
-		
-		// keep original order
-        return listBasemap.stream()
-                 .sorted(Comparator.comparingInt( notif -> listIds.indexOf( notif.getId())))
-                 .collect(Collectors.toList());
-	}
-    
+    @Override
+    List<Basemap> getItemsFromIds( List<Integer> listIds )
+    {
+        List<Basemap> listBasemap = BasemapHome.getBasemapsListByIds( listIds );
+
+        // keep original order
+        return listBasemap.stream( ).sorted( Comparator.comparingInt( notif -> listIds.indexOf( notif.getId( ) ) ) ).collect( Collectors.toList( ) );
+    }
+
     /**
-    * reset the _listIdBasemaps list
-    */
+     * reset the _listIdBasemaps list
+     */
     public void resetListId( )
     {
-    	_listIdBasemaps = new ArrayList<>( );
+        _listIdBasemaps = new ArrayList<>( );
     }
 
     /**
      * Returns the form to create a basemap
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the html code of the basemap form
      */
     @View( VIEW_CREATE_BASEMAP )
     public String getCreateBasemap( HttpServletRequest request )
     {
-        _basemap = ( _basemap != null ) ? _basemap : new Basemap(  );
+        _basemap = ( _basemap != null ) ? _basemap : new Basemap( );
 
-        Map<String, Object> model = getModel(  );
+        Map<String, Object> model = getModel( );
         model.put( MARK_BASEMAP, _basemap );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_CREATE_BASEMAP ) );
 
@@ -175,7 +176,8 @@ public class BasemapJspBean extends AbstractManageCartoJspBean <Integer, Basemap
     /**
      * Process the data capture form of a new basemap
      *
-     * @param request The Http Request
+     * @param request
+     *            The Http Request
      * @return The Jsp URL of the process result
      * @throws AccessDeniedException
      */
@@ -183,11 +185,10 @@ public class BasemapJspBean extends AbstractManageCartoJspBean <Integer, Basemap
     public String doCreateBasemap( HttpServletRequest request ) throws AccessDeniedException
     {
         populate( _basemap, request, getLocale( ) );
-        
 
         if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_CREATE_BASEMAP ) )
         {
-            throw new AccessDeniedException ( "Invalid security token" );
+            throw new AccessDeniedException( "Invalid security token" );
         }
 
         // Check constraints
@@ -197,17 +198,17 @@ public class BasemapJspBean extends AbstractManageCartoJspBean <Integer, Basemap
         }
 
         BasemapHome.create( _basemap );
-        addInfo( INFO_BASEMAP_CREATED, getLocale(  ) );
+        addInfo( INFO_BASEMAP_CREATED, getLocale( ) );
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_BASEMAPS );
     }
 
     /**
-     * Manages the removal form of a basemap whose identifier is in the http
-     * request
+     * Manages the removal form of a basemap whose identifier is in the http request
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the html code to confirm
      */
     @Action( ACTION_CONFIRM_REMOVE_BASEMAP )
@@ -217,7 +218,7 @@ public class BasemapJspBean extends AbstractManageCartoJspBean <Integer, Basemap
         UrlItem url = new UrlItem( getActionUrl( ACTION_REMOVE_BASEMAP ) );
         url.addParameter( PARAMETER_ID_BASEMAP, nId );
 
-        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_BASEMAP, url.getUrl(  ), AdminMessage.TYPE_CONFIRMATION );
+        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_BASEMAP, url.getUrl( ), AdminMessage.TYPE_CONFIRMATION );
 
         return redirect( request, strMessageUrl );
     }
@@ -225,17 +226,17 @@ public class BasemapJspBean extends AbstractManageCartoJspBean <Integer, Basemap
     /**
      * Handles the removal form of a basemap
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the jsp URL to display the form to manage basemaps
      */
     @Action( ACTION_REMOVE_BASEMAP )
     public String doRemoveBasemap( HttpServletRequest request )
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_BASEMAP ) );
-        
-        
+
         BasemapHome.remove( nId );
-        addInfo( INFO_BASEMAP_REMOVED, getLocale(  ) );
+        addInfo( INFO_BASEMAP_REMOVED, getLocale( ) );
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_BASEMAPS );
@@ -244,7 +245,8 @@ public class BasemapJspBean extends AbstractManageCartoJspBean <Integer, Basemap
     /**
      * Returns the form to update info about a basemap
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return The HTML form to update info
      */
     @View( VIEW_MODIFY_BASEMAP )
@@ -252,14 +254,13 @@ public class BasemapJspBean extends AbstractManageCartoJspBean <Integer, Basemap
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_BASEMAP ) );
 
-        if ( _basemap == null || ( _basemap.getId(  ) != nId ) )
+        if ( _basemap == null || ( _basemap.getId( ) != nId ) )
         {
             Optional<Basemap> optBasemap = BasemapHome.findByPrimaryKey( nId );
-            _basemap = optBasemap.orElseThrow( ( ) -> new AppException(ERROR_RESOURCE_NOT_FOUND ) );
+            _basemap = optBasemap.orElseThrow( ( ) -> new AppException( ERROR_RESOURCE_NOT_FOUND ) );
         }
 
-
-        Map<String, Object> model = getModel(  );
+        Map<String, Object> model = getModel( );
         model.put( MARK_BASEMAP, _basemap );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_MODIFY_BASEMAP ) );
 
@@ -269,19 +270,19 @@ public class BasemapJspBean extends AbstractManageCartoJspBean <Integer, Basemap
     /**
      * Process the change form of a basemap
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return The Jsp URL of the process result
      * @throws AccessDeniedException
      */
     @Action( ACTION_MODIFY_BASEMAP )
     public String doModifyBasemap( HttpServletRequest request ) throws AccessDeniedException
-    {   
+    {
         populate( _basemap, request, getLocale( ) );
-		
-		
+
         if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_MODIFY_BASEMAP ) )
         {
-            throw new AccessDeniedException ( "Invalid security token" );
+            throw new AccessDeniedException( "Invalid security token" );
         }
 
         // Check constraints
@@ -291,7 +292,7 @@ public class BasemapJspBean extends AbstractManageCartoJspBean <Integer, Basemap
         }
 
         BasemapHome.update( _basemap );
-        addInfo( INFO_BASEMAP_UPDATED, getLocale(  ) );
+        addInfo( INFO_BASEMAP_UPDATED, getLocale( ) );
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_BASEMAPS );

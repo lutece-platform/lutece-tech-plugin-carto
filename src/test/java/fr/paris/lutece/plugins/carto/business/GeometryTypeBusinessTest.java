@@ -28,16 +28,14 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *"
+ *
  * License 1.0
  */
-
 package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.test.LuteceTestCase;
 
 import java.util.Optional;
-
 
 /**
  * This is the business class test for the object GeometryType
@@ -49,32 +47,32 @@ public class GeometryTypeBusinessTest extends LuteceTestCase
     private static final String TECHNICALNAME1 = "TechnicalName1";
     private static final String TECHNICALNAME2 = "TechnicalName2";
 
-	/**
-	* test GeometryType
-	*/
-    public void testBusiness(  )
+    /**
+     * test GeometryType
+     */
+    public void testBusiness( )
     {
         // Initialize an object
-        GeometryType geometryType = new GeometryType();
+        GeometryType geometryType = new GeometryType( );
         geometryType.setName( NAME1 );
         geometryType.setTechnicalName( TECHNICALNAME1 );
 
         // Create test
         GeometryTypeHome.create( geometryType );
         Optional<GeometryType> optGeometryTypeStored = GeometryTypeHome.findByPrimaryKey( geometryType.getId( ) );
-        GeometryType geometryTypeStored = optGeometryTypeStored.orElse( new GeometryType ( ) );
-        assertEquals( geometryTypeStored.getName( ) , geometryType.getName( ) );
-        assertEquals( geometryTypeStored.getTechnicalName( ) , geometryType.getTechnicalName( ) );
+        GeometryType geometryTypeStored = optGeometryTypeStored.orElse( new GeometryType( ) );
+        assertEquals( geometryTypeStored.getName( ), geometryType.getName( ) );
+        assertEquals( geometryTypeStored.getTechnicalName( ), geometryType.getTechnicalName( ) );
 
         // Update test
         geometryType.setName( NAME2 );
         geometryType.setTechnicalName( TECHNICALNAME2 );
         GeometryTypeHome.update( geometryType );
         optGeometryTypeStored = GeometryTypeHome.findByPrimaryKey( geometryType.getId( ) );
-        geometryTypeStored = optGeometryTypeStored.orElse( new GeometryType ( ) );
-        
-        assertEquals( geometryTypeStored.getName( ) , geometryType.getName( ) );
-        assertEquals( geometryTypeStored.getTechnicalName( ) , geometryType.getTechnicalName( ) );
+        geometryTypeStored = optGeometryTypeStored.orElse( new GeometryType( ) );
+
+        assertEquals( geometryTypeStored.getName( ), geometryType.getName( ) );
+        assertEquals( geometryTypeStored.getTechnicalName( ), geometryType.getTechnicalName( ) );
 
         // List test
         GeometryTypeHome.getGeometryTypesList( );
@@ -84,10 +82,7 @@ public class GeometryTypeBusinessTest extends LuteceTestCase
         optGeometryTypeStored = GeometryTypeHome.findByPrimaryKey( geometryType.getId( ) );
         geometryTypeStored = optGeometryTypeStored.orElse( null );
         assertNull( geometryTypeStored );
-        
+
     }
-    
-    
-     
 
 }

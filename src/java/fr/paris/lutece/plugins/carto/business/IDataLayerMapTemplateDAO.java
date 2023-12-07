@@ -31,7 +31,7 @@
  *
  * License 1.0
  */
- 
+
 package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
@@ -46,22 +46,31 @@ public interface IDataLayerMapTemplateDAO
 {
     /**
      * Insert a new record in the table.
-     * @param dataLayerMapTemplate instance of the DataLayerMapTemplate object to insert
-     * @param plugin the Plugin
+     * 
+     * @param dataLayerMapTemplate
+     *            instance of the DataLayerMapTemplate object to insert
+     * @param plugin
+     *            the Plugin
      */
     void insert( DataLayerMapTemplate dataLayerMapTemplate, Plugin plugin );
 
     /**
      * Update the record in the table
-     * @param dataLayerMapTemplate the reference of the DataLayerMapTemplate
-     * @param plugin the Plugin
+     * 
+     * @param dataLayerMapTemplate
+     *            the reference of the DataLayerMapTemplate
+     * @param plugin
+     *            the Plugin
      */
     void store( DataLayerMapTemplate dataLayerMapTemplate, Plugin plugin );
 
     /**
      * Delete a record from the table
-     * @param nKey The identifier of the DataLayerMapTemplate to delete
-     * @param plugin the Plugin
+     * 
+     * @param nKey
+     *            The identifier of the DataLayerMapTemplate to delete
+     * @param plugin
+     *            the Plugin
      */
     void delete( int nKey, Plugin plugin );
 
@@ -70,64 +79,85 @@ public interface IDataLayerMapTemplateDAO
 
     /**
      * Load the data from the table
-     * @param nKey The identifier of the dataLayerMapTemplate
-     * @param plugin the Plugin
+     * 
+     * @param nKey
+     *            The identifier of the dataLayerMapTemplate
+     * @param plugin
+     *            the Plugin
      * @return The instance of the dataLayerMapTemplate
      */
     Optional<DataLayerMapTemplate> load( int nKey, Plugin plugin );
 
     /**
      * Load the data of all the dataLayerMapTemplate objects and returns them as a list
-     * @param plugin the Plugin
+     * 
+     * @param plugin
+     *            the Plugin
      * @return The list which contains the data of all the dataLayerMapTemplate objects
      */
     List<DataLayerMapTemplate> selectDataLayerMapTemplatesList( Plugin plugin );
-    
+
     /**
      * Load the id of all the dataLayerMapTemplate objects and returns them as a list
-     * @param plugin the Plugin
+     * 
+     * @param plugin
+     *            the Plugin
      * @return The list which contains the id of all the dataLayerMapTemplate objects
      */
     List<Integer> selectIdDataLayerMapTemplatesList( Plugin plugin );
-    
+
     /**
      * Load the data of all the dataLayerMapTemplate objects and returns them as a referenceList
-     * @param plugin the Plugin
+     * 
+     * @param plugin
+     *            the Plugin
      * @return The referenceList which contains the data of all the dataLayerMapTemplate objects
      */
     ReferenceList selectDataLayerMapTemplatesReferenceList( Plugin plugin );
-    
+
     /**
      * Load the data of all the avant objects and returns them as a list
-     * @param plugin the Plugin
-     * @param listIds liste of ids
+     * 
+     * @param plugin
+     *            the Plugin
+     * @param listIds
+     *            liste of ids
      * @return The list which contains the data of all the avant objects
      */
-	List<DataLayerMapTemplate> selectDataLayerMapTemplatesListByIds( Plugin _plugin, List<Integer> listIds );
-	
-	
-	/**
+    List<DataLayerMapTemplate> selectDataLayerMapTemplatesListByIds( Plugin _plugin, List<Integer> listIds );
+
+    /**
      * Load all the DataLayer attached to the MapTemplate id
-     * @param plugin the Plugin
-     * @param nkey : id of the mapTemplate
+     * 
+     * @param plugin
+     *            the Plugin
+     * @param nkey
+     *            : id of the mapTemplate
      * @return The list of DataLayer
      */
-	List<DataLayer> selectDataLayerListByMapTemplateId( Plugin _plugin, int nKey );
+    List<DataLayer> selectDataLayerListByMapTemplateId( Plugin _plugin, int nKey );
 
-	/**
+    /**
      * Load the data from the table
-     * @param nMapKey The identifier of the MapTemplate
-     * @param nDataLayerKey The identifier of the dataLayer
-     * @param plugin the Plugin
+     * 
+     * @param nMapKey
+     *            The identifier of the MapTemplate
+     * @param nDataLayerKey
+     *            The identifier of the dataLayer
+     * @param plugin
+     *            the Plugin
      * @return The instance of the dataLayerMapTemplate
      */
-	Optional<DataLayerMapTemplate> loadByIdMapIdLayer(int nMapKey, int nDataLayerKey, Plugin plugin);
+    Optional<DataLayerMapTemplate> loadByIdMapIdLayer( int nMapKey, int nDataLayerKey, Plugin plugin );
 
-	/**
+    /**
      * Load the data from id data layer
-     * @param nKey The od of the datalayer
-     * @param plugin the Plugin
+     * 
+     * @param nKey
+     *            The od of the datalayer
+     * @param plugin
+     *            the Plugin
      * @return The instance of the dataLayerMapTemplate
      */
-	Optional<DataLayerMapTemplate> loadByDataLayerId(Plugin plugin, int nKey);
+    Optional<DataLayerMapTemplate> loadByDataLayerId( Plugin plugin, int nKey );
 }

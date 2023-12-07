@@ -36,31 +36,33 @@ package fr.paris.lutece.plugins.carto.business;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+
 /**
  * This is the business class for the object DataLayer
- */ 
+ */
 public class DataLayer implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    // Variables declarations 
+    // Variables declarations
     private int _nId;
-    
+
     @NotEmpty( message = "#i18n{carto.validation.datalayer.Title.notEmpty}" )
-    @Size( max = 255 , message = "#i18n{carto.validation.datalayer.Title.size}" ) 
+    @Size( max = 255, message = "#i18n{carto.validation.datalayer.Title.size}" )
     private String _strTitle;
-    
-    @Size( max = 255 , message = "#i18n{carto.validation.datalayer.SolrTag.size}" ) 
+
+    @Size( max = 255, message = "#i18n{carto.validation.datalayer.SolrTag.size}" )
     private String _strSolrTag;
-    
+
     private int _nGeometry;
-    
+
     private GeometryType _geometryType;
-    
+
     private String _strPopupContent;
 
     /**
      * Returns the Id
+     * 
      * @return The Id
      */
     public int getId( )
@@ -70,15 +72,18 @@ public class DataLayer implements Serializable
 
     /**
      * Sets the Id
-     * @param nId The Id
-     */ 
+     * 
+     * @param nId
+     *            The Id
+     */
     public void setId( int nId )
     {
         _nId = nId;
     }
-    
+
     /**
      * Returns the Title
+     * 
      * @return The Title
      */
     public String getTitle( )
@@ -88,16 +93,18 @@ public class DataLayer implements Serializable
 
     /**
      * Sets the Title
-     * @param strTitle The Title
-     */ 
+     * 
+     * @param strTitle
+     *            The Title
+     */
     public void setTitle( String strTitle )
     {
         _strTitle = strTitle;
     }
-    
-    
+
     /**
      * Returns the SolrTag
+     * 
      * @return The SolrTag
      */
     public String getSolrTag( )
@@ -107,16 +114,18 @@ public class DataLayer implements Serializable
 
     /**
      * Sets the SolrTag
-     * @param strSolrTag The SolrTag
-     */ 
+     * 
+     * @param strSolrTag
+     *            The SolrTag
+     */
     public void setSolrTag( String strSolrTag )
     {
         _strSolrTag = strSolrTag;
     }
-    
-    
+
     /**
      * Returns the Geometry
+     * 
      * @return The Geometry
      */
     public int getGeometry( )
@@ -126,8 +135,10 @@ public class DataLayer implements Serializable
 
     /**
      * Sets the Geometry
-     * @param nGeometry The Geometry
-     */ 
+     * 
+     * @param nGeometry
+     *            The Geometry
+     */
     public void setGeometry( int nGeometry )
     {
         _nGeometry = nGeometry;
@@ -135,33 +146,43 @@ public class DataLayer implements Serializable
 
     /**
      * Returns the geometryType
+     * 
      * @return The geometryType
      */
-	public GeometryType getGeometryType( ) {
-		return _geometryType;
-	}
+    public GeometryType getGeometryType( )
+    {
+        return _geometryType;
+    }
 
-	/**
+    /**
      * Sets the geometryType
-     * @param geometryType The geometryType
-     */ 
-	public void setGeometryType(GeometryType geometryType) {
-		this._geometryType = geometryType;
-	}
-    
-	/**
+     * 
+     * @param geometryType
+     *            The geometryType
+     */
+    public void setGeometryType( GeometryType geometryType )
+    {
+        this._geometryType = geometryType;
+    }
+
+    /**
      * Returns the popup content
+     * 
      * @return The popup content
      */
-	public String getPopupContent() {
-		return _strPopupContent;
-	}
+    public String getPopupContent( )
+    {
+        return _strPopupContent;
+    }
 
-	/**
+    /**
      * Sets the popup content
-     * @param strPopupContent The the popup content
-     */ 
-	public void setPopupContent(String strPopupContent) {
-		this._strPopupContent = strPopupContent;
-	}
+     * 
+     * @param strPopupContent
+     *            The the popup content
+     */
+    public void setPopupContent( String strPopupContent )
+    {
+        this._strPopupContent = strPopupContent;
+    }
 }

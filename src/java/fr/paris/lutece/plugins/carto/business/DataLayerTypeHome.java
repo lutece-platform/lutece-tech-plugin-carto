@@ -32,14 +32,12 @@
  * License 1.0
  */
 
-
- package fr.paris.lutece.plugins.carto.business;
+package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.util.ReferenceList;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -56,14 +54,16 @@ public final class DataLayerTypeHome
     /**
      * Private constructor - this class need not be instantiated
      */
-    private DataLayerTypeHome(  )
+    private DataLayerTypeHome( )
     {
     }
 
     /**
      * Create an instance of the dataLayerType class
-     * @param dataLayerType The instance of the DataLayerType which contains the informations to store
-     * @return The  instance of dataLayerType which has been created with its primary key.
+     * 
+     * @param dataLayerType
+     *            The instance of the DataLayerType which contains the informations to store
+     * @return The instance of dataLayerType which has been created with its primary key.
      */
     public static DataLayerType create( DataLayerType dataLayerType )
     {
@@ -74,8 +74,10 @@ public final class DataLayerTypeHome
 
     /**
      * Update of the dataLayerType which is specified in parameter
-     * @param dataLayerType The instance of the DataLayerType which contains the data to store
-     * @return The instance of the  dataLayerType which has been updated
+     * 
+     * @param dataLayerType
+     *            The instance of the DataLayerType which contains the data to store
+     * @return The instance of the dataLayerType which has been updated
      */
     public static DataLayerType update( DataLayerType dataLayerType )
     {
@@ -86,7 +88,9 @@ public final class DataLayerTypeHome
 
     /**
      * Remove the dataLayerType whose identifier is specified in parameter
-     * @param nKey The dataLayerType Id
+     * 
+     * @param nKey
+     *            The dataLayerType Id
      */
     public static void remove( int nKey )
     {
@@ -95,7 +99,9 @@ public final class DataLayerTypeHome
 
     /**
      * Returns an instance of a dataLayerType whose identifier is specified in parameter
-     * @param nKey The dataLayerType primary key
+     * 
+     * @param nKey
+     *            The dataLayerType primary key
      * @return an instance of DataLayerType
      */
     public static Optional<DataLayerType> findByPrimaryKey( int nKey )
@@ -105,35 +111,39 @@ public final class DataLayerTypeHome
 
     /**
      * Load the data of all the dataLayerType objects and returns them as a list
+     * 
      * @return the list which contains the data of all the dataLayerType objects
      */
     public static List<DataLayerType> getDataLayerTypesList( )
     {
         return _dao.selectDataLayerTypesList( _plugin );
     }
-    
+
     /**
      * Load the id of all the dataLayerType objects and returns them as a list
+     * 
      * @return the list which contains the id of all the dataLayerType objects
      */
     public static List<Integer> getIdDataLayerTypesList( )
     {
         return _dao.selectIdDataLayerTypesList( _plugin );
     }
-    
+
     /**
      * Load the data of all the dataLayerType objects and returns them as a referenceList
+     * 
      * @return the referenceList which contains the data of all the dataLayerType objects
      */
     public static ReferenceList getDataLayerTypesReferenceList( )
     {
         return _dao.selectDataLayerTypesReferenceList( _plugin );
     }
-    
-	
+
     /**
      * Load the data of all the avant objects and returns them as a list
-     * @param listIds liste of ids
+     * 
+     * @param listIds
+     *            liste of ids
      * @return the list which contains the data of all the avant objects
      */
     public static List<DataLayerType> getDataLayerTypesListByIds( List<Integer> listIds )
@@ -142,4 +152,3 @@ public final class DataLayerTypeHome
     }
 
 }
-

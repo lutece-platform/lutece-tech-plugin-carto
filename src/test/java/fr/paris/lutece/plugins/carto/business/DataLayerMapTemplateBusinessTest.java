@@ -28,16 +28,14 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *"
+ *
  * License 1.0
  */
-
 package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.test.LuteceTestCase;
 
 import java.util.Optional;
-
 
 /**
  * This is the business class test for the object DataLayerMapTemplate
@@ -61,13 +59,13 @@ public class DataLayerMapTemplateBusinessTest extends LuteceTestCase
     private static final int THICKNESS1 = 1;
     private static final int THICKNESS2 = 2;
 
-	/**
-	* test DataLayerMapTemplate
-	*/
-    public void testBusiness(  )
+    /**
+     * test DataLayerMapTemplate
+     */
+    public void testBusiness( )
     {
         // Initialize an object
-        DataLayerMapTemplate dataLayerMapTemplate = new DataLayerMapTemplate();
+        DataLayerMapTemplate dataLayerMapTemplate = new DataLayerMapTemplate( );
         dataLayerMapTemplate.setIdMapTemplate( IDMAPTEMPLATE1 );
         dataLayerMapTemplate.setIdDataLayer( IDDATALAYER1 );
         dataLayerMapTemplate.setPictogram( PICTOGRAM1 );
@@ -80,15 +78,15 @@ public class DataLayerMapTemplateBusinessTest extends LuteceTestCase
         // Create test
         DataLayerMapTemplateHome.create( dataLayerMapTemplate );
         Optional<DataLayerMapTemplate> optDataLayerMapTemplateStored = DataLayerMapTemplateHome.findByPrimaryKey( dataLayerMapTemplate.getId( ) );
-        DataLayerMapTemplate dataLayerMapTemplateStored = optDataLayerMapTemplateStored.orElse( new DataLayerMapTemplate ( ) );
-        assertEquals( dataLayerMapTemplateStored.getIdMapTemplate( ) , dataLayerMapTemplate.getIdMapTemplate( ) );
-        assertEquals( dataLayerMapTemplateStored.getIdDataLayer( ) , dataLayerMapTemplate.getIdDataLayer( ) );
-        assertEquals( dataLayerMapTemplateStored.getPictogram( ) , dataLayerMapTemplate.getPictogram( ) );
-        assertEquals( dataLayerMapTemplateStored.getZoomMin( ) , dataLayerMapTemplate.getZoomMin( ) );
-        assertEquals( dataLayerMapTemplateStored.getZoomMax( ) , dataLayerMapTemplate.getZoomMax( ) );
-        assertEquals( dataLayerMapTemplateStored.getLayerType( ) , dataLayerMapTemplate.getLayerType( ) );
-        assertEquals( dataLayerMapTemplateStored.getColor( ) , dataLayerMapTemplate.getColor( ) );
-        assertEquals( dataLayerMapTemplateStored.getThickness( ) , dataLayerMapTemplate.getThickness( ) );
+        DataLayerMapTemplate dataLayerMapTemplateStored = optDataLayerMapTemplateStored.orElse( new DataLayerMapTemplate( ) );
+        assertEquals( dataLayerMapTemplateStored.getIdMapTemplate( ), dataLayerMapTemplate.getIdMapTemplate( ) );
+        assertEquals( dataLayerMapTemplateStored.getIdDataLayer( ), dataLayerMapTemplate.getIdDataLayer( ) );
+        assertEquals( dataLayerMapTemplateStored.getPictogram( ), dataLayerMapTemplate.getPictogram( ) );
+        assertEquals( dataLayerMapTemplateStored.getZoomMin( ), dataLayerMapTemplate.getZoomMin( ) );
+        assertEquals( dataLayerMapTemplateStored.getZoomMax( ), dataLayerMapTemplate.getZoomMax( ) );
+        assertEquals( dataLayerMapTemplateStored.getLayerType( ), dataLayerMapTemplate.getLayerType( ) );
+        assertEquals( dataLayerMapTemplateStored.getColor( ), dataLayerMapTemplate.getColor( ) );
+        assertEquals( dataLayerMapTemplateStored.getThickness( ), dataLayerMapTemplate.getThickness( ) );
 
         // Update test
         dataLayerMapTemplate.setIdMapTemplate( IDMAPTEMPLATE2 );
@@ -101,16 +99,16 @@ public class DataLayerMapTemplateBusinessTest extends LuteceTestCase
         dataLayerMapTemplate.setThickness( THICKNESS2 );
         DataLayerMapTemplateHome.update( dataLayerMapTemplate );
         optDataLayerMapTemplateStored = DataLayerMapTemplateHome.findByPrimaryKey( dataLayerMapTemplate.getId( ) );
-        dataLayerMapTemplateStored = optDataLayerMapTemplateStored.orElse( new DataLayerMapTemplate ( ) );
-        
-        assertEquals( dataLayerMapTemplateStored.getIdMapTemplate( ) , dataLayerMapTemplate.getIdMapTemplate( ) );
-        assertEquals( dataLayerMapTemplateStored.getIdDataLayer( ) , dataLayerMapTemplate.getIdDataLayer( ) );
-        assertEquals( dataLayerMapTemplateStored.getPictogram( ) , dataLayerMapTemplate.getPictogram( ) );
-        assertEquals( dataLayerMapTemplateStored.getZoomMin( ) , dataLayerMapTemplate.getZoomMin( ) );
-        assertEquals( dataLayerMapTemplateStored.getZoomMax( ) , dataLayerMapTemplate.getZoomMax( ) );
-        assertEquals( dataLayerMapTemplateStored.getLayerType( ) , dataLayerMapTemplate.getLayerType( ) );
-        assertEquals( dataLayerMapTemplateStored.getColor( ) , dataLayerMapTemplate.getColor( ) );
-        assertEquals( dataLayerMapTemplateStored.getThickness( ) , dataLayerMapTemplate.getThickness( ) );
+        dataLayerMapTemplateStored = optDataLayerMapTemplateStored.orElse( new DataLayerMapTemplate( ) );
+
+        assertEquals( dataLayerMapTemplateStored.getIdMapTemplate( ), dataLayerMapTemplate.getIdMapTemplate( ) );
+        assertEquals( dataLayerMapTemplateStored.getIdDataLayer( ), dataLayerMapTemplate.getIdDataLayer( ) );
+        assertEquals( dataLayerMapTemplateStored.getPictogram( ), dataLayerMapTemplate.getPictogram( ) );
+        assertEquals( dataLayerMapTemplateStored.getZoomMin( ), dataLayerMapTemplate.getZoomMin( ) );
+        assertEquals( dataLayerMapTemplateStored.getZoomMax( ), dataLayerMapTemplate.getZoomMax( ) );
+        assertEquals( dataLayerMapTemplateStored.getLayerType( ), dataLayerMapTemplate.getLayerType( ) );
+        assertEquals( dataLayerMapTemplateStored.getColor( ), dataLayerMapTemplate.getColor( ) );
+        assertEquals( dataLayerMapTemplateStored.getThickness( ), dataLayerMapTemplate.getThickness( ) );
 
         // List test
         DataLayerMapTemplateHome.getDataLayerMapTemplatesList( );
@@ -120,10 +118,7 @@ public class DataLayerMapTemplateBusinessTest extends LuteceTestCase
         optDataLayerMapTemplateStored = DataLayerMapTemplateHome.findByPrimaryKey( dataLayerMapTemplate.getId( ) );
         dataLayerMapTemplateStored = optDataLayerMapTemplateStored.orElse( null );
         assertNull( dataLayerMapTemplateStored );
-        
+
     }
-    
-    
-     
 
 }

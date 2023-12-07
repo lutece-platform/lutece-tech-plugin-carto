@@ -31,7 +31,7 @@
  *
  * License 1.0
  */
- 
+
 package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
@@ -46,22 +46,31 @@ public interface IBasemapDAO
 {
     /**
      * Insert a new record in the table.
-     * @param basemap instance of the Basemap object to insert
-     * @param plugin the Plugin
+     * 
+     * @param basemap
+     *            instance of the Basemap object to insert
+     * @param plugin
+     *            the Plugin
      */
     void insert( Basemap basemap, Plugin plugin );
 
     /**
      * Update the record in the table
-     * @param basemap the reference of the Basemap
-     * @param plugin the Plugin
+     * 
+     * @param basemap
+     *            the reference of the Basemap
+     * @param plugin
+     *            the Plugin
      */
     void store( Basemap basemap, Plugin plugin );
 
     /**
      * Delete a record from the table
-     * @param nKey The identifier of the Basemap to delete
-     * @param plugin the Plugin
+     * 
+     * @param nKey
+     *            The identifier of the Basemap to delete
+     * @param plugin
+     *            the Plugin
      */
     void delete( int nKey, Plugin plugin );
 
@@ -70,38 +79,50 @@ public interface IBasemapDAO
 
     /**
      * Load the data from the table
-     * @param nKey The identifier of the basemap
-     * @param plugin the Plugin
+     * 
+     * @param nKey
+     *            The identifier of the basemap
+     * @param plugin
+     *            the Plugin
      * @return The instance of the basemap
      */
     Optional<Basemap> load( int nKey, Plugin plugin );
 
     /**
      * Load the data of all the basemap objects and returns them as a list
-     * @param plugin the Plugin
+     * 
+     * @param plugin
+     *            the Plugin
      * @return The list which contains the data of all the basemap objects
      */
     List<Basemap> selectBasemapsList( Plugin plugin );
-    
+
     /**
      * Load the id of all the basemap objects and returns them as a list
-     * @param plugin the Plugin
+     * 
+     * @param plugin
+     *            the Plugin
      * @return The list which contains the id of all the basemap objects
      */
     List<Integer> selectIdBasemapsList( Plugin plugin );
-    
+
     /**
      * Load the data of all the basemap objects and returns them as a referenceList
-     * @param plugin the Plugin
+     * 
+     * @param plugin
+     *            the Plugin
      * @return The referenceList which contains the data of all the basemap objects
      */
     ReferenceList selectBasemapsReferenceList( Plugin plugin );
-    
+
     /**
      * Load the data of all the avant objects and returns them as a list
-     * @param plugin the Plugin
-     * @param listIds liste of ids
+     * 
+     * @param plugin
+     *            the Plugin
+     * @param listIds
+     *            liste of ids
      * @return The list which contains the data of all the avant objects
      */
-	List<Basemap> selectBasemapsListByIds( Plugin _plugin, List<Integer> listIds );
+    List<Basemap> selectBasemapsListByIds( Plugin _plugin, List<Integer> listIds );
 }

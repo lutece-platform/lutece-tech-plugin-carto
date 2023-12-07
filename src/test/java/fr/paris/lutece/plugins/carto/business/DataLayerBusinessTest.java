@@ -28,16 +28,14 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *"
+ *
  * License 1.0
  */
-
 package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.test.LuteceTestCase;
 
 import java.util.Optional;
-
 
 /**
  * This is the business class test for the object DataLayer
@@ -51,13 +49,13 @@ public class DataLayerBusinessTest extends LuteceTestCase
     private static final int GEOMETRY1 = 1;
     private static final int GEOMETRY2 = 2;
 
-	/**
-	* test DataLayer
-	*/
-    public void testBusiness(  )
+    /**
+     * test DataLayer
+     */
+    public void testBusiness( )
     {
         // Initialize an object
-        DataLayer dataLayer = new DataLayer();
+        DataLayer dataLayer = new DataLayer( );
         dataLayer.setTitle( TITLE1 );
         dataLayer.setSolrTag( SOLRTAG1 );
         dataLayer.setGeometry( GEOMETRY1 );
@@ -65,10 +63,10 @@ public class DataLayerBusinessTest extends LuteceTestCase
         // Create test
         DataLayerHome.create( dataLayer );
         Optional<DataLayer> optDataLayerStored = DataLayerHome.findByPrimaryKey( dataLayer.getId( ) );
-        DataLayer dataLayerStored = optDataLayerStored.orElse( new DataLayer ( ) );
-        assertEquals( dataLayerStored.getTitle( ) , dataLayer.getTitle( ) );
-        assertEquals( dataLayerStored.getSolrTag( ) , dataLayer.getSolrTag( ) );
-        assertEquals( dataLayerStored.getGeometry( ) , dataLayer.getGeometry( ) );
+        DataLayer dataLayerStored = optDataLayerStored.orElse( new DataLayer( ) );
+        assertEquals( dataLayerStored.getTitle( ), dataLayer.getTitle( ) );
+        assertEquals( dataLayerStored.getSolrTag( ), dataLayer.getSolrTag( ) );
+        assertEquals( dataLayerStored.getGeometry( ), dataLayer.getGeometry( ) );
 
         // Update test
         dataLayer.setTitle( TITLE2 );
@@ -76,11 +74,11 @@ public class DataLayerBusinessTest extends LuteceTestCase
         dataLayer.setGeometry( GEOMETRY2 );
         DataLayerHome.update( dataLayer );
         optDataLayerStored = DataLayerHome.findByPrimaryKey( dataLayer.getId( ) );
-        dataLayerStored = optDataLayerStored.orElse( new DataLayer ( ) );
-        
-        assertEquals( dataLayerStored.getTitle( ) , dataLayer.getTitle( ) );
-        assertEquals( dataLayerStored.getSolrTag( ) , dataLayer.getSolrTag( ) );
-        assertEquals( dataLayerStored.getGeometry( ) , dataLayer.getGeometry( ) );
+        dataLayerStored = optDataLayerStored.orElse( new DataLayer( ) );
+
+        assertEquals( dataLayerStored.getTitle( ), dataLayer.getTitle( ) );
+        assertEquals( dataLayerStored.getSolrTag( ), dataLayer.getSolrTag( ) );
+        assertEquals( dataLayerStored.getGeometry( ), dataLayer.getGeometry( ) );
 
         // List test
         DataLayerHome.getDataLayersList( );
@@ -90,10 +88,7 @@ public class DataLayerBusinessTest extends LuteceTestCase
         optDataLayerStored = DataLayerHome.findByPrimaryKey( dataLayer.getId( ) );
         dataLayerStored = optDataLayerStored.orElse( null );
         assertNull( dataLayerStored );
-        
+
     }
-    
-    
-     
 
 }

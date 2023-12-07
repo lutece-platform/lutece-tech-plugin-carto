@@ -31,8 +31,7 @@
  *
  * License 1.0
  */
- 	
- 
+
 package fr.paris.lutece.plugins.carto.web;
 
 import fr.paris.lutece.portal.service.message.AdminMessage;
@@ -67,7 +66,7 @@ import fr.paris.lutece.plugins.carto.business.MapTemplateHome;
  * This class provides the user interface to manage MapTemplate features ( manage, create, modify, remove )
  */
 @Controller( controllerJsp = "ManageMapTemplates.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT" )
-public class MapTemplateJspBean extends AbstractManageCartoJspBean <Integer, MapTemplate>
+public class MapTemplateJspBean extends AbstractManageCartoJspBean<Integer, MapTemplate>
 {
     // Templates
     private static final String TEMPLATE_MANAGE_MAPTEMPLATES = "/admin/plugins/carto/manage_maptemplates.html";
@@ -110,78 +109,80 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean <Integer, Map
     private static final String INFO_MAPTEMPLATE_CREATED = "carto.info.maptemplate.created";
     private static final String INFO_MAPTEMPLATE_UPDATED = "carto.info.maptemplate.updated";
     private static final String INFO_MAPTEMPLATE_REMOVED = "carto.info.maptemplate.removed";
-    
+
     // Errors
     private static final String ERROR_RESOURCE_NOT_FOUND = "Resource not found";
     private static final String ERROR_MAP_REMOVED = "carto.manage_maptemplate.MapIsPresent";
-    
+
     // Session variable to store working values
     private MapTemplate _maptemplate;
     private List<Integer> _listIdMapTemplates;
-    
+
     /**
      * Build the Manage View
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return The page
      */
     @View( value = VIEW_MANAGE_MAPTEMPLATES, defaultView = true )
     public String getManageMapTemplates( HttpServletRequest request )
     {
         _maptemplate = null;
-        
-        if ( request.getParameter( AbstractPaginator.PARAMETER_PAGE_INDEX) == null || _listIdMapTemplates.isEmpty( ) )
+
+        if ( request.getParameter( AbstractPaginator.PARAMETER_PAGE_INDEX ) == null || _listIdMapTemplates.isEmpty( ) )
         {
-        	_listIdMapTemplates = MapTemplateHome.getIdMapTemplatesList(  );
+            _listIdMapTemplates = MapTemplateHome.getIdMapTemplatesList( );
         }
-        
+
         Map<String, Object> model = getPaginatedListModel( request, MARK_MAPTEMPLATE_LIST, _listIdMapTemplates, JSP_MANAGE_MAPTEMPLATES );
 
         return getPage( PROPERTY_PAGE_TITLE_MANAGE_MAPTEMPLATES, TEMPLATE_MANAGE_MAPTEMPLATES, model );
     }
 
-	/**
+    /**
      * Get Items from Ids list
+     * 
      * @param listIds
      * @return the populated list of items corresponding to the id List
      */
-	@Override
-	List<MapTemplate> getItemsFromIds( List<Integer> listIds ) 
-	{
-		List<MapTemplate> listMapTemplate = MapTemplateHome.getMapTemplatesListByIds( listIds );
-		
-		// keep original order
-        return listMapTemplate.stream()
-                 .sorted(Comparator.comparingInt( notif -> listIds.indexOf( notif.getId())))
-                 .collect(Collectors.toList());
-	}
-    
+    @Override
+    List<MapTemplate> getItemsFromIds( List<Integer> listIds )
+    {
+        List<MapTemplate> listMapTemplate = MapTemplateHome.getMapTemplatesListByIds( listIds );
+
+        // keep original order
+        return listMapTemplate.stream( ).sorted( Comparator.comparingInt( notif -> listIds.indexOf( notif.getId( ) ) ) ).collect( Collectors.toList( ) );
+    }
+
     /**
-    * reset the _listIdMapTemplates list
-    */
+     * reset the _listIdMapTemplates list
+     */
     public void resetListId( )
     {
-    	_listIdMapTemplates = new ArrayList<>( );
+        _listIdMapTemplates = new ArrayList<>( );
     }
 
     /**
      * Returns the form to create a maptemplate
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the html code of the maptemplate form
      */
     @View( VIEW_CREATE_MAPTEMPLATE )
     public String getCreateMapTemplate( HttpServletRequest request )
     {
-        _maptemplate = ( _maptemplate != null ) ? _maptemplate : new MapTemplate(  );
+        _maptemplate = ( _maptemplate != null ) ? _maptemplate : new MapTemplate( );
 
-        Map<String, Object> model = getModel(  );
+        Map<String, Object> model = getModel( );
         model.put( MARK_MAPTEMPLATE, _maptemplate );
         model.put( MARK_MAP_PROVIDER_LIST, BasemapHome.getBasemapsReferenceList( ) );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_CREATE_MAPTEMPLATE ) );
 
         return getPage( PROPERTY_PAGE_TITLE_CREATE_MAPTEMPLATE, TEMPLATE_CREATE_MAPTEMPLATE, model );
     }
-    
+
     /**
      * Builds the {@link ReferenceList} of all available map providers
      * 
@@ -194,11 +195,8 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean <Integer, Map
         refList.addItem( StringUtils.EMPTY, StringUtils.EMPTY );
 
         /*
-        for ( IMapProvider mapProvider : MapProviderManager.getMapProvidersList( ) )
-        {
-            refList.add( mapProvider.toRefItem( ) );
-        }
-        */
+         * for ( IMapProvider mapProvider : MapProviderManager.getMapProvidersList( ) ) { refList.add( mapProvider.toRefItem( ) ); }
+         */
 
         return refList;
     }
@@ -206,7 +204,8 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean <Integer, Map
     /**
      * Process the data capture form of a new maptemplate
      *
-     * @param request The Http Request
+     * @param request
+     *            The Http Request
      * @return The Jsp URL of the process result
      * @throws AccessDeniedException
      */
@@ -214,11 +213,10 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean <Integer, Map
     public String doCreateMapTemplate( HttpServletRequest request ) throws AccessDeniedException
     {
         populate( _maptemplate, request, getLocale( ) );
-        
 
         if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_CREATE_MAPTEMPLATE ) )
         {
-            throw new AccessDeniedException ( "Invalid security token" );
+            throw new AccessDeniedException( "Invalid security token" );
         }
 
         // Check constraints
@@ -228,17 +226,17 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean <Integer, Map
         }
 
         MapTemplateHome.create( _maptemplate );
-        addInfo( INFO_MAPTEMPLATE_CREATED, getLocale(  ) );
+        addInfo( INFO_MAPTEMPLATE_CREATED, getLocale( ) );
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_MAPTEMPLATES );
     }
 
     /**
-     * Manages the removal form of a maptemplate whose identifier is in the http
-     * request
+     * Manages the removal form of a maptemplate whose identifier is in the http request
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the html code to confirm
      */
     @Action( ACTION_CONFIRM_REMOVE_MAPTEMPLATE )
@@ -248,7 +246,7 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean <Integer, Map
         UrlItem url = new UrlItem( getActionUrl( ACTION_REMOVE_MAPTEMPLATE ) );
         url.addParameter( PARAMETER_ID_MAPTEMPLATE, nId );
 
-        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_MAPTEMPLATE, url.getUrl(  ), AdminMessage.TYPE_CONFIRMATION );
+        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_MAPTEMPLATE, url.getUrl( ), AdminMessage.TYPE_CONFIRMATION );
 
         return redirect( request, strMessageUrl );
     }
@@ -256,23 +254,24 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean <Integer, Map
     /**
      * Handles the removal form of a maptemplate
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the jsp URL to display the form to manage maptemplates
      */
     @Action( ACTION_REMOVE_MAPTEMPLATE )
     public String doRemoveMapTemplate( HttpServletRequest request )
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_MAPTEMPLATE ) );
-        
+
         List<DataLayer> lstDataLayer = DataLayerMapTemplateHome.getDataLayerListByMapTemplateId( nId );
         if ( !lstDataLayer.isEmpty( ) )
         {
-        	addError( ERROR_MAP_REMOVED, getLocale( ) );
-        	return redirectView( request, VIEW_MANAGE_MAPTEMPLATES);
+            addError( ERROR_MAP_REMOVED, getLocale( ) );
+            return redirectView( request, VIEW_MANAGE_MAPTEMPLATES );
         }
-        
+
         MapTemplateHome.remove( nId );
-        addInfo( INFO_MAPTEMPLATE_REMOVED, getLocale(  ) );
+        addInfo( INFO_MAPTEMPLATE_REMOVED, getLocale( ) );
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_MAPTEMPLATES );
@@ -281,7 +280,8 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean <Integer, Map
     /**
      * Returns the form to update info about a maptemplate
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return The HTML form to update info
      */
     @View( VIEW_MODIFY_MAPTEMPLATE )
@@ -289,14 +289,13 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean <Integer, Map
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_MAPTEMPLATE ) );
 
-        if ( _maptemplate == null || ( _maptemplate.getId(  ) != nId ) )
+        if ( _maptemplate == null || ( _maptemplate.getId( ) != nId ) )
         {
             Optional<MapTemplate> optMapTemplate = MapTemplateHome.findByPrimaryKey( nId );
-            _maptemplate = optMapTemplate.orElseThrow( ( ) -> new AppException(ERROR_RESOURCE_NOT_FOUND ) );
+            _maptemplate = optMapTemplate.orElseThrow( ( ) -> new AppException( ERROR_RESOURCE_NOT_FOUND ) );
         }
 
-
-        Map<String, Object> model = getModel(  );
+        Map<String, Object> model = getModel( );
         model.put( MARK_MAPTEMPLATE, _maptemplate );
         model.put( MARK_MAP_PROVIDER_LIST, BasemapHome.getBasemapsReferenceList( ) );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_MODIFY_MAPTEMPLATE ) );
@@ -307,19 +306,19 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean <Integer, Map
     /**
      * Process the change form of a maptemplate
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return The Jsp URL of the process result
      * @throws AccessDeniedException
      */
     @Action( ACTION_MODIFY_MAPTEMPLATE )
     public String doModifyMapTemplate( HttpServletRequest request ) throws AccessDeniedException
-    {   
+    {
         populate( _maptemplate, request, getLocale( ) );
-		
-		
+
         if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_MODIFY_MAPTEMPLATE ) )
         {
-            throw new AccessDeniedException ( "Invalid security token" );
+            throw new AccessDeniedException( "Invalid security token" );
         }
 
         // Check constraints
@@ -329,7 +328,7 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean <Integer, Map
         }
 
         MapTemplateHome.update( _maptemplate );
-        addInfo( INFO_MAPTEMPLATE_UPDATED, getLocale(  ) );
+        addInfo( INFO_MAPTEMPLATE_UPDATED, getLocale( ) );
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_MAPTEMPLATES );

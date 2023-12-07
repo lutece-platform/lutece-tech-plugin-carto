@@ -32,14 +32,12 @@
  * License 1.0
  */
 
-
- package fr.paris.lutece.plugins.carto.business;
+package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.util.ReferenceList;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -56,14 +54,16 @@ public final class BasemapHome
     /**
      * Private constructor - this class need not be instantiated
      */
-    private BasemapHome(  )
+    private BasemapHome( )
     {
     }
 
     /**
      * Create an instance of the basemap class
-     * @param basemap The instance of the Basemap which contains the informations to store
-     * @return The  instance of basemap which has been created with its primary key.
+     * 
+     * @param basemap
+     *            The instance of the Basemap which contains the informations to store
+     * @return The instance of basemap which has been created with its primary key.
      */
     public static Basemap create( Basemap basemap )
     {
@@ -74,8 +74,10 @@ public final class BasemapHome
 
     /**
      * Update of the basemap which is specified in parameter
-     * @param basemap The instance of the Basemap which contains the data to store
-     * @return The instance of the  basemap which has been updated
+     * 
+     * @param basemap
+     *            The instance of the Basemap which contains the data to store
+     * @return The instance of the basemap which has been updated
      */
     public static Basemap update( Basemap basemap )
     {
@@ -86,7 +88,9 @@ public final class BasemapHome
 
     /**
      * Remove the basemap whose identifier is specified in parameter
-     * @param nKey The basemap Id
+     * 
+     * @param nKey
+     *            The basemap Id
      */
     public static void remove( int nKey )
     {
@@ -95,7 +99,9 @@ public final class BasemapHome
 
     /**
      * Returns an instance of a basemap whose identifier is specified in parameter
-     * @param nKey The basemap primary key
+     * 
+     * @param nKey
+     *            The basemap primary key
      * @return an instance of Basemap
      */
     public static Optional<Basemap> findByPrimaryKey( int nKey )
@@ -105,35 +111,39 @@ public final class BasemapHome
 
     /**
      * Load the data of all the basemap objects and returns them as a list
+     * 
      * @return the list which contains the data of all the basemap objects
      */
     public static List<Basemap> getBasemapsList( )
     {
         return _dao.selectBasemapsList( _plugin );
     }
-    
+
     /**
      * Load the id of all the basemap objects and returns them as a list
+     * 
      * @return the list which contains the id of all the basemap objects
      */
     public static List<Integer> getIdBasemapsList( )
     {
         return _dao.selectIdBasemapsList( _plugin );
     }
-    
+
     /**
      * Load the data of all the basemap objects and returns them as a referenceList
+     * 
      * @return the referenceList which contains the data of all the basemap objects
      */
     public static ReferenceList getBasemapsReferenceList( )
     {
         return _dao.selectBasemapsReferenceList( _plugin );
     }
-    
-	
+
     /**
      * Load the data of all the avant objects and returns them as a list
-     * @param listIds liste of ids
+     * 
+     * @param listIds
+     *            liste of ids
      * @return the list which contains the data of all the avant objects
      */
     public static List<Basemap> getBasemapsListByIds( List<Integer> listIds )
@@ -142,4 +152,3 @@ public final class BasemapHome
     }
 
 }
-

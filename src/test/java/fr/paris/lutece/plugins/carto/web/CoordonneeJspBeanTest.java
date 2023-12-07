@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2022, City of Paris
+ * Copyright (c) 2002-2023, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,7 +23,7 @@
  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES LOSS OF USE, DATA, OR PROFITS OR BUSINESS
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
@@ -31,7 +31,6 @@
  *
  * License 1.0
  */
-
 package fr.paris.lutece.plugins.carto.web;
 
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -48,6 +47,7 @@ import fr.paris.lutece.portal.service.security.SecurityTokenService;
 import fr.paris.lutece.portal.web.LocalVariables;
 import fr.paris.lutece.plugins.carto.business.Coordonnee;
 import fr.paris.lutece.plugins.carto.business.CoordonneeHome;
+
 /**
  * This is the business class test for the object Coordonnee
  */
@@ -60,135 +60,132 @@ public class CoordonneeJspBeanTest extends LuteceTestCase
     private static final int COORDONNEEY1 = 1;
     private static final int COORDONNEEY2 = 2;
 
-public void testJspBeans(  ) throws AccessDeniedException, IOException
-	{	
-     	MockHttpServletRequest request = new MockHttpServletRequest();
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		MockServletConfig config = new MockServletConfig();
+    public void testJspBeans( ) throws AccessDeniedException, IOException
+    {
+        MockHttpServletRequest request = new MockHttpServletRequest( );
+        MockHttpServletResponse response = new MockHttpServletResponse( );
+        MockServletConfig config = new MockServletConfig( );
 
-		//display admin Coordonnee management JSP
-		CoordonneeJspBean jspbean = new CoordonneeJspBean();
-		String html = jspbean.getManageCoordonnees( request );
-		assertNotNull(html);
+        // display admin Coordonnee management JSP
+        CoordonneeJspBean jspbean = new CoordonneeJspBean( );
+        String html = jspbean.getManageCoordonnees( request );
+        assertNotNull( html );
 
-		//display admin Coordonnee creation JSP
-		html = jspbean.getCreateCoordonnee( request );
-		assertNotNull(html);
+        // display admin Coordonnee creation JSP
+        html = jspbean.getCreateCoordonnee( request );
+        assertNotNull( html );
 
-		//action create Coordonnee
-		request = new MockHttpServletRequest();
+        // action create Coordonnee
+        request = new MockHttpServletRequest( );
 
-		response = new MockHttpServletResponse( );
-		AdminUser adminUser = new AdminUser( );
-		adminUser.setAccessCode( "admin" );
-		
-        
-        request.addParameter( "adresse" , ADRESSE1 );
-        request.addParameter( "coordonnee_x" , String.valueOf( COORDONNEEX1) );
-        request.addParameter( "coordonnee_y" , String.valueOf( COORDONNEEY1) );
-		request.addParameter("action","createCoordonnee");
-        request.addParameter( "token", SecurityTokenService.getInstance( ).getToken( request, "createCoordonnee" ));
-		request.setMethod( "POST" );
-        
-		
-		try 
-		{
-			AdminAuthenticationService.getInstance( ).registerUser(request, adminUser);
-			html = jspbean.processController( request, response ); 
-			
-			
-			// MockResponse object does not redirect, result is always null
-			assertNull( html );
-		}
-		catch (AccessDeniedException e)
-		{
-			fail("access denied");
-		}
-		catch (UserNotSignedException e) 
-		{
-			fail("user not signed in");
-		}
+        response = new MockHttpServletResponse( );
+        AdminUser adminUser = new AdminUser( );
+        adminUser.setAccessCode( "admin" );
 
-		//display modify Coordonnee JSP
-		request = new MockHttpServletRequest();
-        request.addParameter( "adresse" , ADRESSE1 );
-        request.addParameter( "coordonnee_x" , String.valueOf( COORDONNEEX1) );
-        request.addParameter( "coordonnee_y" , String.valueOf( COORDONNEEY1) );
-		List<Integer> listIds = CoordonneeHome.getIdCoordonneesList();
+        request.addParameter( "adresse", ADRESSE1 );
+        request.addParameter( "coordonnee_x", String.valueOf( COORDONNEEX1 ) );
+        request.addParameter( "coordonnee_y", String.valueOf( COORDONNEEY1 ) );
+        request.addParameter( "action", "createCoordonnee" );
+        request.addParameter( "token", SecurityTokenService.getInstance( ).getToken( request, "createCoordonnee" ) );
+        request.setMethod( "POST" );
+
+        try
+        {
+            AdminAuthenticationService.getInstance( ).registerUser( request, adminUser );
+            html = jspbean.processController( request, response );
+
+            // MockResponse object does not redirect, result is always null
+            assertNull( html );
+        }
+        catch( AccessDeniedException e )
+        {
+            fail( "access denied" );
+        }
+        catch( UserNotSignedException e )
+        {
+            fail( "user not signed in" );
+        }
+
+        // display modify Coordonnee JSP
+        request = new MockHttpServletRequest( );
+        request.addParameter( "adresse", ADRESSE1 );
+        request.addParameter( "coordonnee_x", String.valueOf( COORDONNEEX1 ) );
+        request.addParameter( "coordonnee_y", String.valueOf( COORDONNEEY1 ) );
+        List<Integer> listIds = CoordonneeHome.getIdCoordonneesList( );
         assertTrue( !listIds.isEmpty( ) );
         request.addParameter( "id", String.valueOf( listIds.get( 0 ) ) );
-		jspbean = new CoordonneeJspBean();
-		
-		assertNotNull( jspbean.getModifyCoordonnee( request ) );	
+        jspbean = new CoordonneeJspBean( );
 
-		//action modify Coordonnee
-		request = new MockHttpServletRequest();
-		response = new MockHttpServletResponse();
-		
-		adminUser = new AdminUser();
-		adminUser.setAccessCode("admin");
-		
-        request.addParameter( "adresse" , ADRESSE2 );
-        request.addParameter( "coordonnee_x" , String.valueOf( COORDONNEEX2) );
-        request.addParameter( "coordonnee_y" , String.valueOf( COORDONNEEY2) );
-		request.setRequestURI("jsp/admin/plugins/example/ManageCoordonnees.jsp");
-		//important pour que MVCController sache quelle action effectuer, sinon, il redirigera vers createCoordonnee, qui est l'action par défaut
-		request.addParameter("action","modifyCoordonnee");
-		request.addParameter( "token", SecurityTokenService.getInstance( ).getToken( request, "modifyCoordonnee" ));
+        assertNotNull( jspbean.getModifyCoordonnee( request ) );
 
-		try 
-		{
-			AdminAuthenticationService.getInstance( ).registerUser(request, adminUser);
-			html = jspbean.processController( request, response );
+        // action modify Coordonnee
+        request = new MockHttpServletRequest( );
+        response = new MockHttpServletResponse( );
 
-			// MockResponse object does not redirect, result is always null
-			assertNull( html );
-		}
-		catch (AccessDeniedException e)
-		{
-			fail("access denied");
-		}
-		catch (UserNotSignedException e) 
-		{
-			fail("user not signed in");
-		}
-		
-		//get remove Coordonnee
-		request = new MockHttpServletRequest();
-        //request.setRequestURI("jsp/admin/plugins/example/ManageCoordonnees.jsp");
+        adminUser = new AdminUser( );
+        adminUser.setAccessCode( "admin" );
+
+        request.addParameter( "adresse", ADRESSE2 );
+        request.addParameter( "coordonnee_x", String.valueOf( COORDONNEEX2 ) );
+        request.addParameter( "coordonnee_y", String.valueOf( COORDONNEEY2 ) );
+        request.setRequestURI( "jsp/admin/plugins/example/ManageCoordonnees.jsp" );
+        // important pour que MVCController sache quelle action effectuer, sinon, il redirigera vers createCoordonnee, qui est l'action par défaut
+        request.addParameter( "action", "modifyCoordonnee" );
+        request.addParameter( "token", SecurityTokenService.getInstance( ).getToken( request, "modifyCoordonnee" ) );
+
+        try
+        {
+            AdminAuthenticationService.getInstance( ).registerUser( request, adminUser );
+            html = jspbean.processController( request, response );
+
+            // MockResponse object does not redirect, result is always null
+            assertNull( html );
+        }
+        catch( AccessDeniedException e )
+        {
+            fail( "access denied" );
+        }
+        catch( UserNotSignedException e )
+        {
+            fail( "user not signed in" );
+        }
+
+        // get remove Coordonnee
+        request = new MockHttpServletRequest( );
+        // request.setRequestURI("jsp/admin/plugins/example/ManageCoordonnees.jsp");
         request.addParameter( "id", String.valueOf( listIds.get( 0 ) ) );
-		jspbean = new CoordonneeJspBean();
-		request.addParameter("action","confirmRemoveCoordonnee");
-		assertNotNull( jspbean.getModifyCoordonnee( request ) );
-				
-		//do remove Coordonnee
-		request = new MockHttpServletRequest();
-		response = new MockHttpServletResponse();
-		request.setRequestURI("jsp/admin/plugins/example/ManageCoordonneets.jsp");
-		//important pour que MVCController sache quelle action effectuer, sinon, il redirigera vers createCoordonnee, qui est l'action par défaut
-		request.addParameter("action","removeCoordonnee");
-		request.addParameter( "token", SecurityTokenService.getInstance( ).getToken( request, "removeCoordonnee" ));
-		request.addParameter( "id", String.valueOf( listIds.get( 0 ) ) );
-		request.setMethod("POST");
-		adminUser = new AdminUser();
-		adminUser.setAccessCode("admin");
+        jspbean = new CoordonneeJspBean( );
+        request.addParameter( "action", "confirmRemoveCoordonnee" );
+        assertNotNull( jspbean.getModifyCoordonnee( request ) );
 
-		try 
-		{
-			AdminAuthenticationService.getInstance( ).registerUser(request, adminUser);
-			html = jspbean.processController( request, response ); 
+        // do remove Coordonnee
+        request = new MockHttpServletRequest( );
+        response = new MockHttpServletResponse( );
+        request.setRequestURI( "jsp/admin/plugins/example/ManageCoordonneets.jsp" );
+        // important pour que MVCController sache quelle action effectuer, sinon, il redirigera vers createCoordonnee, qui est l'action par défaut
+        request.addParameter( "action", "removeCoordonnee" );
+        request.addParameter( "token", SecurityTokenService.getInstance( ).getToken( request, "removeCoordonnee" ) );
+        request.addParameter( "id", String.valueOf( listIds.get( 0 ) ) );
+        request.setMethod( "POST" );
+        adminUser = new AdminUser( );
+        adminUser.setAccessCode( "admin" );
 
-			// MockResponse object does not redirect, result is always null
-			assertNull( html );
-		}
-		catch (AccessDeniedException e)
-		{
-			fail("access denied");
-		}
-		catch (UserNotSignedException e) 
-		{
-			fail("user not signed in");
-		}	
-     
-     }
+        try
+        {
+            AdminAuthenticationService.getInstance( ).registerUser( request, adminUser );
+            html = jspbean.processController( request, response );
+
+            // MockResponse object does not redirect, result is always null
+            assertNull( html );
+        }
+        catch( AccessDeniedException e )
+        {
+            fail( "access denied" );
+        }
+        catch( UserNotSignedException e )
+        {
+            fail( "user not signed in" );
+        }
+
+    }
 }

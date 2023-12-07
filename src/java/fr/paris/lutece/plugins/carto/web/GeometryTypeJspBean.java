@@ -31,8 +31,7 @@
  *
  * License 1.0
  */
- 	
- 
+
 package fr.paris.lutece.plugins.carto.web;
 
 import fr.paris.lutece.portal.service.message.AdminMessage;
@@ -60,7 +59,7 @@ import fr.paris.lutece.plugins.carto.business.GeometryTypeHome;
  * This class provides the user interface to manage GeometryType features ( manage, create, modify, remove )
  */
 @Controller( controllerJsp = "ManageGeometryTypes.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT_REFERENTIEL" )
-public class GeometryTypeJspBean extends AbstractManageCartoJspBean <Integer, GeometryType>
+public class GeometryTypeJspBean extends AbstractManageCartoJspBean<Integer, GeometryType>
 {
     // Templates
     private static final String TEMPLATE_MANAGE_GEOMETRYTYPES = "/admin/plugins/carto/manage_geometrytypes.html";
@@ -102,70 +101,72 @@ public class GeometryTypeJspBean extends AbstractManageCartoJspBean <Integer, Ge
     private static final String INFO_GEOMETRYTYPE_CREATED = "carto.info.geometrytype.created";
     private static final String INFO_GEOMETRYTYPE_UPDATED = "carto.info.geometrytype.updated";
     private static final String INFO_GEOMETRYTYPE_REMOVED = "carto.info.geometrytype.removed";
-    
+
     // Errors
     private static final String ERROR_RESOURCE_NOT_FOUND = "Resource not found";
-    
+
     // Session variable to store working values
     private GeometryType _geometrytype;
     private List<Integer> _listIdGeometryTypes;
-    
+
     /**
      * Build the Manage View
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return The page
      */
     @View( value = VIEW_MANAGE_GEOMETRYTYPES, defaultView = true )
     public String getManageGeometryTypes( HttpServletRequest request )
     {
         _geometrytype = null;
-        
-        if ( request.getParameter( AbstractPaginator.PARAMETER_PAGE_INDEX) == null || _listIdGeometryTypes.isEmpty( ) )
+
+        if ( request.getParameter( AbstractPaginator.PARAMETER_PAGE_INDEX ) == null || _listIdGeometryTypes.isEmpty( ) )
         {
-        	_listIdGeometryTypes = GeometryTypeHome.getIdGeometryTypesList(  );
+            _listIdGeometryTypes = GeometryTypeHome.getIdGeometryTypesList( );
         }
-        
+
         Map<String, Object> model = getPaginatedListModel( request, MARK_GEOMETRYTYPE_LIST, _listIdGeometryTypes, JSP_MANAGE_GEOMETRYTYPES );
 
         return getPage( PROPERTY_PAGE_TITLE_MANAGE_GEOMETRYTYPES, TEMPLATE_MANAGE_GEOMETRYTYPES, model );
     }
 
-	/**
+    /**
      * Get Items from Ids list
+     * 
      * @param listIds
      * @return the populated list of items corresponding to the id List
      */
-	@Override
-	List<GeometryType> getItemsFromIds( List<Integer> listIds ) 
-	{
-		List<GeometryType> listGeometryType = GeometryTypeHome.getGeometryTypesListByIds( listIds );
-		
-		// keep original order
-        return listGeometryType.stream()
-                 .sorted(Comparator.comparingInt( notif -> listIds.indexOf( notif.getId())))
-                 .collect(Collectors.toList());
-	}
-    
+    @Override
+    List<GeometryType> getItemsFromIds( List<Integer> listIds )
+    {
+        List<GeometryType> listGeometryType = GeometryTypeHome.getGeometryTypesListByIds( listIds );
+
+        // keep original order
+        return listGeometryType.stream( ).sorted( Comparator.comparingInt( notif -> listIds.indexOf( notif.getId( ) ) ) ).collect( Collectors.toList( ) );
+    }
+
     /**
-    * reset the _listIdGeometryTypes list
-    */
+     * reset the _listIdGeometryTypes list
+     */
     public void resetListId( )
     {
-    	_listIdGeometryTypes = new ArrayList<>( );
+        _listIdGeometryTypes = new ArrayList<>( );
     }
 
     /**
      * Returns the form to create a geometrytype
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the html code of the geometrytype form
      */
     @View( VIEW_CREATE_GEOMETRYTYPE )
     public String getCreateGeometryType( HttpServletRequest request )
     {
-        _geometrytype = ( _geometrytype != null ) ? _geometrytype : new GeometryType(  );
+        _geometrytype = ( _geometrytype != null ) ? _geometrytype : new GeometryType( );
 
-        Map<String, Object> model = getModel(  );
+        Map<String, Object> model = getModel( );
         model.put( MARK_GEOMETRYTYPE, _geometrytype );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_CREATE_GEOMETRYTYPE ) );
 
@@ -175,7 +176,8 @@ public class GeometryTypeJspBean extends AbstractManageCartoJspBean <Integer, Ge
     /**
      * Process the data capture form of a new geometrytype
      *
-     * @param request The Http Request
+     * @param request
+     *            The Http Request
      * @return The Jsp URL of the process result
      * @throws AccessDeniedException
      */
@@ -183,11 +185,10 @@ public class GeometryTypeJspBean extends AbstractManageCartoJspBean <Integer, Ge
     public String doCreateGeometryType( HttpServletRequest request ) throws AccessDeniedException
     {
         populate( _geometrytype, request, getLocale( ) );
-        
 
         if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_CREATE_GEOMETRYTYPE ) )
         {
-            throw new AccessDeniedException ( "Invalid security token" );
+            throw new AccessDeniedException( "Invalid security token" );
         }
 
         // Check constraints
@@ -197,17 +198,17 @@ public class GeometryTypeJspBean extends AbstractManageCartoJspBean <Integer, Ge
         }
 
         GeometryTypeHome.create( _geometrytype );
-        addInfo( INFO_GEOMETRYTYPE_CREATED, getLocale(  ) );
+        addInfo( INFO_GEOMETRYTYPE_CREATED, getLocale( ) );
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_GEOMETRYTYPES );
     }
 
     /**
-     * Manages the removal form of a geometrytype whose identifier is in the http
-     * request
+     * Manages the removal form of a geometrytype whose identifier is in the http request
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the html code to confirm
      */
     @Action( ACTION_CONFIRM_REMOVE_GEOMETRYTYPE )
@@ -217,7 +218,7 @@ public class GeometryTypeJspBean extends AbstractManageCartoJspBean <Integer, Ge
         UrlItem url = new UrlItem( getActionUrl( ACTION_REMOVE_GEOMETRYTYPE ) );
         url.addParameter( PARAMETER_ID_GEOMETRYTYPE, nId );
 
-        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_GEOMETRYTYPE, url.getUrl(  ), AdminMessage.TYPE_CONFIRMATION );
+        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_GEOMETRYTYPE, url.getUrl( ), AdminMessage.TYPE_CONFIRMATION );
 
         return redirect( request, strMessageUrl );
     }
@@ -225,17 +226,17 @@ public class GeometryTypeJspBean extends AbstractManageCartoJspBean <Integer, Ge
     /**
      * Handles the removal form of a geometrytype
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the jsp URL to display the form to manage geometrytypes
      */
     @Action( ACTION_REMOVE_GEOMETRYTYPE )
     public String doRemoveGeometryType( HttpServletRequest request )
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_GEOMETRYTYPE ) );
-        
-        
+
         GeometryTypeHome.remove( nId );
-        addInfo( INFO_GEOMETRYTYPE_REMOVED, getLocale(  ) );
+        addInfo( INFO_GEOMETRYTYPE_REMOVED, getLocale( ) );
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_GEOMETRYTYPES );
@@ -244,7 +245,8 @@ public class GeometryTypeJspBean extends AbstractManageCartoJspBean <Integer, Ge
     /**
      * Returns the form to update info about a geometrytype
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return The HTML form to update info
      */
     @View( VIEW_MODIFY_GEOMETRYTYPE )
@@ -252,14 +254,13 @@ public class GeometryTypeJspBean extends AbstractManageCartoJspBean <Integer, Ge
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_GEOMETRYTYPE ) );
 
-        if ( _geometrytype == null || ( _geometrytype.getId(  ) != nId ) )
+        if ( _geometrytype == null || ( _geometrytype.getId( ) != nId ) )
         {
             Optional<GeometryType> optGeometryType = GeometryTypeHome.findByPrimaryKey( nId );
-            _geometrytype = optGeometryType.orElseThrow( ( ) -> new AppException(ERROR_RESOURCE_NOT_FOUND ) );
+            _geometrytype = optGeometryType.orElseThrow( ( ) -> new AppException( ERROR_RESOURCE_NOT_FOUND ) );
         }
 
-
-        Map<String, Object> model = getModel(  );
+        Map<String, Object> model = getModel( );
         model.put( MARK_GEOMETRYTYPE, _geometrytype );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_MODIFY_GEOMETRYTYPE ) );
 
@@ -269,19 +270,19 @@ public class GeometryTypeJspBean extends AbstractManageCartoJspBean <Integer, Ge
     /**
      * Process the change form of a geometrytype
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return The Jsp URL of the process result
      * @throws AccessDeniedException
      */
     @Action( ACTION_MODIFY_GEOMETRYTYPE )
     public String doModifyGeometryType( HttpServletRequest request ) throws AccessDeniedException
-    {   
+    {
         populate( _geometrytype, request, getLocale( ) );
-		
-		
+
         if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_MODIFY_GEOMETRYTYPE ) )
         {
-            throw new AccessDeniedException ( "Invalid security token" );
+            throw new AccessDeniedException( "Invalid security token" );
         }
 
         // Check constraints
@@ -291,7 +292,7 @@ public class GeometryTypeJspBean extends AbstractManageCartoJspBean <Integer, Ge
         }
 
         GeometryTypeHome.update( _geometrytype );
-        addInfo( INFO_GEOMETRYTYPE_UPDATED, getLocale(  ) );
+        addInfo( INFO_GEOMETRYTYPE_UPDATED, getLocale( ) );
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_GEOMETRYTYPES );

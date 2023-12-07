@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2022, City of Paris
+ * Copyright (c) 2002-2023, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,15 +31,12 @@
  *
  * License 1.0
  */
-
-
- package fr.paris.lutece.plugins.carto.business;
+package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.util.ReferenceList;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -56,14 +53,16 @@ public final class CoordonneeHome
     /**
      * Private constructor - this class need not be instantiated
      */
-    private CoordonneeHome(  )
+    private CoordonneeHome( )
     {
     }
 
     /**
      * Create an instance of the coordonnee class
-     * @param coordonnee The instance of the Coordonnee which contains the informations to store
-     * @return The  instance of coordonnee which has been created with its primary key.
+     * 
+     * @param coordonnee
+     *            The instance of the Coordonnee which contains the informations to store
+     * @return The instance of coordonnee which has been created with its primary key.
      */
     public static Coordonnee create( Coordonnee coordonnee )
     {
@@ -74,8 +73,10 @@ public final class CoordonneeHome
 
     /**
      * Update of the coordonnee which is specified in parameter
-     * @param coordonnee The instance of the Coordonnee which contains the data to store
-     * @return The instance of the  coordonnee which has been updated
+     * 
+     * @param coordonnee
+     *            The instance of the Coordonnee which contains the data to store
+     * @return The instance of the coordonnee which has been updated
      */
     public static Coordonnee update( Coordonnee coordonnee )
     {
@@ -86,7 +87,9 @@ public final class CoordonneeHome
 
     /**
      * Remove the coordonnee whose identifier is specified in parameter
-     * @param nKey The coordonnee Id
+     * 
+     * @param nKey
+     *            The coordonnee Id
      */
     public static void remove( int nKey )
     {
@@ -95,7 +98,9 @@ public final class CoordonneeHome
 
     /**
      * Returns an instance of a coordonnee whose identifier is specified in parameter
-     * @param nKey The coordonnee primary key
+     * 
+     * @param nKey
+     *            The coordonnee primary key
      * @return an instance of Coordonnee
      */
     public static Optional<Coordonnee> findByPrimaryKey( int nKey )
@@ -105,35 +110,39 @@ public final class CoordonneeHome
 
     /**
      * Load the data of all the coordonnee objects and returns them as a list
+     * 
      * @return the list which contains the data of all the coordonnee objects
      */
     public static List<Coordonnee> getCoordonneesList( )
     {
         return _dao.selectCoordonneesList( _plugin );
     }
-    
+
     /**
      * Load the id of all the coordonnee objects and returns them as a list
+     * 
      * @return the list which contains the id of all the coordonnee objects
      */
     public static List<Integer> getIdCoordonneesList( )
     {
         return _dao.selectIdCoordonneesList( _plugin );
     }
-    
+
     /**
      * Load the data of all the coordonnee objects and returns them as a referenceList
+     * 
      * @return the referenceList which contains the data of all the coordonnee objects
      */
     public static ReferenceList getCoordonneesReferenceList( )
     {
         return _dao.selectCoordonneesReferenceList( _plugin );
     }
-    
-	
+
     /**
      * Load the data of all the avant objects and returns them as a list
-     * @param listIds liste of ids
+     * 
+     * @param listIds
+     *            liste of ids
      * @return the list which contains the data of all the avant objects
      */
     public static List<Coordonnee> getCoordonneesListByIds( List<Integer> listIds )
@@ -142,4 +151,3 @@ public final class CoordonneeHome
     }
 
 }
-

@@ -36,25 +36,27 @@ package fr.paris.lutece.plugins.carto.business;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+
 /**
  * This is the business class for the object Basemap
- */ 
+ */
 public class Basemap implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    // Variables declarations 
+    // Variables declarations
     private int _nId;
-    
+
     @NotEmpty( message = "#i18n{carto.validation.basemap.Title.notEmpty}" )
-    @Size( max = 255 , message = "#i18n{carto.validation.basemap.Title.size}" ) 
+    @Size( max = 255, message = "#i18n{carto.validation.basemap.Title.size}" )
     private String _strTitle;
-    
+
     @NotEmpty( message = "#i18n{carto.validation.basemap.Url.notEmpty}" )
     private String _strUrl;
 
     /**
      * Returns the Id
+     * 
      * @return The Id
      */
     public int getId( )
@@ -64,15 +66,18 @@ public class Basemap implements Serializable
 
     /**
      * Sets the Id
-     * @param nId The Id
-     */ 
+     * 
+     * @param nId
+     *            The Id
+     */
     public void setId( int nId )
     {
         _nId = nId;
     }
-    
+
     /**
      * Returns the Title
+     * 
      * @return The Title
      */
     public String getTitle( )
@@ -82,16 +87,18 @@ public class Basemap implements Serializable
 
     /**
      * Sets the Title
-     * @param strTitle The Title
-     */ 
+     * 
+     * @param strTitle
+     *            The Title
+     */
     public void setTitle( String strTitle )
     {
         _strTitle = strTitle;
     }
-    
-    
+
     /**
      * Returns the Url
+     * 
      * @return The Url
      */
     public String getUrl( )
@@ -101,11 +108,13 @@ public class Basemap implements Serializable
 
     /**
      * Sets the Url
-     * @param strUrl The Url
-     */ 
+     * 
+     * @param strUrl
+     *            The Url
+     */
     public void setUrl( String strUrl )
     {
         _strUrl = strUrl;
     }
-    
+
 }

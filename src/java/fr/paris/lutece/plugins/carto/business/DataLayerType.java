@@ -36,30 +36,32 @@ package fr.paris.lutece.plugins.carto.business;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+
 /**
  * This is the business class for the object DataLayerType
- */ 
+ */
 public class DataLayerType implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    // Variables declarations 
+    // Variables declarations
     private int _nId;
-    
+
     @NotEmpty( message = "#i18n{carto.validation.datalayertype.Title.notEmpty}" )
-    @Size( max = 255 , message = "#i18n{carto.validation.datalayertype.Title.size}" ) 
+    @Size( max = 255, message = "#i18n{carto.validation.datalayertype.Title.size}" )
     private String _strTitle;
-    
+
     private boolean _bEditable;
-    
+
     private boolean _bSearchableByOthers;
-    
+
     private boolean _bInclusion;
-    
+
     private boolean _bExclusion;
 
     /**
      * Returns the Id
+     * 
      * @return The Id
      */
     public int getId( )
@@ -69,15 +71,18 @@ public class DataLayerType implements Serializable
 
     /**
      * Sets the Id
-     * @param nId The Id
-     */ 
+     * 
+     * @param nId
+     *            The Id
+     */
     public void setId( int nId )
     {
         _nId = nId;
     }
-    
+
     /**
      * Returns the Title
+     * 
      * @return The Title
      */
     public String getTitle( )
@@ -87,16 +92,18 @@ public class DataLayerType implements Serializable
 
     /**
      * Sets the Title
-     * @param strTitle The Title
-     */ 
+     * 
+     * @param strTitle
+     *            The Title
+     */
     public void setTitle( String strTitle )
     {
         _strTitle = strTitle;
     }
-    
-    
+
     /**
      * Returns the Editable
+     * 
      * @return The Editable
      */
     public boolean getEditable( )
@@ -106,16 +113,18 @@ public class DataLayerType implements Serializable
 
     /**
      * Sets the Editable
-     * @param bEditable The Editable
-     */ 
+     * 
+     * @param bEditable
+     *            The Editable
+     */
     public void setEditable( boolean bEditable )
     {
         _bEditable = bEditable;
     }
-    
-    
+
     /**
      * Returns the SearchableByOthers
+     * 
      * @return The SearchableByOthers
      */
     public boolean getSearchableByOthers( )
@@ -125,15 +134,18 @@ public class DataLayerType implements Serializable
 
     /**
      * Sets the SearchableByOthers
-     * @param bSearchableByOthers The SearchableByOthers
-     */ 
+     * 
+     * @param bSearchableByOthers
+     *            The SearchableByOthers
+     */
     public void setSearchableByOthers( boolean bSearchableByOthers )
     {
         _bSearchableByOthers = bSearchableByOthers;
     }
-    
+
     /**
      * Returns the Inclusion
+     * 
      * @return The Inclusion
      */
     public boolean getInclusion( )
@@ -143,15 +155,18 @@ public class DataLayerType implements Serializable
 
     /**
      * Sets the Inclusion
-     * @param bInclusion The Inclusion
-     */ 
+     * 
+     * @param bInclusion
+     *            The Inclusion
+     */
     public void setInclusion( boolean bInclusion )
     {
         _bInclusion = bInclusion;
     }
-    
+
     /**
      * Returns the Exclusion
+     * 
      * @return The Exclusion
      */
     public boolean getExclusion( )
@@ -161,11 +176,13 @@ public class DataLayerType implements Serializable
 
     /**
      * Sets the Exclusion
-     * @param bExclusion The Exclusion
-     */ 
+     * 
+     * @param bExclusion
+     *            The Exclusion
+     */
     public void setExclusion( boolean bExclusion )
     {
         _bExclusion = bExclusion;
     }
-    
+
 }

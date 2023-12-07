@@ -31,8 +31,7 @@
  *
  * License 1.0
  */
- 	
- 
+
 package fr.paris.lutece.plugins.carto.web;
 
 import fr.paris.lutece.portal.service.message.AdminMessage;
@@ -76,7 +75,7 @@ import fr.paris.lutece.plugins.carto.business.MapTemplateHome;
  * This class provides the user interface to manage DataLayerMapTemplate features ( manage, create, modify, remove )
  */
 @Controller( controllerJsp = "ManageDataLayerMapTemplates.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT" )
-public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean <Integer, DataLayerMapTemplate>
+public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Integer, DataLayerMapTemplate>
 {
     // Templates
     private static final String TEMPLATE_MANAGE_DATALAYERMAPTEMPLATES = "/admin/plugins/carto/manage_datalayermaptemplates.html";
@@ -124,89 +123,93 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean <Int
     private static final String INFO_DATALAYERMAPTEMPLATE_CREATED = "carto.info.datalayermaptemplate.created";
     private static final String INFO_DATALAYERMAPTEMPLATE_UPDATED = "carto.info.datalayermaptemplate.updated";
     private static final String INFO_DATALAYERMAPTEMPLATE_REMOVED = "carto.info.datalayermaptemplate.removed";
-    
+
     // Errors
     private static final String ERROR_RESOURCE_NOT_FOUND = "Resource not found";
     private static final String ERROR_LAYER_TEMPLATE_EDITABLE = "carto.modify_datalayermaptemplate.error.layereditable";
     private static final String ERROR_LAYER_TEMPLATE_INCLUSION_EXCLUSION = "carto.modify_datalayermaptemplate.error.layerinclusionexclusion";
-    
+
     // Session variable to store working values
     private DataLayerMapTemplate _datalayermaptemplate;
     private List<Integer> _listIdDataLayerMapTemplates;
-    
+
     /**
      * Build the Manage View
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return The page
      */
     @View( value = VIEW_MANAGE_DATALAYERMAPTEMPLATES, defaultView = true )
     public String getManageDataLayerMapTemplates( HttpServletRequest request )
     {
         _datalayermaptemplate = null;
-        
-        if ( request.getParameter( AbstractPaginator.PARAMETER_PAGE_INDEX) == null || _listIdDataLayerMapTemplates.isEmpty( ) )
+
+        if ( request.getParameter( AbstractPaginator.PARAMETER_PAGE_INDEX ) == null || _listIdDataLayerMapTemplates.isEmpty( ) )
         {
-        	_listIdDataLayerMapTemplates = DataLayerMapTemplateHome.getIdDataLayerMapTemplatesList(  );
+            _listIdDataLayerMapTemplates = DataLayerMapTemplateHome.getIdDataLayerMapTemplatesList( );
         }
-        
+
         ReferenceList refDataLayer = DataLayerHome.getDataLayersReferenceList( );
         ReferenceList refMapTemplate = MapTemplateHome.getMapTemplatesReferenceList( );
         ReferenceList refDataLayerType = DataLayerTypeHome.getDataLayerTypesReferenceList( );
-        
-        Map<String, Object> model = getPaginatedListModel( request, MARK_DATALAYERMAPTEMPLATE_LIST, _listIdDataLayerMapTemplates, JSP_MANAGE_DATALAYERMAPTEMPLATES );
+
+        Map<String, Object> model = getPaginatedListModel( request, MARK_DATALAYERMAPTEMPLATE_LIST, _listIdDataLayerMapTemplates,
+                JSP_MANAGE_DATALAYERMAPTEMPLATES );
         model.put( MARK_REF_DATA_LAYER, refDataLayer.toMap( ) );
         model.put( MARK_REF_MAP_TEMPLATE, refMapTemplate.toMap( ) );
-        model.put( MARK_REF_DATA_LAYER_TYPE, refDataLayerType.toMap( ) ); 
-        
+        model.put( MARK_REF_DATA_LAYER_TYPE, refDataLayerType.toMap( ) );
+
         return getPage( PROPERTY_PAGE_TITLE_MANAGE_DATALAYERMAPTEMPLATES, TEMPLATE_MANAGE_DATALAYERMAPTEMPLATES, model );
     }
 
-	/**
+    /**
      * Get Items from Ids list
+     * 
      * @param listIds
      * @return the populated list of items corresponding to the id List
      */
-	@Override
-	List<DataLayerMapTemplate> getItemsFromIds( List<Integer> listIds ) 
-	{
-		List<DataLayerMapTemplate> listDataLayerMapTemplate = DataLayerMapTemplateHome.getDataLayerMapTemplatesListByIds( listIds );
-		
-		// keep original order
-        return listDataLayerMapTemplate.stream()
-                 .sorted(Comparator.comparingInt( notif -> listIds.indexOf( notif.getId())))
-                 .collect(Collectors.toList());
-	}
-    
+    @Override
+    List<DataLayerMapTemplate> getItemsFromIds( List<Integer> listIds )
+    {
+        List<DataLayerMapTemplate> listDataLayerMapTemplate = DataLayerMapTemplateHome.getDataLayerMapTemplatesListByIds( listIds );
+
+        // keep original order
+        return listDataLayerMapTemplate.stream( ).sorted( Comparator.comparingInt( notif -> listIds.indexOf( notif.getId( ) ) ) )
+                .collect( Collectors.toList( ) );
+    }
+
     /**
-    * reset the _listIdDataLayerMapTemplates list
-    */
+     * reset the _listIdDataLayerMapTemplates list
+     */
     public void resetListId( )
     {
-    	_listIdDataLayerMapTemplates = new ArrayList<>( );
+        _listIdDataLayerMapTemplates = new ArrayList<>( );
     }
 
     /**
      * Returns the form to create a datalayermaptemplate
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the html code of the datalayermaptemplate form
      */
     @View( VIEW_CREATE_DATALAYERMAPTEMPLATE )
     public String getCreateDataLayerMapTemplate( HttpServletRequest request )
     {
-        _datalayermaptemplate = ( _datalayermaptemplate != null ) ? _datalayermaptemplate : new DataLayerMapTemplate(  );
+        _datalayermaptemplate = ( _datalayermaptemplate != null ) ? _datalayermaptemplate : new DataLayerMapTemplate( );
 
         ReferenceList refDataLayer = DataLayerHome.getDataLayersReferenceList( );
         ReferenceList refMapTemplate = MapTemplateHome.getMapTemplatesReferenceList( );
         ReferenceList refDataLayerType = DataLayerTypeHome.getDataLayerTypesReferenceList( );
         List<DataLayer> lstDataLayer = DataLayerHome.getDataLayersList( );
-        
-        Map<String, Object> model = getModel(  );
+
+        Map<String, Object> model = getModel( );
         model.put( MARK_REF_DATA_LAYER, refDataLayer );
         model.put( MARK_REF_MAP_TEMPLATE, refMapTemplate );
         model.put( MARK_DATALAYERMAPTEMPLATE, _datalayermaptemplate );
-        model.put( MARK_REF_DATA_LAYER_TYPE, refDataLayerType); 
-        model.put( MARK_LIST_DATA_LAYER , lstDataLayer );
+        model.put( MARK_REF_DATA_LAYER_TYPE, refDataLayerType );
+        model.put( MARK_LIST_DATA_LAYER, lstDataLayer );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_CREATE_DATALAYERMAPTEMPLATE ) );
 
         return getPage( PROPERTY_PAGE_TITLE_CREATE_DATALAYERMAPTEMPLATE, TEMPLATE_CREATE_DATALAYERMAPTEMPLATE, model );
@@ -215,7 +218,8 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean <Int
     /**
      * Process the data capture form of a new datalayermaptemplate
      *
-     * @param request The Http Request
+     * @param request
+     *            The Http Request
      * @return The Jsp URL of the process result
      * @throws AccessDeniedException
      */
@@ -223,11 +227,10 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean <Int
     public String doCreateDataLayerMapTemplate( HttpServletRequest request ) throws AccessDeniedException
     {
         populate( _datalayermaptemplate, request, getLocale( ) );
-        
 
         if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_CREATE_DATALAYERMAPTEMPLATE ) )
         {
-            throw new AccessDeniedException ( "Invalid security token" );
+            throw new AccessDeniedException( "Invalid security token" );
         }
 
         // Check constraints
@@ -237,53 +240,53 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean <Int
         }
 
         DataLayerType dataLayerType = DataLayerTypeHome.findByPrimaryKey( _datalayermaptemplate.getLayerType( ) ).get( );
-        Optional<DataLayer> dataLayerEditable  = DataLayerHome.findDataLayerFromMapId( _datalayermaptemplate.getIdMapTemplate( ), true, false, false );
+        Optional<DataLayer> dataLayerEditable = DataLayerHome.findDataLayerFromMapId( _datalayermaptemplate.getIdMapTemplate( ), true, false, false );
         if ( dataLayerType.getEditable( ) && dataLayerEditable.isPresent( ) )
         {
-        	addError( ERROR_LAYER_TEMPLATE_EDITABLE, getLocale( )  );
-        	return redirect( request, VIEW_CREATE_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE, _datalayermaptemplate.getId( ) );
+            addError( ERROR_LAYER_TEMPLATE_EDITABLE, getLocale( ) );
+            return redirect( request, VIEW_CREATE_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE, _datalayermaptemplate.getId( ) );
         }
-        
-        MultipartHttpServletRequest multipartRequest = ( MultipartHttpServletRequest ) request;
+
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         FileItem zoneJsonFileItem = multipartRequest.getFile( PARAMETER_ZONE_JSON );
         if ( zoneJsonFileItem != null && zoneJsonFileItem.getSize( ) > 0 )
         {
-        	String strGeoJson = zoneJsonFileItem.getString();
-        	try
+            String strGeoJson = zoneJsonFileItem.getString( );
+            try
             {
-                //GeolocItem.fromJSON( strGeoJson );
-        		new ObjectMapper( ).readTree( strGeoJson );
+                // GeolocItem.fromJSON( strGeoJson );
+                new ObjectMapper( ).readTree( strGeoJson );
             }
             catch( IOException e )
             {
                 AppLogService.error( "Exception during GEOJSON parsing : " + strGeoJson + " : " + e );
                 addError( "GeoJSON not valid" );
-            	return redirect( request, VIEW_MODIFY_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE, _datalayermaptemplate.getId( ) );
+                return redirect( request, VIEW_MODIFY_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE, _datalayermaptemplate.getId( ) );
 
             }
-        	Coordonnee coord = new Coordonnee();
-	        coord.setAdresse("");
-	        coord.setCoordonneeX(0.0);
-	        coord.setCoordonneeY(0.0);
-	        coord.setGeoJson( strGeoJson );
-	        DataLayer datalayer = DataLayerHome.findByPrimaryKey( _datalayermaptemplate.getIdDataLayer() ).get( );
-	        coord.setDataLayer( datalayer );
-	        coord = CoordonneeHome.create(coord);
-	        _datalayermaptemplate.setIdCoordinate( coord.getId( ) );
+            Coordonnee coord = new Coordonnee( );
+            coord.setAdresse( "" );
+            coord.setCoordonneeX( 0.0 );
+            coord.setCoordonneeY( 0.0 );
+            coord.setGeoJson( strGeoJson );
+            DataLayer datalayer = DataLayerHome.findByPrimaryKey( _datalayermaptemplate.getIdDataLayer( ) ).get( );
+            coord.setDataLayer( datalayer );
+            coord = CoordonneeHome.create( coord );
+            _datalayermaptemplate.setIdCoordinate( coord.getId( ) );
         }
-        
+
         DataLayerMapTemplateHome.create( _datalayermaptemplate );
-        addInfo( INFO_DATALAYERMAPTEMPLATE_CREATED, getLocale(  ) );
+        addInfo( INFO_DATALAYERMAPTEMPLATE_CREATED, getLocale( ) );
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_DATALAYERMAPTEMPLATES );
     }
 
     /**
-     * Manages the removal form of a datalayermaptemplate whose identifier is in the http
-     * request
+     * Manages the removal form of a datalayermaptemplate whose identifier is in the http request
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the html code to confirm
      */
     @Action( ACTION_CONFIRM_REMOVE_DATALAYERMAPTEMPLATE )
@@ -293,7 +296,8 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean <Int
         UrlItem url = new UrlItem( getActionUrl( ACTION_REMOVE_DATALAYERMAPTEMPLATE ) );
         url.addParameter( PARAMETER_ID_DATALAYERMAPTEMPLATE, nId );
 
-        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_DATALAYERMAPTEMPLATE, url.getUrl(  ), AdminMessage.TYPE_CONFIRMATION );
+        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_DATALAYERMAPTEMPLATE, url.getUrl( ),
+                AdminMessage.TYPE_CONFIRMATION );
 
         return redirect( request, strMessageUrl );
     }
@@ -301,22 +305,23 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean <Int
     /**
      * Handles the removal form of a datalayermaptemplate
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the jsp URL to display the form to manage datalayermaptemplates
      */
     @Action( ACTION_REMOVE_DATALAYERMAPTEMPLATE )
     public String doRemoveDataLayerMapTemplate( HttpServletRequest request )
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_DATALAYERMAPTEMPLATE ) );
-        
+
         Optional<DataLayerMapTemplate> optDataLayerMapTemplate = DataLayerMapTemplateHome.findByPrimaryKey( nId );
-        _datalayermaptemplate = optDataLayerMapTemplate.orElseThrow( ( ) -> new AppException(ERROR_RESOURCE_NOT_FOUND ) );
+        _datalayermaptemplate = optDataLayerMapTemplate.orElseThrow( ( ) -> new AppException( ERROR_RESOURCE_NOT_FOUND ) );
         DataLayerMapTemplateHome.remove( nId );
         if ( _datalayermaptemplate.getIdCoordinate( ) != 0 )
         {
-        	CoordonneeHome.remove( _datalayermaptemplate.getIdCoordinate( ) );
+            CoordonneeHome.remove( _datalayermaptemplate.getIdCoordinate( ) );
         }
-        addInfo( INFO_DATALAYERMAPTEMPLATE_REMOVED, getLocale(  ) );
+        addInfo( INFO_DATALAYERMAPTEMPLATE_REMOVED, getLocale( ) );
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_DATALAYERMAPTEMPLATES );
@@ -325,7 +330,8 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean <Int
     /**
      * Returns the form to update info about a datalayermaptemplate
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return The HTML form to update info
      */
     @View( VIEW_MODIFY_DATALAYERMAPTEMPLATE )
@@ -333,33 +339,31 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean <Int
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_DATALAYERMAPTEMPLATE ) );
 
-        if ( _datalayermaptemplate == null || ( _datalayermaptemplate.getId(  ) != nId ) )
+        if ( _datalayermaptemplate == null || ( _datalayermaptemplate.getId( ) != nId ) )
         {
             Optional<DataLayerMapTemplate> optDataLayerMapTemplate = DataLayerMapTemplateHome.findByPrimaryKey( nId );
-            _datalayermaptemplate = optDataLayerMapTemplate.orElseThrow( ( ) -> new AppException(ERROR_RESOURCE_NOT_FOUND ) );
+            _datalayermaptemplate = optDataLayerMapTemplate.orElseThrow( ( ) -> new AppException( ERROR_RESOURCE_NOT_FOUND ) );
         }
-
 
         ReferenceList refDataLayer = DataLayerHome.getDataLayersReferenceList( );
         ReferenceList refMapTemplate = MapTemplateHome.getMapTemplatesReferenceList( );
         ReferenceList refDataLayerType = DataLayerTypeHome.getDataLayerTypesReferenceList( );
         List<DataLayer> lstDataLayer = DataLayerHome.getDataLayersList( );
-        
-        Map<String, Object> model = getModel(  );
-        
+
+        Map<String, Object> model = getModel( );
+
         Optional<Coordonnee> optCoord = CoordonneeHome.findByPrimaryKey( _datalayermaptemplate.getIdCoordinate( ) );
-    	if ( optCoord.isPresent( ) )
-    	{
-    		Coordonnee coord = optCoord.get( );
-    		model.put( MARK_POLYGON_INCLUSION_EXCLUSION, coord.getGeoJson( ) );
-    	}
-        
-        
+        if ( optCoord.isPresent( ) )
+        {
+            Coordonnee coord = optCoord.get( );
+            model.put( MARK_POLYGON_INCLUSION_EXCLUSION, coord.getGeoJson( ) );
+        }
+
         model.put( MARK_REF_DATA_LAYER, refDataLayer );
         model.put( MARK_REF_MAP_TEMPLATE, refMapTemplate );
         model.put( MARK_DATALAYERMAPTEMPLATE, _datalayermaptemplate );
-        model.put( MARK_REF_DATA_LAYER_TYPE, refDataLayerType); 
-        model.put( MARK_LIST_DATA_LAYER , lstDataLayer );
+        model.put( MARK_REF_DATA_LAYER_TYPE, refDataLayerType );
+        model.put( MARK_LIST_DATA_LAYER, lstDataLayer );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_MODIFY_DATALAYERMAPTEMPLATE ) );
 
         return getPage( PROPERTY_PAGE_TITLE_MODIFY_DATALAYERMAPTEMPLATE, TEMPLATE_MODIFY_DATALAYERMAPTEMPLATE, model );
@@ -368,19 +372,19 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean <Int
     /**
      * Process the change form of a datalayermaptemplate
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return The Jsp URL of the process result
      * @throws AccessDeniedException
      */
     @Action( ACTION_MODIFY_DATALAYERMAPTEMPLATE )
     public String doModifyDataLayerMapTemplate( HttpServletRequest request ) throws AccessDeniedException
-    {   
+    {
         populate( _datalayermaptemplate, request, getLocale( ) );
-		
-		
+
         if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_MODIFY_DATALAYERMAPTEMPLATE ) )
         {
-            throw new AccessDeniedException ( "Invalid security token" );
+            throw new AccessDeniedException( "Invalid security token" );
         }
 
         // Check constraints
@@ -388,83 +392,69 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean <Int
         {
             return redirect( request, VIEW_MODIFY_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE, _datalayermaptemplate.getId( ) );
         }
-        
+
         DataLayerMapTemplate oldDataLayerMapTemplate = DataLayerMapTemplateHome.findByPrimaryKey( _datalayermaptemplate.getId( ) ).get( );
         DataLayerType oldDataLayerType = DataLayerTypeHome.findByPrimaryKey( oldDataLayerMapTemplate.getLayerType( ) ).get( );
-        
+
         DataLayerType dataLayerType = DataLayerTypeHome.findByPrimaryKey( _datalayermaptemplate.getLayerType( ) ).get( );
-        Optional<DataLayer> dataLayerEditable  = DataLayerHome.findDataLayerFromMapId( _datalayermaptemplate.getIdMapTemplate( ), true, false, false );
+        Optional<DataLayer> dataLayerEditable = DataLayerHome.findDataLayerFromMapId( _datalayermaptemplate.getIdMapTemplate( ), true, false, false );
         if ( dataLayerType.getEditable( ) && dataLayerEditable.isPresent( ) && !oldDataLayerType.getEditable( ) )
         {
-        	addError( ERROR_LAYER_TEMPLATE_EDITABLE, getLocale( )  );
-        	return redirect( request, VIEW_MODIFY_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE, _datalayermaptemplate.getId( ) );
+            addError( ERROR_LAYER_TEMPLATE_EDITABLE, getLocale( ) );
+            return redirect( request, VIEW_MODIFY_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE, _datalayermaptemplate.getId( ) );
         }
-        
-        MultipartHttpServletRequest multipartRequest = ( MultipartHttpServletRequest ) request;
+
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         FileItem zoneJsonFileItem = multipartRequest.getFile( PARAMETER_ZONE_JSON );
         if ( zoneJsonFileItem != null && zoneJsonFileItem.getSize( ) > 0 )
         {
-        	String strGeoJson = zoneJsonFileItem.getString();
-        	/*
-        	try {
-        		GeolocItem geo = GeolocItem.fromJSON( strGeoJson );
-        		geo.getAddress();
-        		//geo.getLat();
-			} catch (JsonParseException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				AppLogService.error( "Exception during GEOJSON parsing : " + strGeoJson + " : " + e1 );
-                addError( "GeoJSON not valid" );
-            	return redirect( request, VIEW_MODIFY_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE, _datalayermaptemplate.getId( ) );
-			} catch (JsonMappingException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				AppLogService.error( "Exception during GEOJSON parsing : " + strGeoJson + " : " + e1 );
-                addError( "GeoJSON not valid" );
-            	return redirect( request, VIEW_MODIFY_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE, _datalayermaptemplate.getId( ) );
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-				AppLogService.error( "Exception during GEOJSON parsing : " + strGeoJson + " : " + e1 );
-                addError( "GeoJSON not valid" );
-            	return redirect( request, VIEW_MODIFY_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE, _datalayermaptemplate.getId( ) );
-			}
-			*/
-        	try
+            String strGeoJson = zoneJsonFileItem.getString( );
+            /*
+             * try { GeolocItem geo = GeolocItem.fromJSON( strGeoJson ); geo.getAddress(); //geo.getLat(); } catch (JsonParseException e1) { // TODO
+             * Auto-generated catch block e1.printStackTrace(); AppLogService.error( "Exception during GEOJSON parsing : " + strGeoJson + " : " + e1 );
+             * addError( "GeoJSON not valid" ); return redirect( request, VIEW_MODIFY_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE,
+             * _datalayermaptemplate.getId( ) ); } catch (JsonMappingException e1) { // TODO Auto-generated catch block e1.printStackTrace();
+             * AppLogService.error( "Exception during GEOJSON parsing : " + strGeoJson + " : " + e1 ); addError( "GeoJSON not valid" ); return redirect(
+             * request, VIEW_MODIFY_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE, _datalayermaptemplate.getId( ) ); } catch (IOException e1) { //
+             * TODO Auto-generated catch block e1.printStackTrace(); AppLogService.error( "Exception during GEOJSON parsing : " + strGeoJson + " : " + e1 );
+             * addError( "GeoJSON not valid" ); return redirect( request, VIEW_MODIFY_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE,
+             * _datalayermaptemplate.getId( ) ); }
+             */
+            try
             {
-                //GeolocItem.fromJSON( strGeoJson );
-        		new ObjectMapper( ).readTree( strGeoJson );
+                // GeolocItem.fromJSON( strGeoJson );
+                new ObjectMapper( ).readTree( strGeoJson );
             }
             catch( IOException e )
             {
                 AppLogService.error( "Exception during GEOJSON parsing : " + strGeoJson + " : " + e );
                 addError( "GeoJSON not valid" );
-            	return redirect( request, VIEW_MODIFY_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE, _datalayermaptemplate.getId( ) );
+                return redirect( request, VIEW_MODIFY_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE, _datalayermaptemplate.getId( ) );
 
             }
-        	Optional<Coordonnee> optCoord = CoordonneeHome.findByPrimaryKey( _datalayermaptemplate.getIdCoordinate( ) );
-        	if ( optCoord.isPresent( ) )
-        	{
-        		Coordonnee coord = optCoord.get( );
-		        coord.setGeoJson( strGeoJson );
-		        CoordonneeHome.update(coord);
-        	}
-        	else
-        	{
-        		Coordonnee coord = new Coordonnee();
-    	        coord.setAdresse("");
-    	        coord.setCoordonneeX(0.0);
-    	        coord.setCoordonneeY(0.0);
-    	        coord.setGeoJson( strGeoJson );
-    	        DataLayer datalayer = DataLayerHome.findByPrimaryKey( _datalayermaptemplate.getIdDataLayer() ).get( );
-    	        coord.setDataLayer( datalayer );
-    	        coord = CoordonneeHome.create(coord);
-    	        _datalayermaptemplate.setIdCoordinate( coord.getId( ) );
-        	}
+            Optional<Coordonnee> optCoord = CoordonneeHome.findByPrimaryKey( _datalayermaptemplate.getIdCoordinate( ) );
+            if ( optCoord.isPresent( ) )
+            {
+                Coordonnee coord = optCoord.get( );
+                coord.setGeoJson( strGeoJson );
+                CoordonneeHome.update( coord );
+            }
+            else
+            {
+                Coordonnee coord = new Coordonnee( );
+                coord.setAdresse( "" );
+                coord.setCoordonneeX( 0.0 );
+                coord.setCoordonneeY( 0.0 );
+                coord.setGeoJson( strGeoJson );
+                DataLayer datalayer = DataLayerHome.findByPrimaryKey( _datalayermaptemplate.getIdDataLayer( ) ).get( );
+                coord.setDataLayer( datalayer );
+                coord = CoordonneeHome.create( coord );
+                _datalayermaptemplate.setIdCoordinate( coord.getId( ) );
+            }
         }
 
         DataLayerMapTemplateHome.update( _datalayermaptemplate );
-        addInfo( INFO_DATALAYERMAPTEMPLATE_UPDATED, getLocale(  ) );
+        addInfo( INFO_DATALAYERMAPTEMPLATE_UPDATED, getLocale( ) );
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_DATALAYERMAPTEMPLATES );

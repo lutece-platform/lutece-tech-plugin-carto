@@ -28,16 +28,14 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- *"
+ *
  * License 1.0
  */
-
 package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.test.LuteceTestCase;
 
 import java.util.Optional;
-
 
 /**
  * This is the business class test for the object DataLayerType
@@ -46,22 +44,22 @@ public class DataLayerTypeBusinessTest extends LuteceTestCase
 {
     private static final String TITLE1 = "Title1";
     private static final String TITLE2 = "Title2";
-	private static final boolean EDITABLE1 = true;
+    private static final boolean EDITABLE1 = true;
     private static final boolean EDITABLE2 = false;
-	private static final boolean SEARCHABLEBYOTHERS1 = true;
+    private static final boolean SEARCHABLEBYOTHERS1 = true;
     private static final boolean SEARCHABLEBYOTHERS2 = false;
-	private static final boolean INCLUSION1 = true;
+    private static final boolean INCLUSION1 = true;
     private static final boolean INCLUSION2 = false;
-	private static final boolean EXCLUSION1 = true;
+    private static final boolean EXCLUSION1 = true;
     private static final boolean EXCLUSION2 = false;
 
-	/**
-	* test DataLayerType
-	*/
-    public void testBusiness(  )
+    /**
+     * test DataLayerType
+     */
+    public void testBusiness( )
     {
         // Initialize an object
-        DataLayerType dataLayerType = new DataLayerType();
+        DataLayerType dataLayerType = new DataLayerType( );
         dataLayerType.setTitle( TITLE1 );
         dataLayerType.setEditable( EDITABLE1 );
         dataLayerType.setSearchableByOthers( SEARCHABLEBYOTHERS1 );
@@ -71,12 +69,12 @@ public class DataLayerTypeBusinessTest extends LuteceTestCase
         // Create test
         DataLayerTypeHome.create( dataLayerType );
         Optional<DataLayerType> optDataLayerTypeStored = DataLayerTypeHome.findByPrimaryKey( dataLayerType.getId( ) );
-        DataLayerType dataLayerTypeStored = optDataLayerTypeStored.orElse( new DataLayerType ( ) );
-        assertEquals( dataLayerTypeStored.getTitle( ) , dataLayerType.getTitle( ) );
-        assertEquals( dataLayerTypeStored.getEditable( ) , dataLayerType.getEditable( ) );
-        assertEquals( dataLayerTypeStored.getSearchableByOthers( ) , dataLayerType.getSearchableByOthers( ) );
-        assertEquals( dataLayerTypeStored.getInclusion( ) , dataLayerType.getInclusion( ) );
-        assertEquals( dataLayerTypeStored.getExclusion( ) , dataLayerType.getExclusion( ) );
+        DataLayerType dataLayerTypeStored = optDataLayerTypeStored.orElse( new DataLayerType( ) );
+        assertEquals( dataLayerTypeStored.getTitle( ), dataLayerType.getTitle( ) );
+        assertEquals( dataLayerTypeStored.getEditable( ), dataLayerType.getEditable( ) );
+        assertEquals( dataLayerTypeStored.getSearchableByOthers( ), dataLayerType.getSearchableByOthers( ) );
+        assertEquals( dataLayerTypeStored.getInclusion( ), dataLayerType.getInclusion( ) );
+        assertEquals( dataLayerTypeStored.getExclusion( ), dataLayerType.getExclusion( ) );
 
         // Update test
         dataLayerType.setTitle( TITLE2 );
@@ -86,13 +84,13 @@ public class DataLayerTypeBusinessTest extends LuteceTestCase
         dataLayerType.setExclusion( EXCLUSION2 );
         DataLayerTypeHome.update( dataLayerType );
         optDataLayerTypeStored = DataLayerTypeHome.findByPrimaryKey( dataLayerType.getId( ) );
-        dataLayerTypeStored = optDataLayerTypeStored.orElse( new DataLayerType ( ) );
-        
-        assertEquals( dataLayerTypeStored.getTitle( ) , dataLayerType.getTitle( ) );
-        assertEquals( dataLayerTypeStored.getEditable( ) , dataLayerType.getEditable( ) );
-        assertEquals( dataLayerTypeStored.getSearchableByOthers( ) , dataLayerType.getSearchableByOthers( ) );
-        assertEquals( dataLayerTypeStored.getInclusion( ) , dataLayerType.getInclusion( ) );
-        assertEquals( dataLayerTypeStored.getExclusion( ) , dataLayerType.getExclusion( ) );
+        dataLayerTypeStored = optDataLayerTypeStored.orElse( new DataLayerType( ) );
+
+        assertEquals( dataLayerTypeStored.getTitle( ), dataLayerType.getTitle( ) );
+        assertEquals( dataLayerTypeStored.getEditable( ), dataLayerType.getEditable( ) );
+        assertEquals( dataLayerTypeStored.getSearchableByOthers( ), dataLayerType.getSearchableByOthers( ) );
+        assertEquals( dataLayerTypeStored.getInclusion( ), dataLayerType.getInclusion( ) );
+        assertEquals( dataLayerTypeStored.getExclusion( ), dataLayerType.getExclusion( ) );
 
         // List test
         DataLayerTypeHome.getDataLayerTypesList( );
@@ -102,10 +100,7 @@ public class DataLayerTypeBusinessTest extends LuteceTestCase
         optDataLayerTypeStored = DataLayerTypeHome.findByPrimaryKey( dataLayerType.getId( ) );
         dataLayerTypeStored = optDataLayerTypeStored.orElse( null );
         assertNull( dataLayerTypeStored );
-        
+
     }
-    
-    
-     
 
 }

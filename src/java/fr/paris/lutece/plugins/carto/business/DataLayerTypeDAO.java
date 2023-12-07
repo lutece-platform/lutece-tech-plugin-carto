@@ -32,7 +32,6 @@
  * License 1.0
  */
 
-
 package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
@@ -64,22 +63,22 @@ public final class DataLayerTypeDAO implements IDataLayerTypeDAO
     @Override
     public void insert( DataLayerType dataLayerType, Plugin plugin )
     {
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, Statement.RETURN_GENERATED_KEYS, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, Statement.RETURN_GENERATED_KEYS, plugin ) )
         {
             int nIndex = 1;
-            daoUtil.setString( nIndex++ , dataLayerType.getTitle( ) );
-            daoUtil.setBoolean( nIndex++ , dataLayerType.getEditable( ) );
-            daoUtil.setBoolean( nIndex++ , dataLayerType.getSearchableByOthers( ) );
-            daoUtil.setBoolean( nIndex++ , dataLayerType.getInclusion( ) );
-            daoUtil.setBoolean( nIndex++ , dataLayerType.getExclusion( ) );
-            
+            daoUtil.setString( nIndex++, dataLayerType.getTitle( ) );
+            daoUtil.setBoolean( nIndex++, dataLayerType.getEditable( ) );
+            daoUtil.setBoolean( nIndex++, dataLayerType.getSearchableByOthers( ) );
+            daoUtil.setBoolean( nIndex++, dataLayerType.getInclusion( ) );
+            daoUtil.setBoolean( nIndex++, dataLayerType.getExclusion( ) );
+
             daoUtil.executeUpdate( );
-            if ( daoUtil.nextGeneratedKey( ) ) 
+            if ( daoUtil.nextGeneratedKey( ) )
             {
                 dataLayerType.setId( daoUtil.getGeneratedKeyInt( 1 ) );
             }
         }
-        
+
     }
 
     /**
@@ -88,26 +87,26 @@ public final class DataLayerTypeDAO implements IDataLayerTypeDAO
     @Override
     public Optional<DataLayerType> load( int nKey, Plugin plugin )
     {
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin ) )
         {
-	        daoUtil.setInt( 1 , nKey );
-	        daoUtil.executeQuery( );
-	        DataLayerType dataLayerType = null;
-	
-	        if ( daoUtil.next( ) )
-	        {
-	            dataLayerType = new DataLayerType();
-	            int nIndex = 1;
-	            
-	            dataLayerType.setId( daoUtil.getInt( nIndex++ ) );
-			    dataLayerType.setTitle( daoUtil.getString( nIndex++ ) );
-			    dataLayerType.setEditable( daoUtil.getBoolean( nIndex++ ) );
-			    dataLayerType.setSearchableByOthers( daoUtil.getBoolean( nIndex++ ) );
-			    dataLayerType.setInclusion( daoUtil.getBoolean( nIndex++ ) );
-			    dataLayerType.setExclusion( daoUtil.getBoolean( nIndex ) );
-	        }
-	
-	        return Optional.ofNullable( dataLayerType );
+            daoUtil.setInt( 1, nKey );
+            daoUtil.executeQuery( );
+            DataLayerType dataLayerType = null;
+
+            if ( daoUtil.next( ) )
+            {
+                dataLayerType = new DataLayerType( );
+                int nIndex = 1;
+
+                dataLayerType.setId( daoUtil.getInt( nIndex++ ) );
+                dataLayerType.setTitle( daoUtil.getString( nIndex++ ) );
+                dataLayerType.setEditable( daoUtil.getBoolean( nIndex++ ) );
+                dataLayerType.setSearchableByOthers( daoUtil.getBoolean( nIndex++ ) );
+                dataLayerType.setInclusion( daoUtil.getBoolean( nIndex++ ) );
+                dataLayerType.setExclusion( daoUtil.getBoolean( nIndex ) );
+            }
+
+            return Optional.ofNullable( dataLayerType );
         }
     }
 
@@ -117,10 +116,10 @@ public final class DataLayerTypeDAO implements IDataLayerTypeDAO
     @Override
     public void delete( int nKey, Plugin plugin )
     {
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin ) )
         {
-	        daoUtil.setInt( 1 , nKey );
-	        daoUtil.executeUpdate( );
+            daoUtil.setInt( 1, nKey );
+            daoUtil.executeUpdate( );
         }
     }
 
@@ -130,18 +129,18 @@ public final class DataLayerTypeDAO implements IDataLayerTypeDAO
     @Override
     public void store( DataLayerType dataLayerType, Plugin plugin )
     {
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin ) )
         {
-	        int nIndex = 1;
-	        
-            	daoUtil.setString( nIndex++ , dataLayerType.getTitle( ) );
-            	daoUtil.setBoolean( nIndex++ , dataLayerType.getEditable( ) );
-            	daoUtil.setBoolean( nIndex++ , dataLayerType.getSearchableByOthers( ) );
-            	daoUtil.setBoolean( nIndex++ , dataLayerType.getInclusion( ) );
-            	daoUtil.setBoolean( nIndex++ , dataLayerType.getExclusion( ) );
-	        daoUtil.setInt( nIndex , dataLayerType.getId( ) );
-	
-	        daoUtil.executeUpdate( );
+            int nIndex = 1;
+
+            daoUtil.setString( nIndex++, dataLayerType.getTitle( ) );
+            daoUtil.setBoolean( nIndex++, dataLayerType.getEditable( ) );
+            daoUtil.setBoolean( nIndex++, dataLayerType.getSearchableByOthers( ) );
+            daoUtil.setBoolean( nIndex++, dataLayerType.getInclusion( ) );
+            daoUtil.setBoolean( nIndex++, dataLayerType.getExclusion( ) );
+            daoUtil.setInt( nIndex, dataLayerType.getId( ) );
+
+            daoUtil.executeUpdate( );
         }
     }
 
@@ -151,30 +150,30 @@ public final class DataLayerTypeDAO implements IDataLayerTypeDAO
     @Override
     public List<DataLayerType> selectDataLayerTypesList( Plugin plugin )
     {
-        List<DataLayerType> dataLayerTypeList = new ArrayList<>(  );
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
+        List<DataLayerType> dataLayerTypeList = new ArrayList<>( );
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
         {
-	        daoUtil.executeQuery(  );
-	
-	        while ( daoUtil.next(  ) )
-	        {
-	            DataLayerType dataLayerType = new DataLayerType(  );
-	            int nIndex = 1;
-	            
-	            dataLayerType.setId( daoUtil.getInt( nIndex++ ) );
-			    dataLayerType.setTitle( daoUtil.getString( nIndex++ ) );
-			    dataLayerType.setEditable( daoUtil.getBoolean( nIndex++ ) );
-			    dataLayerType.setSearchableByOthers( daoUtil.getBoolean( nIndex++ ) );
-			    dataLayerType.setInclusion( daoUtil.getBoolean( nIndex++ ) );
-			    dataLayerType.setExclusion( daoUtil.getBoolean( nIndex ) );
-	
-	            dataLayerTypeList.add( dataLayerType );
-	        }
-	
-	        return dataLayerTypeList;
+            daoUtil.executeQuery( );
+
+            while ( daoUtil.next( ) )
+            {
+                DataLayerType dataLayerType = new DataLayerType( );
+                int nIndex = 1;
+
+                dataLayerType.setId( daoUtil.getInt( nIndex++ ) );
+                dataLayerType.setTitle( daoUtil.getString( nIndex++ ) );
+                dataLayerType.setEditable( daoUtil.getBoolean( nIndex++ ) );
+                dataLayerType.setSearchableByOthers( daoUtil.getBoolean( nIndex++ ) );
+                dataLayerType.setInclusion( daoUtil.getBoolean( nIndex++ ) );
+                dataLayerType.setExclusion( daoUtil.getBoolean( nIndex ) );
+
+                dataLayerTypeList.add( dataLayerType );
+            }
+
+            return dataLayerTypeList;
         }
     }
-    
+
     /**
      * {@inheritDoc }
      */
@@ -182,86 +181,88 @@ public final class DataLayerTypeDAO implements IDataLayerTypeDAO
     public List<Integer> selectIdDataLayerTypesList( Plugin plugin )
     {
         List<Integer> dataLayerTypeList = new ArrayList<>( );
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL_ID, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL_ID, plugin ) )
         {
-	        daoUtil.executeQuery(  );
-	
-	        while ( daoUtil.next(  ) )
-	        {
-	            dataLayerTypeList.add( daoUtil.getInt( 1 ) );
-	        }
-	
-	        return dataLayerTypeList;
+            daoUtil.executeQuery( );
+
+            while ( daoUtil.next( ) )
+            {
+                dataLayerTypeList.add( daoUtil.getInt( 1 ) );
+            }
+
+            return dataLayerTypeList;
         }
     }
-    
+
     /**
      * {@inheritDoc }
      */
     @Override
     public ReferenceList selectDataLayerTypesReferenceList( Plugin plugin )
     {
-        ReferenceList dataLayerTypeList = new ReferenceList();
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
+        ReferenceList dataLayerTypeList = new ReferenceList( );
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
         {
-	        daoUtil.executeQuery(  );
-	
-	        while ( daoUtil.next(  ) )
-	        {
-	            dataLayerTypeList.addItem( daoUtil.getInt( 1 ) , daoUtil.getString( 2 ) );
-	        }
-	
-	        return dataLayerTypeList;
-    	}
+            daoUtil.executeQuery( );
+
+            while ( daoUtil.next( ) )
+            {
+                dataLayerTypeList.addItem( daoUtil.getInt( 1 ), daoUtil.getString( 2 ) );
+            }
+
+            return dataLayerTypeList;
+        }
     }
-    
+
     /**
      * {@inheritDoc }
      */
-	@Override
-	public List<DataLayerType> selectDataLayerTypesListByIds( Plugin plugin, List<Integer> listIds ) {
-		List<DataLayerType> dataLayerTypeList = new ArrayList<>(  );
-		
-		StringBuilder builder = new StringBuilder( );
+    @Override
+    public List<DataLayerType> selectDataLayerTypesListByIds( Plugin plugin, List<Integer> listIds )
+    {
+        List<DataLayerType> dataLayerTypeList = new ArrayList<>( );
 
-		if ( !listIds.isEmpty( ) )
-		{
-			for( int i = 0 ; i < listIds.size(); i++ ) {
-			    builder.append( "?," );
-			}
-	
-			String placeHolders =  builder.deleteCharAt( builder.length( ) -1 ).toString( );
-			String stmt = SQL_QUERY_SELECTALL_BY_IDS + placeHolders + ")";
-			
-			
-	        try ( DAOUtil daoUtil = new DAOUtil( stmt, plugin ) )
-	        {
-	        	int index = 1;
-				for( Integer n : listIds ) {
-					daoUtil.setInt(  index++, n ); 
-				}
-	        	
-	        	daoUtil.executeQuery(  );
-	        	while ( daoUtil.next(  ) )
-		        {
-		        	DataLayerType dataLayerType = new DataLayerType(  );
-		            int nIndex = 1;
-		            
-		            dataLayerType.setId( daoUtil.getInt( nIndex++ ) );
-				    dataLayerType.setTitle( daoUtil.getString( nIndex++ ) );
-				    dataLayerType.setEditable( daoUtil.getBoolean( nIndex++ ) );
-				    dataLayerType.setSearchableByOthers( daoUtil.getBoolean( nIndex++ ) );
-				    dataLayerType.setInclusion( daoUtil.getBoolean( nIndex++ ) );
-				    dataLayerType.setExclusion( daoUtil.getBoolean( nIndex ) );
-		            
-		            dataLayerTypeList.add( dataLayerType );
-		        }
-		
-		        daoUtil.free( );
-		        
-	        }
-	    }
-		return dataLayerTypeList;
-		
-	}
+        StringBuilder builder = new StringBuilder( );
+
+        if ( !listIds.isEmpty( ) )
+        {
+            for ( int i = 0; i < listIds.size( ); i++ )
+            {
+                builder.append( "?," );
+            }
+
+            String placeHolders = builder.deleteCharAt( builder.length( ) - 1 ).toString( );
+            String stmt = SQL_QUERY_SELECTALL_BY_IDS + placeHolders + ")";
+
+            try ( DAOUtil daoUtil = new DAOUtil( stmt, plugin ) )
+            {
+                int index = 1;
+                for ( Integer n : listIds )
+                {
+                    daoUtil.setInt( index++, n );
+                }
+
+                daoUtil.executeQuery( );
+                while ( daoUtil.next( ) )
+                {
+                    DataLayerType dataLayerType = new DataLayerType( );
+                    int nIndex = 1;
+
+                    dataLayerType.setId( daoUtil.getInt( nIndex++ ) );
+                    dataLayerType.setTitle( daoUtil.getString( nIndex++ ) );
+                    dataLayerType.setEditable( daoUtil.getBoolean( nIndex++ ) );
+                    dataLayerType.setSearchableByOthers( daoUtil.getBoolean( nIndex++ ) );
+                    dataLayerType.setInclusion( daoUtil.getBoolean( nIndex++ ) );
+                    dataLayerType.setExclusion( daoUtil.getBoolean( nIndex ) );
+
+                    dataLayerTypeList.add( dataLayerType );
+                }
+
+                daoUtil.free( );
+
+            }
+        }
+        return dataLayerTypeList;
+
+    }
 }

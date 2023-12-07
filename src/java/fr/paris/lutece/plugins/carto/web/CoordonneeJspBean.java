@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2022, City of Paris
+ * Copyright (c) 2002-2023, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,8 +31,6 @@
  *
  * License 1.0
  */
- 	
- 
 package fr.paris.lutece.plugins.carto.web;
 
 import fr.paris.lutece.portal.service.message.AdminMessage;
@@ -60,7 +58,7 @@ import fr.paris.lutece.plugins.carto.business.CoordonneeHome;
  * This class provides the user interface to manage Coordonnee features ( manage, create, modify, remove )
  */
 @Controller( controllerJsp = "ManageCoordonnees.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT" )
-public class CoordonneeJspBean extends AbstractManageCartoJspBean <Integer, Coordonnee>
+public class CoordonneeJspBean extends AbstractManageCartoJspBean<Integer, Coordonnee>
 {
     // Templates
     private static final String TEMPLATE_MANAGE_COORDONNEES = "/admin/plugins/carto/manage_coordonnees.html";
@@ -102,70 +100,72 @@ public class CoordonneeJspBean extends AbstractManageCartoJspBean <Integer, Coor
     private static final String INFO_COORDONNEE_CREATED = "carto.info.coordonnee.created";
     private static final String INFO_COORDONNEE_UPDATED = "carto.info.coordonnee.updated";
     private static final String INFO_COORDONNEE_REMOVED = "carto.info.coordonnee.removed";
-    
+
     // Errors
     private static final String ERROR_RESOURCE_NOT_FOUND = "Resource not found";
-    
+
     // Session variable to store working values
     private Coordonnee _coordonnee;
     private List<Integer> _listIdCoordonnees;
-    
+
     /**
      * Build the Manage View
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return The page
      */
     @View( value = VIEW_MANAGE_COORDONNEES, defaultView = true )
     public String getManageCoordonnees( HttpServletRequest request )
     {
         _coordonnee = null;
-        
-        if ( request.getParameter( AbstractPaginator.PARAMETER_PAGE_INDEX) == null || _listIdCoordonnees.isEmpty( ) )
+
+        if ( request.getParameter( AbstractPaginator.PARAMETER_PAGE_INDEX ) == null || _listIdCoordonnees.isEmpty( ) )
         {
-        	_listIdCoordonnees = CoordonneeHome.getIdCoordonneesList(  );
+            _listIdCoordonnees = CoordonneeHome.getIdCoordonneesList( );
         }
-        
+
         Map<String, Object> model = getPaginatedListModel( request, MARK_COORDONNEE_LIST, _listIdCoordonnees, JSP_MANAGE_COORDONNEES );
 
         return getPage( PROPERTY_PAGE_TITLE_MANAGE_COORDONNEES, TEMPLATE_MANAGE_COORDONNEES, model );
     }
 
-	/**
+    /**
      * Get Items from Ids list
+     * 
      * @param listIds
      * @return the populated list of items corresponding to the id List
      */
-	@Override
-	List<Coordonnee> getItemsFromIds( List<Integer> listIds ) 
-	{
-		List<Coordonnee> listCoordonnee = CoordonneeHome.getCoordonneesListByIds( listIds );
-		
-		// keep original order
-        return listCoordonnee.stream()
-                 .sorted(Comparator.comparingInt( notif -> listIds.indexOf( notif.getId())))
-                 .collect(Collectors.toList());
-	}
-    
+    @Override
+    List<Coordonnee> getItemsFromIds( List<Integer> listIds )
+    {
+        List<Coordonnee> listCoordonnee = CoordonneeHome.getCoordonneesListByIds( listIds );
+
+        // keep original order
+        return listCoordonnee.stream( ).sorted( Comparator.comparingInt( notif -> listIds.indexOf( notif.getId( ) ) ) ).collect( Collectors.toList( ) );
+    }
+
     /**
-    * reset the _listIdCoordonnees list
-    */
+     * reset the _listIdCoordonnees list
+     */
     public void resetListId( )
     {
-    	_listIdCoordonnees = new ArrayList<>( );
+        _listIdCoordonnees = new ArrayList<>( );
     }
 
     /**
      * Returns the form to create a coordonnee
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the html code of the coordonnee form
      */
     @View( VIEW_CREATE_COORDONNEE )
     public String getCreateCoordonnee( HttpServletRequest request )
     {
-        _coordonnee = ( _coordonnee != null ) ? _coordonnee : new Coordonnee(  );
+        _coordonnee = ( _coordonnee != null ) ? _coordonnee : new Coordonnee( );
 
-        Map<String, Object> model = getModel(  );
+        Map<String, Object> model = getModel( );
         model.put( MARK_COORDONNEE, _coordonnee );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_CREATE_COORDONNEE ) );
 
@@ -175,7 +175,8 @@ public class CoordonneeJspBean extends AbstractManageCartoJspBean <Integer, Coor
     /**
      * Process the data capture form of a new coordonnee
      *
-     * @param request The Http Request
+     * @param request
+     *            The Http Request
      * @return The Jsp URL of the process result
      * @throws AccessDeniedException
      */
@@ -183,11 +184,10 @@ public class CoordonneeJspBean extends AbstractManageCartoJspBean <Integer, Coor
     public String doCreateCoordonnee( HttpServletRequest request ) throws AccessDeniedException
     {
         populate( _coordonnee, request, getLocale( ) );
-        
 
         if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_CREATE_COORDONNEE ) )
         {
-            throw new AccessDeniedException ( "Invalid security token" );
+            throw new AccessDeniedException( "Invalid security token" );
         }
 
         // Check constraints
@@ -197,17 +197,17 @@ public class CoordonneeJspBean extends AbstractManageCartoJspBean <Integer, Coor
         }
 
         CoordonneeHome.create( _coordonnee );
-        addInfo( INFO_COORDONNEE_CREATED, getLocale(  ) );
+        addInfo( INFO_COORDONNEE_CREATED, getLocale( ) );
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_COORDONNEES );
     }
 
     /**
-     * Manages the removal form of a coordonnee whose identifier is in the http
-     * request
+     * Manages the removal form of a coordonnee whose identifier is in the http request
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the html code to confirm
      */
     @Action( ACTION_CONFIRM_REMOVE_COORDONNEE )
@@ -217,7 +217,7 @@ public class CoordonneeJspBean extends AbstractManageCartoJspBean <Integer, Coor
         UrlItem url = new UrlItem( getActionUrl( ACTION_REMOVE_COORDONNEE ) );
         url.addParameter( PARAMETER_ID_COORDONNEE, nId );
 
-        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_COORDONNEE, url.getUrl(  ), AdminMessage.TYPE_CONFIRMATION );
+        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_COORDONNEE, url.getUrl( ), AdminMessage.TYPE_CONFIRMATION );
 
         return redirect( request, strMessageUrl );
     }
@@ -225,17 +225,17 @@ public class CoordonneeJspBean extends AbstractManageCartoJspBean <Integer, Coor
     /**
      * Handles the removal form of a coordonnee
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return the jsp URL to display the form to manage coordonnees
      */
     @Action( ACTION_REMOVE_COORDONNEE )
     public String doRemoveCoordonnee( HttpServletRequest request )
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_COORDONNEE ) );
-        
-        
+
         CoordonneeHome.remove( nId );
-        addInfo( INFO_COORDONNEE_REMOVED, getLocale(  ) );
+        addInfo( INFO_COORDONNEE_REMOVED, getLocale( ) );
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_COORDONNEES );
@@ -244,7 +244,8 @@ public class CoordonneeJspBean extends AbstractManageCartoJspBean <Integer, Coor
     /**
      * Returns the form to update info about a coordonnee
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return The HTML form to update info
      */
     @View( VIEW_MODIFY_COORDONNEE )
@@ -252,14 +253,13 @@ public class CoordonneeJspBean extends AbstractManageCartoJspBean <Integer, Coor
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_COORDONNEE ) );
 
-        if ( _coordonnee == null || ( _coordonnee.getId(  ) != nId ) )
+        if ( _coordonnee == null || ( _coordonnee.getId( ) != nId ) )
         {
             Optional<Coordonnee> optCoordonnee = CoordonneeHome.findByPrimaryKey( nId );
-            _coordonnee = optCoordonnee.orElseThrow( ( ) -> new AppException(ERROR_RESOURCE_NOT_FOUND ) );
+            _coordonnee = optCoordonnee.orElseThrow( ( ) -> new AppException( ERROR_RESOURCE_NOT_FOUND ) );
         }
 
-
-        Map<String, Object> model = getModel(  );
+        Map<String, Object> model = getModel( );
         model.put( MARK_COORDONNEE, _coordonnee );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_MODIFY_COORDONNEE ) );
 
@@ -269,19 +269,19 @@ public class CoordonneeJspBean extends AbstractManageCartoJspBean <Integer, Coor
     /**
      * Process the change form of a coordonnee
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return The Jsp URL of the process result
      * @throws AccessDeniedException
      */
     @Action( ACTION_MODIFY_COORDONNEE )
     public String doModifyCoordonnee( HttpServletRequest request ) throws AccessDeniedException
-    {   
+    {
         populate( _coordonnee, request, getLocale( ) );
-		
-		
+
         if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_MODIFY_COORDONNEE ) )
         {
-            throw new AccessDeniedException ( "Invalid security token" );
+            throw new AccessDeniedException( "Invalid security token" );
         }
 
         // Check constraints
@@ -291,7 +291,7 @@ public class CoordonneeJspBean extends AbstractManageCartoJspBean <Integer, Coor
         }
 
         CoordonneeHome.update( _coordonnee );
-        addInfo( INFO_COORDONNEE_UPDATED, getLocale(  ) );
+        addInfo( INFO_COORDONNEE_UPDATED, getLocale( ) );
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_COORDONNEES );

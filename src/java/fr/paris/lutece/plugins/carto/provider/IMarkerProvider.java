@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2021, City of Paris
+ * Copyright (c) 2002-2023, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -91,6 +91,6 @@ public interface IMarkerProvider
      * @return the value of the markers
      */
     Collection<InfoMarker> provideMarkerValues( String solrTag, String uid );
-    
+
     Map<String, String> valueMarker( String marker, String solrTag, String uid );
 }

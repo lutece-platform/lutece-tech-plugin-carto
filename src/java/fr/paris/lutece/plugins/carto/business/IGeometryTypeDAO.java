@@ -31,7 +31,7 @@
  *
  * License 1.0
  */
- 
+
 package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
@@ -46,22 +46,31 @@ public interface IGeometryTypeDAO
 {
     /**
      * Insert a new record in the table.
-     * @param geometryType instance of the GeometryType object to insert
-     * @param plugin the Plugin
+     * 
+     * @param geometryType
+     *            instance of the GeometryType object to insert
+     * @param plugin
+     *            the Plugin
      */
     void insert( GeometryType geometryType, Plugin plugin );
 
     /**
      * Update the record in the table
-     * @param geometryType the reference of the GeometryType
-     * @param plugin the Plugin
+     * 
+     * @param geometryType
+     *            the reference of the GeometryType
+     * @param plugin
+     *            the Plugin
      */
     void store( GeometryType geometryType, Plugin plugin );
 
     /**
      * Delete a record from the table
-     * @param nKey The identifier of the GeometryType to delete
-     * @param plugin the Plugin
+     * 
+     * @param nKey
+     *            The identifier of the GeometryType to delete
+     * @param plugin
+     *            the Plugin
      */
     void delete( int nKey, Plugin plugin );
 
@@ -70,38 +79,50 @@ public interface IGeometryTypeDAO
 
     /**
      * Load the data from the table
-     * @param nKey The identifier of the geometryType
-     * @param plugin the Plugin
+     * 
+     * @param nKey
+     *            The identifier of the geometryType
+     * @param plugin
+     *            the Plugin
      * @return The instance of the geometryType
      */
     Optional<GeometryType> load( int nKey, Plugin plugin );
 
     /**
      * Load the data of all the geometryType objects and returns them as a list
-     * @param plugin the Plugin
+     * 
+     * @param plugin
+     *            the Plugin
      * @return The list which contains the data of all the geometryType objects
      */
     List<GeometryType> selectGeometryTypesList( Plugin plugin );
-    
+
     /**
      * Load the id of all the geometryType objects and returns them as a list
-     * @param plugin the Plugin
+     * 
+     * @param plugin
+     *            the Plugin
      * @return The list which contains the id of all the geometryType objects
      */
     List<Integer> selectIdGeometryTypesList( Plugin plugin );
-    
+
     /**
      * Load the data of all the geometryType objects and returns them as a referenceList
-     * @param plugin the Plugin
+     * 
+     * @param plugin
+     *            the Plugin
      * @return The referenceList which contains the data of all the geometryType objects
      */
     ReferenceList selectGeometryTypesReferenceList( Plugin plugin );
-    
+
     /**
      * Load the data of all the avant objects and returns them as a list
-     * @param plugin the Plugin
-     * @param listIds liste of ids
+     * 
+     * @param plugin
+     *            the Plugin
+     * @param listIds
+     *            liste of ids
      * @return The list which contains the data of all the avant objects
      */
-	List<GeometryType> selectGeometryTypesListByIds( Plugin _plugin, List<Integer> listIds );
+    List<GeometryType> selectGeometryTypesListByIds( Plugin _plugin, List<Integer> listIds );
 }

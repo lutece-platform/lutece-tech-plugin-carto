@@ -32,14 +32,12 @@
  * License 1.0
  */
 
-
- package fr.paris.lutece.plugins.carto.business;
+package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.util.ReferenceList;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -56,14 +54,16 @@ public final class MapTemplateHome
     /**
      * Private constructor - this class need not be instantiated
      */
-    private MapTemplateHome(  )
+    private MapTemplateHome( )
     {
     }
 
     /**
      * Create an instance of the mapTemplate class
-     * @param mapTemplate The instance of the MapTemplate which contains the informations to store
-     * @return The  instance of mapTemplate which has been created with its primary key.
+     * 
+     * @param mapTemplate
+     *            The instance of the MapTemplate which contains the informations to store
+     * @return The instance of mapTemplate which has been created with its primary key.
      */
     public static MapTemplate create( MapTemplate mapTemplate )
     {
@@ -74,8 +74,10 @@ public final class MapTemplateHome
 
     /**
      * Update of the mapTemplate which is specified in parameter
-     * @param mapTemplate The instance of the MapTemplate which contains the data to store
-     * @return The instance of the  mapTemplate which has been updated
+     * 
+     * @param mapTemplate
+     *            The instance of the MapTemplate which contains the data to store
+     * @return The instance of the mapTemplate which has been updated
      */
     public static MapTemplate update( MapTemplate mapTemplate )
     {
@@ -86,7 +88,9 @@ public final class MapTemplateHome
 
     /**
      * Remove the mapTemplate whose identifier is specified in parameter
-     * @param nKey The mapTemplate Id
+     * 
+     * @param nKey
+     *            The mapTemplate Id
      */
     public static void remove( int nKey )
     {
@@ -95,16 +99,19 @@ public final class MapTemplateHome
 
     /**
      * Returns an instance of a mapTemplate whose identifier is specified in parameter
-     * @param nKey The mapTemplate primary key
+     * 
+     * @param nKey
+     *            The mapTemplate primary key
      * @return an instance of MapTemplate
      */
     public static Optional<MapTemplate> findByPrimaryKey( int nKey )
     {
         return _dao.load( nKey, _plugin );
     }
-    
+
     /**
      * Returns an instance of a mapTemplate whose identifier is specified in parameter
+     * 
      * @return an instance of MapTemplate
      */
     public static Optional<MapTemplate> findXpageFrontOffice( )
@@ -114,35 +121,39 @@ public final class MapTemplateHome
 
     /**
      * Load the data of all the mapTemplate objects and returns them as a list
+     * 
      * @return the list which contains the data of all the mapTemplate objects
      */
     public static List<MapTemplate> getMapTemplatesList( )
     {
         return _dao.selectMapTemplatesList( _plugin );
     }
-    
+
     /**
      * Load the id of all the mapTemplate objects and returns them as a list
+     * 
      * @return the list which contains the id of all the mapTemplate objects
      */
     public static List<Integer> getIdMapTemplatesList( )
     {
         return _dao.selectIdMapTemplatesList( _plugin );
     }
-    
+
     /**
      * Load the data of all the mapTemplate objects and returns them as a referenceList
+     * 
      * @return the referenceList which contains the data of all the mapTemplate objects
      */
     public static ReferenceList getMapTemplatesReferenceList( )
     {
         return _dao.selectMapTemplatesReferenceList( _plugin );
     }
-    
-	
+
     /**
      * Load the data of all the avant objects and returns them as a list
-     * @param listIds liste of ids
+     * 
+     * @param listIds
+     *            liste of ids
      * @return the list which contains the data of all the avant objects
      */
     public static List<MapTemplate> getMapTemplatesListByIds( List<Integer> listIds )
@@ -151,4 +162,3 @@ public final class MapTemplateHome
     }
 
 }
-

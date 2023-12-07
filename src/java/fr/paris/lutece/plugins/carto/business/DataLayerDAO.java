@@ -32,7 +32,6 @@
  * License 1.0
  */
 
-
 package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
@@ -58,7 +57,7 @@ public final class DataLayerDAO implements IDataLayerDAO
     private static final String SQL_QUERY_SELECTALL_ID = "SELECT id_data_layer FROM carto_data_layer";
     private static final String SQL_QUERY_SELECTALL_BY_IDS = "SELECT id_data_layer, title, solr_tag, geometry, popup_content FROM carto_data_layer WHERE id_data_layer IN (  ";
     private static final String SQL_QUERY_SELECT_LAYER_EDITABLE = "SELECT a.id_data_layer, a.title, a.solr_tag, a.geometry, a.popup_content FROM carto_data_layer a INNER JOIN carto_data_layer_map_template b ON a.id_data_layer = b.id_data_layer "
-    															+ "INNER JOIN carto_data_layer_type c ON b.layer_type = c.id_data_layer_type  WHERE c.editable = 1 AND b.id_map_template = ? ";
+            + "INNER JOIN carto_data_layer_type c ON b.layer_type = c.id_data_layer_type  WHERE c.editable = 1 AND b.id_map_template = ? ";
 
     /**
      * {@inheritDoc }
@@ -66,21 +65,21 @@ public final class DataLayerDAO implements IDataLayerDAO
     @Override
     public void insert( DataLayer dataLayer, Plugin plugin )
     {
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, Statement.RETURN_GENERATED_KEYS, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, Statement.RETURN_GENERATED_KEYS, plugin ) )
         {
             int nIndex = 1;
-            daoUtil.setString( nIndex++ , dataLayer.getTitle( ) );
-            daoUtil.setString( nIndex++ , dataLayer.getSolrTag( ) );
-            daoUtil.setInt( nIndex++ , dataLayer.getGeometryType( ).getId( ) );
-            daoUtil.setString( nIndex++ , dataLayer.getPopupContent( ) );
-            
+            daoUtil.setString( nIndex++, dataLayer.getTitle( ) );
+            daoUtil.setString( nIndex++, dataLayer.getSolrTag( ) );
+            daoUtil.setInt( nIndex++, dataLayer.getGeometryType( ).getId( ) );
+            daoUtil.setString( nIndex++, dataLayer.getPopupContent( ) );
+
             daoUtil.executeUpdate( );
-            if ( daoUtil.nextGeneratedKey( ) ) 
+            if ( daoUtil.nextGeneratedKey( ) )
             {
                 dataLayer.setId( daoUtil.getGeneratedKeyInt( 1 ) );
             }
         }
-        
+
     }
 
     /**
@@ -89,30 +88,30 @@ public final class DataLayerDAO implements IDataLayerDAO
     @Override
     public Optional<DataLayer> load( int nKey, Plugin plugin )
     {
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin ) )
         {
-	        daoUtil.setInt( 1 , nKey );
-	        daoUtil.executeQuery( );
-	        DataLayer dataLayer = null;
-	
-	        if ( daoUtil.next( ) )
-	        {
-	            dataLayer = new DataLayer();
-	            int nIndex = 1;
-	            
-	            dataLayer.setId( daoUtil.getInt( nIndex++ ) );
-			    dataLayer.setTitle( daoUtil.getString( nIndex++ ) );
-			    dataLayer.setSolrTag( daoUtil.getString( nIndex++ ) );
-			    //dataLayer.setGeometry( daoUtil.getInt( nIndex ) );
-			    Optional<GeometryType> geometryType = GeometryTypeHome.findByPrimaryKey( daoUtil.getInt( nIndex++ ) );
-			    if ( geometryType.isPresent( ) )
-			    {
-			    	dataLayer.setGeometryType( geometryType.get( ) );
-	        	}
-			    dataLayer.setPopupContent( daoUtil.getString( nIndex++ ) );
-	        }
-	
-	        return Optional.ofNullable( dataLayer );
+            daoUtil.setInt( 1, nKey );
+            daoUtil.executeQuery( );
+            DataLayer dataLayer = null;
+
+            if ( daoUtil.next( ) )
+            {
+                dataLayer = new DataLayer( );
+                int nIndex = 1;
+
+                dataLayer.setId( daoUtil.getInt( nIndex++ ) );
+                dataLayer.setTitle( daoUtil.getString( nIndex++ ) );
+                dataLayer.setSolrTag( daoUtil.getString( nIndex++ ) );
+                // dataLayer.setGeometry( daoUtil.getInt( nIndex ) );
+                Optional<GeometryType> geometryType = GeometryTypeHome.findByPrimaryKey( daoUtil.getInt( nIndex++ ) );
+                if ( geometryType.isPresent( ) )
+                {
+                    dataLayer.setGeometryType( geometryType.get( ) );
+                }
+                dataLayer.setPopupContent( daoUtil.getString( nIndex++ ) );
+            }
+
+            return Optional.ofNullable( dataLayer );
         }
     }
 
@@ -122,10 +121,10 @@ public final class DataLayerDAO implements IDataLayerDAO
     @Override
     public void delete( int nKey, Plugin plugin )
     {
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin ) )
         {
-	        daoUtil.setInt( 1 , nKey );
-	        daoUtil.executeUpdate( );
+            daoUtil.setInt( 1, nKey );
+            daoUtil.executeUpdate( );
         }
     }
 
@@ -135,18 +134,18 @@ public final class DataLayerDAO implements IDataLayerDAO
     @Override
     public void store( DataLayer dataLayer, Plugin plugin )
     {
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin ) )
         {
-	        int nIndex = 1;
-	        
-            	daoUtil.setString( nIndex++ , dataLayer.getTitle( ) );
-            	daoUtil.setString( nIndex++ , dataLayer.getSolrTag( ) );
-            	//daoUtil.setInt( nIndex++ , dataLayer.getGeometry( ) );
-            	daoUtil.setInt( nIndex++ , dataLayer.getGeometryType( ).getId( ) );
-            	daoUtil.setString( nIndex++ , dataLayer.getPopupContent( ) );
-	        daoUtil.setInt( nIndex , dataLayer.getId( ) );
-	
-	        daoUtil.executeUpdate( );
+            int nIndex = 1;
+
+            daoUtil.setString( nIndex++, dataLayer.getTitle( ) );
+            daoUtil.setString( nIndex++, dataLayer.getSolrTag( ) );
+            // daoUtil.setInt( nIndex++ , dataLayer.getGeometry( ) );
+            daoUtil.setInt( nIndex++, dataLayer.getGeometryType( ).getId( ) );
+            daoUtil.setString( nIndex++, dataLayer.getPopupContent( ) );
+            daoUtil.setInt( nIndex, dataLayer.getId( ) );
+
+            daoUtil.executeUpdate( );
         }
     }
 
@@ -156,34 +155,34 @@ public final class DataLayerDAO implements IDataLayerDAO
     @Override
     public List<DataLayer> selectDataLayersList( Plugin plugin )
     {
-        List<DataLayer> dataLayerList = new ArrayList<>(  );
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
+        List<DataLayer> dataLayerList = new ArrayList<>( );
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
         {
-	        daoUtil.executeQuery(  );
-	
-	        while ( daoUtil.next(  ) )
-	        {
-	            DataLayer dataLayer = new DataLayer(  );
-	            int nIndex = 1;
-	            
-	            dataLayer.setId( daoUtil.getInt( nIndex++ ) );
-			    dataLayer.setTitle( daoUtil.getString( nIndex++ ) );
-			    dataLayer.setSolrTag( daoUtil.getString( nIndex++ ) );
-			    //dataLayer.setGeometry( daoUtil.getInt( nIndex ) );
-			    Optional<GeometryType> geometryType = GeometryTypeHome.findByPrimaryKey( daoUtil.getInt( nIndex++ ) );
-			    if ( geometryType.isPresent( ) )
-			    {
-			    	dataLayer.setGeometryType( geometryType.get( ) );
-	        	}
-			    dataLayer.setPopupContent( daoUtil.getString( nIndex++ ) );
-	
-	            dataLayerList.add( dataLayer );
-	        }
-	
-	        return dataLayerList;
+            daoUtil.executeQuery( );
+
+            while ( daoUtil.next( ) )
+            {
+                DataLayer dataLayer = new DataLayer( );
+                int nIndex = 1;
+
+                dataLayer.setId( daoUtil.getInt( nIndex++ ) );
+                dataLayer.setTitle( daoUtil.getString( nIndex++ ) );
+                dataLayer.setSolrTag( daoUtil.getString( nIndex++ ) );
+                // dataLayer.setGeometry( daoUtil.getInt( nIndex ) );
+                Optional<GeometryType> geometryType = GeometryTypeHome.findByPrimaryKey( daoUtil.getInt( nIndex++ ) );
+                if ( geometryType.isPresent( ) )
+                {
+                    dataLayer.setGeometryType( geometryType.get( ) );
+                }
+                dataLayer.setPopupContent( daoUtil.getString( nIndex++ ) );
+
+                dataLayerList.add( dataLayer );
+            }
+
+            return dataLayerList;
         }
     }
-    
+
     /**
      * {@inheritDoc }
      */
@@ -191,137 +190,139 @@ public final class DataLayerDAO implements IDataLayerDAO
     public List<Integer> selectIdDataLayersList( Plugin plugin )
     {
         List<Integer> dataLayerList = new ArrayList<>( );
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL_ID, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL_ID, plugin ) )
         {
-	        daoUtil.executeQuery(  );
-	
-	        while ( daoUtil.next(  ) )
-	        {
-	            dataLayerList.add( daoUtil.getInt( 1 ) );
-	        }
-	
-	        return dataLayerList;
+            daoUtil.executeQuery( );
+
+            while ( daoUtil.next( ) )
+            {
+                dataLayerList.add( daoUtil.getInt( 1 ) );
+            }
+
+            return dataLayerList;
         }
     }
-    
+
     /**
      * {@inheritDoc }
      */
     @Override
     public ReferenceList selectDataLayersReferenceList( Plugin plugin )
     {
-        ReferenceList dataLayerList = new ReferenceList();
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
+        ReferenceList dataLayerList = new ReferenceList( );
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
         {
-	        daoUtil.executeQuery(  );
-	
-	        while ( daoUtil.next(  ) )
-	        {
-	            dataLayerList.addItem( daoUtil.getInt( 1 ) , daoUtil.getString( 2 ) );
-	        }
-	
-	        return dataLayerList;
-    	}
+            daoUtil.executeQuery( );
+
+            while ( daoUtil.next( ) )
+            {
+                dataLayerList.addItem( daoUtil.getInt( 1 ), daoUtil.getString( 2 ) );
+            }
+
+            return dataLayerList;
+        }
     }
-    
+
     /**
      * {@inheritDoc }
      */
-	@Override
-	public List<DataLayer> selectDataLayersListByIds( Plugin plugin, List<Integer> listIds ) {
-		List<DataLayer> dataLayerList = new ArrayList<>(  );
-		
-		StringBuilder builder = new StringBuilder( );
+    @Override
+    public List<DataLayer> selectDataLayersListByIds( Plugin plugin, List<Integer> listIds )
+    {
+        List<DataLayer> dataLayerList = new ArrayList<>( );
 
-		if ( !listIds.isEmpty( ) )
-		{
-			for( int i = 0 ; i < listIds.size(); i++ ) {
-			    builder.append( "?," );
-			}
-	
-			String placeHolders =  builder.deleteCharAt( builder.length( ) -1 ).toString( );
-			String stmt = SQL_QUERY_SELECTALL_BY_IDS + placeHolders + ")";
-			
-			
-	        try ( DAOUtil daoUtil = new DAOUtil( stmt, plugin ) )
-	        {
-	        	int index = 1;
-				for( Integer n : listIds ) {
-					daoUtil.setInt(  index++, n ); 
-				}
-	        	
-	        	daoUtil.executeQuery(  );
-	        	while ( daoUtil.next(  ) )
-		        {
-		        	DataLayer dataLayer = new DataLayer(  );
-		            int nIndex = 1;
-		            
-		            dataLayer.setId( daoUtil.getInt( nIndex++ ) );
-				    dataLayer.setTitle( daoUtil.getString( nIndex++ ) );
-				    dataLayer.setSolrTag( daoUtil.getString( nIndex++ ) );
-				    //dataLayer.setGeometry( daoUtil.getInt( nIndex ) );
-				    Optional<GeometryType> geometryType = GeometryTypeHome.findByPrimaryKey( daoUtil.getInt( nIndex++ ) );
-				    if ( geometryType.isPresent( ) )
-				    {
-				    	dataLayer.setGeometryType( geometryType.get( ) );
-		        	}
-				    dataLayer.setPopupContent( daoUtil.getString( nIndex++ ) );
-				    
-		            dataLayerList.add( dataLayer );
-		        }
-		
-		        daoUtil.free( );
-		        
-	        }
-	    }
-		return dataLayerList;
-		
-	}
-	
-	/**
+        StringBuilder builder = new StringBuilder( );
+
+        if ( !listIds.isEmpty( ) )
+        {
+            for ( int i = 0; i < listIds.size( ); i++ )
+            {
+                builder.append( "?," );
+            }
+
+            String placeHolders = builder.deleteCharAt( builder.length( ) - 1 ).toString( );
+            String stmt = SQL_QUERY_SELECTALL_BY_IDS + placeHolders + ")";
+
+            try ( DAOUtil daoUtil = new DAOUtil( stmt, plugin ) )
+            {
+                int index = 1;
+                for ( Integer n : listIds )
+                {
+                    daoUtil.setInt( index++, n );
+                }
+
+                daoUtil.executeQuery( );
+                while ( daoUtil.next( ) )
+                {
+                    DataLayer dataLayer = new DataLayer( );
+                    int nIndex = 1;
+
+                    dataLayer.setId( daoUtil.getInt( nIndex++ ) );
+                    dataLayer.setTitle( daoUtil.getString( nIndex++ ) );
+                    dataLayer.setSolrTag( daoUtil.getString( nIndex++ ) );
+                    // dataLayer.setGeometry( daoUtil.getInt( nIndex ) );
+                    Optional<GeometryType> geometryType = GeometryTypeHome.findByPrimaryKey( daoUtil.getInt( nIndex++ ) );
+                    if ( geometryType.isPresent( ) )
+                    {
+                        dataLayer.setGeometryType( geometryType.get( ) );
+                    }
+                    dataLayer.setPopupContent( daoUtil.getString( nIndex++ ) );
+
+                    dataLayerList.add( dataLayer );
+                }
+
+                daoUtil.free( );
+
+            }
+        }
+        return dataLayerList;
+
+    }
+
+    /**
      * {@inheritDoc }
      */
     @Override
     public Optional<DataLayer> loadDataLayerWithOptions( int nKey, boolean editable, boolean inclusion, boolean exclusion, Plugin plugin )
     {
-    	StringBuilder builder = new StringBuilder( SQL_QUERY_SELECT_LAYER_EDITABLE );
-    	if ( editable )
-    	{
-    		builder.append( " AND c.editable = 1 " );
-    	}
-    	if ( inclusion )
-    	{
-    		builder.append( " AND c.inclusion = 1 " );
-    	}
-    	if ( exclusion )
-    	{
-    		builder.append( " AND c.exclusion = 1 " );
-    	}
-    	
-    	try( DAOUtil daoUtil = new DAOUtil( builder.toString( ), plugin ) )
+        StringBuilder builder = new StringBuilder( SQL_QUERY_SELECT_LAYER_EDITABLE );
+        if ( editable )
         {
-	        daoUtil.setInt( 1 , nKey );
-	        daoUtil.executeQuery( );
-	        DataLayer dataLayer = null;
-	
-	        if ( daoUtil.next( ) )
-	        {
-	            dataLayer = new DataLayer();
-	            int nIndex = 1;
-	            
-	            dataLayer.setId( daoUtil.getInt( nIndex++ ) );
-			    dataLayer.setTitle( daoUtil.getString( nIndex++ ) );
-			    dataLayer.setSolrTag( daoUtil.getString( nIndex++ ) );
-			    //dataLayer.setGeometry( daoUtil.getInt( nIndex ) );
-			    Optional<GeometryType> geometryType = GeometryTypeHome.findByPrimaryKey( daoUtil.getInt( nIndex++ ) );
-			    if ( geometryType.isPresent( ) )
-			    {
-			    	dataLayer.setGeometryType( geometryType.get( ) );
-	        	}
-			    dataLayer.setPopupContent( daoUtil.getString( nIndex++ ) );
-	        }
-	
-	        return Optional.ofNullable( dataLayer );
+            builder.append( " AND c.editable = 1 " );
+        }
+        if ( inclusion )
+        {
+            builder.append( " AND c.inclusion = 1 " );
+        }
+        if ( exclusion )
+        {
+            builder.append( " AND c.exclusion = 1 " );
+        }
+
+        try ( DAOUtil daoUtil = new DAOUtil( builder.toString( ), plugin ) )
+        {
+            daoUtil.setInt( 1, nKey );
+            daoUtil.executeQuery( );
+            DataLayer dataLayer = null;
+
+            if ( daoUtil.next( ) )
+            {
+                dataLayer = new DataLayer( );
+                int nIndex = 1;
+
+                dataLayer.setId( daoUtil.getInt( nIndex++ ) );
+                dataLayer.setTitle( daoUtil.getString( nIndex++ ) );
+                dataLayer.setSolrTag( daoUtil.getString( nIndex++ ) );
+                // dataLayer.setGeometry( daoUtil.getInt( nIndex ) );
+                Optional<GeometryType> geometryType = GeometryTypeHome.findByPrimaryKey( daoUtil.getInt( nIndex++ ) );
+                if ( geometryType.isPresent( ) )
+                {
+                    dataLayer.setGeometryType( geometryType.get( ) );
+                }
+                dataLayer.setPopupContent( daoUtil.getString( nIndex++ ) );
+            }
+
+            return Optional.ofNullable( dataLayer );
         }
     }
 }

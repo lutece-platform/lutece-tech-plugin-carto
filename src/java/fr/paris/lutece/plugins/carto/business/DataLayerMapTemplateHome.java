@@ -32,14 +32,12 @@
  * License 1.0
  */
 
-
- package fr.paris.lutece.plugins.carto.business;
+package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.util.ReferenceList;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -56,14 +54,16 @@ public final class DataLayerMapTemplateHome
     /**
      * Private constructor - this class need not be instantiated
      */
-    private DataLayerMapTemplateHome(  )
+    private DataLayerMapTemplateHome( )
     {
     }
 
     /**
      * Create an instance of the dataLayerMapTemplate class
-     * @param dataLayerMapTemplate The instance of the DataLayerMapTemplate which contains the informations to store
-     * @return The  instance of dataLayerMapTemplate which has been created with its primary key.
+     * 
+     * @param dataLayerMapTemplate
+     *            The instance of the DataLayerMapTemplate which contains the informations to store
+     * @return The instance of dataLayerMapTemplate which has been created with its primary key.
      */
     public static DataLayerMapTemplate create( DataLayerMapTemplate dataLayerMapTemplate )
     {
@@ -74,8 +74,10 @@ public final class DataLayerMapTemplateHome
 
     /**
      * Update of the dataLayerMapTemplate which is specified in parameter
-     * @param dataLayerMapTemplate The instance of the DataLayerMapTemplate which contains the data to store
-     * @return The instance of the  dataLayerMapTemplate which has been updated
+     * 
+     * @param dataLayerMapTemplate
+     *            The instance of the DataLayerMapTemplate which contains the data to store
+     * @return The instance of the dataLayerMapTemplate which has been updated
      */
     public static DataLayerMapTemplate update( DataLayerMapTemplate dataLayerMapTemplate )
     {
@@ -86,7 +88,9 @@ public final class DataLayerMapTemplateHome
 
     /**
      * Remove the dataLayerMapTemplate whose identifier is specified in parameter
-     * @param nKey The dataLayerMapTemplate Id
+     * 
+     * @param nKey
+     *            The dataLayerMapTemplate Id
      */
     public static void remove( int nKey )
     {
@@ -95,7 +99,9 @@ public final class DataLayerMapTemplateHome
 
     /**
      * Returns an instance of a dataLayerMapTemplate whose identifier is specified in parameter
-     * @param nKey The dataLayerMapTemplate primary key
+     * 
+     * @param nKey
+     *            The dataLayerMapTemplate primary key
      * @return an instance of DataLayerMapTemplate
      */
     public static Optional<DataLayerMapTemplate> findByPrimaryKey( int nKey )
@@ -105,66 +111,77 @@ public final class DataLayerMapTemplateHome
 
     /**
      * Load the data of all the dataLayerMapTemplate objects and returns them as a list
+     * 
      * @return the list which contains the data of all the dataLayerMapTemplate objects
      */
     public static List<DataLayerMapTemplate> getDataLayerMapTemplatesList( )
     {
         return _dao.selectDataLayerMapTemplatesList( _plugin );
     }
-    
+
     /**
      * Load the id of all the dataLayerMapTemplate objects and returns them as a list
+     * 
      * @return the list which contains the id of all the dataLayerMapTemplate objects
      */
     public static List<Integer> getIdDataLayerMapTemplatesList( )
     {
         return _dao.selectIdDataLayerMapTemplatesList( _plugin );
     }
-    
+
     /**
      * Load the data of all the dataLayerMapTemplate objects and returns them as a referenceList
+     * 
      * @return the referenceList which contains the data of all the dataLayerMapTemplate objects
      */
     public static ReferenceList getDataLayerMapTemplatesReferenceList( )
     {
         return _dao.selectDataLayerMapTemplatesReferenceList( _plugin );
     }
-    
-	
+
     /**
      * Load the data of all the avant objects and returns them as a list
-     * @param listIds liste of ids
+     * 
+     * @param listIds
+     *            liste of ids
      * @return the list which contains the data of all the avant objects
      */
     public static List<DataLayerMapTemplate> getDataLayerMapTemplatesListByIds( List<Integer> listIds )
     {
         return _dao.selectDataLayerMapTemplatesListByIds( _plugin, listIds );
     }
-    
+
     /**
      * Load all the DataLayer attached to the MapTemplate id
-     * @param nkey : id of the mapTemplate
+     * 
+     * @param nkey
+     *            : id of the mapTemplate
      * @return The list of DataLayer
      */
     public static List<DataLayer> getDataLayerListByMapTemplateId( int nKey )
     {
-    	return _dao.selectDataLayerListByMapTemplateId( _plugin, nKey );
+        return _dao.selectDataLayerListByMapTemplateId( _plugin, nKey );
     }
-    
+
     /**
      * Returns an instance of a dataLayerMapTemplate whose identifier is specified in parameter
-     * @param nMapKey The MapTemplate primary key
-     * @param nDataLayerKey The dataLayer primary key
+     * 
+     * @param nMapKey
+     *            The MapTemplate primary key
+     * @param nDataLayerKey
+     *            The dataLayer primary key
      * @return an instance of DataLayerMapTemplate
      */
     public static Optional<DataLayerMapTemplate> findByIdMapKeyIdDataLayerKey( int nMapKey, int nDataLayerKey )
     {
         return _dao.loadByIdMapIdLayer( nMapKey, nDataLayerKey, _plugin );
     }
-    
+
     /**
      * Returns an instance of a dataLayerMapTemplate whose identifier is specified in parameter
-     * @param nDataLayerKey The dataLayer primary key
+     * 
+     * @param nDataLayerKey
+     *            The dataLayer primary key
      * @return an instance of DataLayerMapTemplate
      */
     public static Optional<DataLayerMapTemplate> findByIdDataLayerKey( int nDataLayerKey )
@@ -173,4 +190,3 @@ public final class DataLayerMapTemplateHome
     }
 
 }
-
