@@ -50,6 +50,7 @@ public final class DataLayerDAO implements IDataLayerDAO
 {
     // Constants
     private static final String SQL_QUERY_SELECT = "SELECT id_data_layer, title, solr_tag, geometry, popup_content FROM carto_data_layer WHERE id_data_layer = ?";
+    private static final String SQL_QUERY_SELECT_BY_SOLR_TAG = "SELECT id_data_layer, title, solr_tag, geometry, popup_content FROM carto_data_layer WHERE solr_tag = ?";
     private static final String SQL_QUERY_INSERT = "INSERT INTO carto_data_layer ( title, solr_tag, geometry, popup_content ) VALUES ( ?, ?, ?, ? ) ";
     private static final String SQL_QUERY_DELETE = "DELETE FROM carto_data_layer WHERE id_data_layer = ? ";
     private static final String SQL_QUERY_UPDATE = "UPDATE carto_data_layer SET title = ?, solr_tag = ?, geometry = ?, popup_content = ? WHERE id_data_layer = ?";
@@ -91,6 +92,39 @@ public final class DataLayerDAO implements IDataLayerDAO
         try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin ) )
         {
             daoUtil.setInt( 1, nKey );
+            daoUtil.executeQuery( );
+            DataLayer dataLayer = null;
+
+            if ( daoUtil.next( ) )
+            {
+                dataLayer = new DataLayer( );
+                int nIndex = 1;
+
+                dataLayer.setId( daoUtil.getInt( nIndex++ ) );
+                dataLayer.setTitle( daoUtil.getString( nIndex++ ) );
+                dataLayer.setSolrTag( daoUtil.getString( nIndex++ ) );
+                // dataLayer.setGeometry( daoUtil.getInt( nIndex ) );
+                Optional<GeometryType> geometryType = GeometryTypeHome.findByPrimaryKey( daoUtil.getInt( nIndex++ ) );
+                if ( geometryType.isPresent( ) )
+                {
+                    dataLayer.setGeometryType( geometryType.get( ) );
+                }
+                dataLayer.setPopupContent( daoUtil.getString( nIndex++ ) );
+            }
+
+            return Optional.ofNullable( dataLayer );
+        }
+    }
+    
+    /**
+     * {@inheritDoc }
+     */
+    @Override
+    public Optional<DataLayer> loadBySolrTag( String strSolrTag, Plugin plugin )
+    {
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_BY_SOLR_TAG, plugin ) )
+        {
+            daoUtil.setString( 1, strSolrTag );
             daoUtil.executeQuery( );
             DataLayer dataLayer = null;
 

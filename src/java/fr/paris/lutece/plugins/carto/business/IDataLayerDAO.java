@@ -142,4 +142,15 @@ public interface IDataLayerDAO
      * @return The instance of the dataLayer
      */
     Optional<DataLayer> loadDataLayerWithOptions( int nKey, boolean editable, boolean inclusion, boolean exclusion, Plugin plugin );
+
+	/**
+     * Load the data from the table
+     * 
+     * @param strSolrTag
+     *            The identifier of the solrtag
+     * @param plugin
+     *            the Plugin
+     * @return The instance of the dataLayer
+     */
+	Optional<DataLayer> loadBySolrTag(String strSolrTag, Plugin plugin);
 }

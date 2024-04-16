@@ -112,6 +112,8 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean<Integer, DataLa
     private static final String INFO_DATALAYER_CREATED = "carto.info.datalayer.created";
     private static final String INFO_DATALAYER_UPDATED = "carto.info.datalayer.updated";
     private static final String INFO_DATALAYER_REMOVED = "carto.info.datalayer.removed";
+    
+    private static final String MESSAGE_SEARCH_IDENTITY_NORESULT = "carto.message.warning.solrtag";
 
     // Errors
     private static final String ERROR_RESOURCE_NOT_FOUND = "Resource not found";
@@ -209,6 +211,11 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean<Integer, DataLa
         if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_CREATE_DATALAYER ) )
         {
             throw new AccessDeniedException( "Invalid security token" );
+        }
+        Optional<DataLayer> optDataLayerSolrTag = DataLayerHome.findBySolrTag( _datalayer.getSolrTag( ) );
+        if ( optDataLayerSolrTag.isPresent( ) )
+        {
+        	addWarning( MESSAGE_SEARCH_IDENTITY_NORESULT, getLocale(  ) );
         }
 
         // Check constraints

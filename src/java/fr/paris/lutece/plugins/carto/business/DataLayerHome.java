@@ -108,6 +108,18 @@ public final class DataLayerHome
     {
         return _dao.load( nKey, _plugin );
     }
+    
+    /**
+     * Returns an instance of a dataLayer whose identifier is specified in parameter
+     * 
+     * @param nKey
+     *            The dataLayer primary key
+     * @return an instance of DataLayer
+     */
+    public static Optional<DataLayer> findBySolrTag( String strSolrTag )
+    {
+        return _dao.loadBySolrTag( strSolrTag, _plugin );
+    }
 
     /**
      * Load the data of all the dataLayer objects and returns them as a list
