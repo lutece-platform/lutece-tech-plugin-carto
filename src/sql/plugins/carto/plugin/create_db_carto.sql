@@ -103,6 +103,7 @@ CREATE TABLE carto_basemap (
 id_basemap int AUTO_INCREMENT,
 title varchar(255) default '' NOT NULL,
 url long varchar NOT NULL,
+attribution varchar(255) default '',
 PRIMARY KEY (id_basemap)
 );
 

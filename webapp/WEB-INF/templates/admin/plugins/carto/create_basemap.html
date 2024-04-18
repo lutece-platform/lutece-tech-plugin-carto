@@ -11,6 +11,9 @@
 			<@formGroup labelFor='url' labelKey='#i18n{carto.modify_basemap.labelUrl}' mandatory=true>
 				<@input type='url' id='url' name='url'  value='${basemap.url!\'\'}'  />
 			</@formGroup>
+			<@formGroup labelFor='attribution' labelKey='#i18n{carto.modify_basemap.labelAttribution}' mandatory=true>
+				<@input type='text' id='attribution' name='attribution'  value='${basemap.attribution!\'\'}'  />
+			</@formGroup>
 			<@actionButtons button1Name="action_createBasemap" button2Name="view_manageBasemap"/>
 			</@tform>
     	</@div>

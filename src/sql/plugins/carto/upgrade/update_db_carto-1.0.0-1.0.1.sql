@@ -1,0 +1,1 @@
+ALTER TABLE carto_basemap add column attribution varchar(255) default '';

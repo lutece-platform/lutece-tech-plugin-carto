@@ -49,13 +49,13 @@ import java.util.Optional;
 public final class BasemapDAO implements IBasemapDAO
 {
     // Constants
-    private static final String SQL_QUERY_SELECT = "SELECT id_basemap, title, url FROM carto_basemap WHERE id_basemap = ?";
-    private static final String SQL_QUERY_INSERT = "INSERT INTO carto_basemap ( title, url ) VALUES ( ?, ? ) ";
+    private static final String SQL_QUERY_SELECT = "SELECT id_basemap, title, url, attribution FROM carto_basemap WHERE id_basemap = ?";
+    private static final String SQL_QUERY_INSERT = "INSERT INTO carto_basemap ( title, url, attribution ) VALUES ( ?, ?, ? ) ";
     private static final String SQL_QUERY_DELETE = "DELETE FROM carto_basemap WHERE id_basemap = ? ";
-    private static final String SQL_QUERY_UPDATE = "UPDATE carto_basemap SET title = ?, url = ? WHERE id_basemap = ?";
-    private static final String SQL_QUERY_SELECTALL = "SELECT id_basemap, title, url FROM carto_basemap";
+    private static final String SQL_QUERY_UPDATE = "UPDATE carto_basemap SET title = ?, url = ?, attribution = ? WHERE id_basemap = ?";
+    private static final String SQL_QUERY_SELECTALL = "SELECT id_basemap, title, url, attribution FROM carto_basemap";
     private static final String SQL_QUERY_SELECTALL_ID = "SELECT id_basemap FROM carto_basemap";
-    private static final String SQL_QUERY_SELECTALL_BY_IDS = "SELECT id_basemap, title, url FROM carto_basemap WHERE id_basemap IN (  ";
+    private static final String SQL_QUERY_SELECTALL_BY_IDS = "SELECT id_basemap, title, url, attribution FROM carto_basemap WHERE id_basemap IN (  ";
 
     /**
      * {@inheritDoc }
@@ -68,6 +68,7 @@ public final class BasemapDAO implements IBasemapDAO
             int nIndex = 1;
             daoUtil.setString( nIndex++, basemap.getTitle( ) );
             daoUtil.setString( nIndex++, basemap.getUrl( ) );
+            daoUtil.setString( nIndex++, basemap.getAttribution( ) );
 
             daoUtil.executeUpdate( );
             if ( daoUtil.nextGeneratedKey( ) )
@@ -97,7 +98,8 @@ public final class BasemapDAO implements IBasemapDAO
 
                 basemap.setId( daoUtil.getInt( nIndex++ ) );
                 basemap.setTitle( daoUtil.getString( nIndex++ ) );
-                basemap.setUrl( daoUtil.getString( nIndex ) );
+                basemap.setUrl( daoUtil.getString( nIndex++ ) );
+                basemap.setAttribution( daoUtil.getString( nIndex ) );
             }
 
             return Optional.ofNullable( basemap );
@@ -129,6 +131,7 @@ public final class BasemapDAO implements IBasemapDAO
 
             daoUtil.setString( nIndex++, basemap.getTitle( ) );
             daoUtil.setString( nIndex++, basemap.getUrl( ) );
+            daoUtil.setString( nIndex++, basemap.getAttribution( ) );
             daoUtil.setInt( nIndex, basemap.getId( ) );
 
             daoUtil.executeUpdate( );
@@ -153,7 +156,8 @@ public final class BasemapDAO implements IBasemapDAO
 
                 basemap.setId( daoUtil.getInt( nIndex++ ) );
                 basemap.setTitle( daoUtil.getString( nIndex++ ) );
-                basemap.setUrl( daoUtil.getString( nIndex ) );
+                basemap.setUrl( daoUtil.getString( nIndex++ ) );
+                basemap.setAttribution( daoUtil.getString( nIndex ) );
 
                 basemapList.add( basemap );
             }
@@ -238,7 +242,8 @@ public final class BasemapDAO implements IBasemapDAO
 
                     basemap.setId( daoUtil.getInt( nIndex++ ) );
                     basemap.setTitle( daoUtil.getString( nIndex++ ) );
-                    basemap.setUrl( daoUtil.getString( nIndex ) );
+                    basemap.setUrl( daoUtil.getString( nIndex++ ) );
+                    basemap.setAttribution( daoUtil.getString( nIndex ) );
 
                     basemapList.add( basemap );
                 }

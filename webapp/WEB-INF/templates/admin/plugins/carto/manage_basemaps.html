@@ -13,6 +13,7 @@
                     <@tr>
                         <@th>#i18n{carto.manage_basemap.columnTitle}</@th>
                         <@th>#i18n{carto.manage_basemap.columnUrl}</@th>
+                        <@th>#i18n{carto.manage_basemap.columnAttribution}</@th>
                         <@th>#i18n{portal.util.labelActions}</@th>
                     </@tr>
                     <@tableHeadBodySeparator />
@@ -20,6 +21,7 @@
                     <@tr>
                         <@td>${basemap.title}</@td>
                         <@td>${basemap.url}</@td>
+                        <@td>${basemap.attribution}</@td>
                         <@td>
                             <@offcanvas targetUrl="jsp/admin/plugins/carto/ManageBasemaps.jsp?view=modifyBasemap&id=${basemap.id}" targetElement="#modify_basemap" redirectForm=true id="template-modify-basemap-${basemap.id}" title="#i18n{portal.util.labelModify}" btnTitle="#i18n{portal.util.labelModify}" btnIcon="pencil" btnSize="" position="end" size="half" />
                             <@aButton href='jsp/admin/plugins/carto/ManageBasemaps.jsp?action=confirmRemoveBasemap&id=${basemap.id}' title='#i18n{portal.util.labelDelete}' size='' buttonIcon='trash' hideTitle=['all'] color='danger'  />

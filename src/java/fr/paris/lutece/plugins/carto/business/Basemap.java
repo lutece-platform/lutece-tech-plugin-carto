@@ -53,6 +53,8 @@ public class Basemap implements Serializable
 
     @NotEmpty( message = "#i18n{carto.validation.basemap.Url.notEmpty}" )
     private String _strUrl;
+    
+    private String _strAttribution;
 
     /**
      * Returns the Id
@@ -116,5 +118,24 @@ public class Basemap implements Serializable
     {
         _strUrl = strUrl;
     }
+
+    /**
+     * Returns the attribution
+     * 
+     * @return The attribution
+     */
+	public String getAttribution() {
+		return _strAttribution;
+	}
+
+	/**
+     * Sets the attribution
+     * 
+     * @param strAttribution
+     *            The attribution
+     */
+	public void setAttribution(String strAttribution) {
+		this._strAttribution = strAttribution;
+	}
 
 }
