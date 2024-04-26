@@ -59,6 +59,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItem;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.paris.lutece.plugins.carto.business.Coordonnee;
@@ -249,17 +253,18 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         FileItem zoneJsonFileItem = multipartRequest.getFile( PARAMETER_ZONE_JSON );
+        String strGeoJSON = null;
         if ( zoneJsonFileItem != null && zoneJsonFileItem.getSize( ) > 0 )
         {
-            String strGeoJson = zoneJsonFileItem.getString( );
+            String strGeoJsonFeatureCollection = zoneJsonFileItem.getString( );
             try
             {
-                // GeolocItem.fromJSON( strGeoJson );
-                new ObjectMapper( ).readTree( strGeoJson );
+                new ObjectMapper( ).readTree( strGeoJsonFeatureCollection );
+                strGeoJSON = getGeoJSON( strGeoJsonFeatureCollection );
             }
             catch( IOException e )
             {
-                AppLogService.error( "Exception during GEOJSON parsing : " + strGeoJson + " : " + e );
+                AppLogService.error( "Exception during GEOJSON parsing : " + strGeoJsonFeatureCollection + " : " + e );
                 addError( "GeoJSON not valid" );
                 return redirect( request, VIEW_MODIFY_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE, _datalayermaptemplate.getId( ) );
 
@@ -268,7 +273,10 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
             coord.setAdresse( "" );
             coord.setCoordonneeX( 0.0 );
             coord.setCoordonneeY( 0.0 );
-            coord.setGeoJson( strGeoJson );
+            if ( strGeoJSON != null && !strGeoJSON.isEmpty() )
+            	coord.setGeoJson( strGeoJSON );
+            else
+            	coord.setGeoJson( strGeoJsonFeatureCollection );
             DataLayer datalayer = DataLayerHome.findByPrimaryKey( _datalayermaptemplate.getIdDataLayer( ) ).get( );
             coord.setDataLayer( datalayer );
             coord = CoordonneeHome.create( coord );
@@ -406,28 +414,18 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         FileItem zoneJsonFileItem = multipartRequest.getFile( PARAMETER_ZONE_JSON );
+        String strGeoJSON = null;
         if ( zoneJsonFileItem != null && zoneJsonFileItem.getSize( ) > 0 )
         {
-            String strGeoJson = zoneJsonFileItem.getString( );
-            /*
-             * try { GeolocItem geo = GeolocItem.fromJSON( strGeoJson ); geo.getAddress(); //geo.getLat(); } catch (JsonParseException e1) { // TODO
-             * Auto-generated catch block e1.printStackTrace(); AppLogService.error( "Exception during GEOJSON parsing : " + strGeoJson + " : " + e1 );
-             * addError( "GeoJSON not valid" ); return redirect( request, VIEW_MODIFY_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE,
-             * _datalayermaptemplate.getId( ) ); } catch (JsonMappingException e1) { // TODO Auto-generated catch block e1.printStackTrace();
-             * AppLogService.error( "Exception during GEOJSON parsing : " + strGeoJson + " : " + e1 ); addError( "GeoJSON not valid" ); return redirect(
-             * request, VIEW_MODIFY_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE, _datalayermaptemplate.getId( ) ); } catch (IOException e1) { //
-             * TODO Auto-generated catch block e1.printStackTrace(); AppLogService.error( "Exception during GEOJSON parsing : " + strGeoJson + " : " + e1 );
-             * addError( "GeoJSON not valid" ); return redirect( request, VIEW_MODIFY_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE,
-             * _datalayermaptemplate.getId( ) ); }
-             */
+            String strGeoJsonFeatureCollection = zoneJsonFileItem.getString( );
             try
             {
-                // GeolocItem.fromJSON( strGeoJson );
-                new ObjectMapper( ).readTree( strGeoJson );
+            	new ObjectMapper( ).readTree( strGeoJsonFeatureCollection );
+            	strGeoJSON = getGeoJSON( strGeoJsonFeatureCollection );
             }
             catch( IOException e )
             {
-                AppLogService.error( "Exception during GEOJSON parsing : " + strGeoJson + " : " + e );
+                AppLogService.error( "Exception during GEOJSON parsing : " + strGeoJsonFeatureCollection + " : " + e );
                 addError( "GeoJSON not valid" );
                 return redirect( request, VIEW_MODIFY_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE, _datalayermaptemplate.getId( ) );
 
@@ -436,7 +434,10 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
             if ( optCoord.isPresent( ) )
             {
                 Coordonnee coord = optCoord.get( );
-                coord.setGeoJson( strGeoJson );
+                if ( strGeoJSON != null && !strGeoJSON.isEmpty() )
+                	coord.setGeoJson( strGeoJSON );
+                else
+                	coord.setGeoJson( strGeoJsonFeatureCollection );
                 CoordonneeHome.update( coord );
             }
             else
@@ -445,7 +446,10 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
                 coord.setAdresse( "" );
                 coord.setCoordonneeX( 0.0 );
                 coord.setCoordonneeY( 0.0 );
-                coord.setGeoJson( strGeoJson );
+                if ( strGeoJSON != null && !strGeoJSON.isEmpty() )
+                	coord.setGeoJson( strGeoJSON );
+                else
+                	coord.setGeoJson( strGeoJsonFeatureCollection );
                 DataLayer datalayer = DataLayerHome.findByPrimaryKey( _datalayermaptemplate.getIdDataLayer( ) ).get( );
                 coord.setDataLayer( datalayer );
                 coord = CoordonneeHome.create( coord );
@@ -458,5 +462,24 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_DATALAYERMAPTEMPLATES );
+    }
+    
+    public String getGeoJSON ( String strJSON ) throws JsonMappingException, JsonProcessingException
+    {
+    	String strGeoJSON = null;
+    	ObjectMapper objectMapper = new ObjectMapper( );
+        objectMapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
+    	JsonNode root = objectMapper.readTree( strJSON );
+        if ( root.has("features") )
+        {
+        	// Récupérer le nœud "feature"
+            JsonNode nodeFeatures = root.get("features");
+        	
+            //strGeoJSON = objectMapper.writeValueAsString(nodeFeatures).replace("[{", "{").replace("}]", "}");
+            strGeoJSON = objectMapper.writeValueAsString(nodeFeatures);
+
+        }
+        
+        return strGeoJSON;
     }
 }
