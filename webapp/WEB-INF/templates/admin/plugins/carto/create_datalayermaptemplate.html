@@ -23,7 +23,7 @@
 			<@row class='pb-5'>
 				<@columns sm=2>
 					<@formGroup labelFor='pictogram' labelKey='#i18n{carto.modify_datalayermaptemplate.labelPictogram}' mandatory=true rows=2>
-						<@selectIconFont id='pictogram' class='point form-select' name='pictogram' defaultValue='${datalayermaptemplate.pictogram!\'\'}' showListLabel=true showListIcon=true searchShow=true searchFocus=false searchHighlight=true prefix='ti' resources=true />
+						<@selectIconFont id='pictogram' class='form-select' name='pictogram' defaultValue='${datalayermaptemplate.pictogram!\'\'}' showListLabel=true showListIcon=true searchShow=true searchFocus=false searchHighlight=true prefix='ti' resources=true />
 					</@formGroup>
 				</@columns>
 				<@columns sm=1>
@@ -34,6 +34,11 @@
 				<@columns sm=2>
 					<@formGroup labelFor='zoom_max' labelKey='#i18n{carto.modify_datalayermaptemplate.labelZoomMax}' mandatory=true rows=2>
 						<@input type='number' id='zoom_max' class='point' name='zoom_max'  value='${datalayermaptemplate.zoomMax!\'\'}' />
+					</@formGroup>
+				</@columns>
+				<@columns sm=1>
+					<@formGroup labelFor='zoom_picto' labelKey='#i18n{carto.modify_datalayermaptemplate.labelZoomPicto}' rows=2>
+						<@input type='number' id='zoom_picto' class='poly' name='zoom_picto'  value='${datalayermaptemplate.zoomPicto!\'\'}' />
 					</@formGroup>
 				</@columns>
 				<@columns sm=2>

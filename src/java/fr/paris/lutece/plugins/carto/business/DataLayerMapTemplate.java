@@ -66,6 +66,8 @@ public class DataLayerMapTemplate implements Serializable
     private int _nThickness;
 
     private int _idCoordinate;
+    
+    private int _nZoomPicto;
 
     /**
      * Returns the Id
@@ -276,5 +278,24 @@ public class DataLayerMapTemplate implements Serializable
     {
         this._idCoordinate = _fkIdCoordinate;
     }
+
+    /**
+     * Returns the nZoomPicto
+     * 
+     * @return The nZoomPicto
+     */
+	public int getZoomPicto() {
+		return _nZoomPicto;
+	}
+
+	/**
+     * Sets the nZoomPicto
+     * 
+     * @param _nZoomPicto
+     *            The zoomPicto
+     */
+	public void setZoomPicto(int _nZoomPicto) {
+		this._nZoomPicto = _nZoomPicto;
+	}
 
 }
