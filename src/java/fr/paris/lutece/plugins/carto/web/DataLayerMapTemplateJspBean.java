@@ -37,7 +37,12 @@ package fr.paris.lutece.plugins.carto.web;
 import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
 import fr.paris.lutece.portal.service.security.SecurityTokenService;
+import fr.paris.lutece.portal.business.file.File;
 import fr.paris.lutece.portal.service.admin.AccessDeniedException;
+import fr.paris.lutece.portal.service.file.FileService;
+import fr.paris.lutece.portal.service.file.IFileStoreServiceProvider;
+import fr.paris.lutece.portal.service.fileimage.FileImagePublicService;
+import fr.paris.lutece.portal.service.image.ImageResourceManager;
 import fr.paris.lutece.portal.service.util.AppException;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.util.mvc.admin.annotations.Controller;
@@ -89,6 +94,7 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
     // Parameters
     private static final String PARAMETER_ID_DATALAYERMAPTEMPLATE = "id";
     private static final String PARAMETER_ZONE_JSON = "zone_json";
+    private static final String PARAMETER_ICONE_IMAGE = "pictogram_icon";
 
     // Properties for page titles
     private static final String PROPERTY_PAGE_TITLE_MANAGE_DATALAYERMAPTEMPLATES = "carto.manage_datalayermaptemplates.pageTitle";
@@ -103,6 +109,7 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
     private static final String MARK_REF_DATA_LAYER_TYPE = "reflist_data_layer_type";
     private static final String MARK_LIST_DATA_LAYER = "list_data_layer";
     private static final String MARK_POLYGON_INCLUSION_EXCLUSION = "polygon_inclusion_exclusion";
+    private static final String MARK_URK_ICON = "urlIcon";
 
     private static final String JSP_MANAGE_DATALAYERMAPTEMPLATES = "jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp";
 
@@ -122,6 +129,7 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
     private static final String ACTION_MODIFY_DATALAYERMAPTEMPLATE = "modifyDataLayerMapTemplate";
     private static final String ACTION_REMOVE_DATALAYERMAPTEMPLATE = "removeDataLayerMapTemplate";
     private static final String ACTION_CONFIRM_REMOVE_DATALAYERMAPTEMPLATE = "confirmRemoveDataLayerMapTemplate";
+    private static final String ACTION_DELETE_ICON_DATALAYERMAPTEMPLATE = "deleteIconDataLayerMapTemplate";
 
     // Infos
     private static final String INFO_DATALAYERMAPTEMPLATE_CREATED = "carto.info.datalayermaptemplate.created";
@@ -282,6 +290,13 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
             coord = CoordonneeHome.create( coord );
             _datalayermaptemplate.setIdCoordinate( coord.getId( ) );
         }
+        
+        FileItem zoneIconFileItem = multipartRequest.getFile( PARAMETER_ICONE_IMAGE );
+        if ( zoneIconFileItem != null && zoneIconFileItem.getSize( ) > 0 )
+        {
+        	String strFileStoreKey = ImageResourceManager.addImageResource( FileImagePublicService.IMAGE_RESOURCE_TYPE_ID, zoneIconFileItem );
+            _datalayermaptemplate.setIconImage( strFileStoreKey );
+        }
 
         DataLayerMapTemplateHome.create( _datalayermaptemplate );
         addInfo( INFO_DATALAYERMAPTEMPLATE_CREATED, getLocale( ) );
@@ -360,6 +375,11 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
 
         Map<String, Object> model = getModel( );
 
+        //affichage image
+        String strUrlIcon = null;
+        if ( _datalayermaptemplate.getIconImage( ) != null && !_datalayermaptemplate.getIconImage( ).isEmpty() )
+        	strUrlIcon = ImageResourceManager.getImageUrl( FileImagePublicService.IMAGE_RESOURCE_TYPE_ID, Integer.valueOf( _datalayermaptemplate.getIconImage( ) )  );
+        
         Optional<Coordonnee> optCoord = CoordonneeHome.findByPrimaryKey( _datalayermaptemplate.getIdCoordinate( ) );
         if ( optCoord.isPresent( ) )
         {
@@ -372,6 +392,7 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
         model.put( MARK_DATALAYERMAPTEMPLATE, _datalayermaptemplate );
         model.put( MARK_REF_DATA_LAYER_TYPE, refDataLayerType );
         model.put( MARK_LIST_DATA_LAYER, lstDataLayer );
+        model.put( MARK_URK_ICON, strUrlIcon );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_MODIFY_DATALAYERMAPTEMPLATE ) );
 
         return getPage( PROPERTY_PAGE_TITLE_MODIFY_DATALAYERMAPTEMPLATE, TEMPLATE_MODIFY_DATALAYERMAPTEMPLATE, model );
@@ -456,6 +477,13 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
                 _datalayermaptemplate.setIdCoordinate( coord.getId( ) );
             }
         }
+        
+        FileItem zoneIconFileItem = multipartRequest.getFile( PARAMETER_ICONE_IMAGE );
+        if ( zoneIconFileItem != null && zoneIconFileItem.getSize( ) > 0 )
+        {
+        	String strFileStoreKey = ImageResourceManager.addImageResource( FileImagePublicService.IMAGE_RESOURCE_TYPE_ID, zoneIconFileItem );
+            _datalayermaptemplate.setIconImage( strFileStoreKey );
+        }
 
         DataLayerMapTemplateHome.update( _datalayermaptemplate );
         addInfo( INFO_DATALAYERMAPTEMPLATE_UPDATED, getLocale( ) );
@@ -481,5 +509,32 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
         }
         
         return strGeoJSON;
+    }
+    
+    /**
+     * Process the change form of a datalayermaptemplate
+     *
+     * @param request
+     *            The Http request
+     * @return The Jsp URL of the process result
+     * @throws AccessDeniedException
+     */
+    @Action( ACTION_DELETE_ICON_DATALAYERMAPTEMPLATE )
+    public String doDeleteIconDataLayerMapTemplate( HttpServletRequest request ) throws AccessDeniedException
+    {
+        //populate( _datalayermaptemplate, request, getLocale( ) );
+    	int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_DATALAYERMAPTEMPLATE ) );
+        DataLayerMapTemplate dataLayerMaptemplateUpdate = DataLayerMapTemplateHome.findByPrimaryKey( nId ).get( );
+        
+        IFileStoreServiceProvider fileStoreService = FileService.getInstance( ).getFileStoreServiceProvider( );
+        fileStoreService.delete( dataLayerMaptemplateUpdate.getIconImage( ) );
+
+        dataLayerMaptemplateUpdate.setIconImage( "" );
+
+        DataLayerMapTemplateHome.update( dataLayerMaptemplateUpdate );
+        addInfo( INFO_DATALAYERMAPTEMPLATE_UPDATED, getLocale( ) );
+        resetListId( );
+
+        return redirectView( request, VIEW_MANAGE_DATALAYERMAPTEMPLATES );
     }
 }

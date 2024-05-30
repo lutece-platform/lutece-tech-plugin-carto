@@ -68,6 +68,8 @@ public class DataLayerMapTemplate implements Serializable
     private int _idCoordinate;
     
     private int _nZoomPicto;
+    
+    private String _strIconImage;
 
     /**
      * Returns the Id
@@ -296,6 +298,25 @@ public class DataLayerMapTemplate implements Serializable
      */
 	public void setZoomPicto(int _nZoomPicto) {
 		this._nZoomPicto = _nZoomPicto;
+	}
+
+	/**
+     * Returns the strIconImage
+     * 
+     * @return The strIconImage
+     */
+	public String getIconImage() {
+		return _strIconImage;
+	}
+
+	/**
+     * Sets the strIconImage
+     * 
+     * @param _strIconImage
+     *            The IconImage
+     */
+	public void setIconImage(String _strIconImage) {
+		this._strIconImage = _strIconImage;
 	}
 
 }

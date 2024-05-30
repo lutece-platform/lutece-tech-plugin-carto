@@ -27,8 +27,13 @@
 			</@row>
 			<@row>
                 <@columns sm=1 class='pb-5'>
-					<@formGroup labelFor='pictogram' labelKey='#i18n{carto.modify_datalayermaptemplate.labelPictogram}' class='pb-5' mandatory=true rows=2>
+					<@formGroup labelFor='pictogram' labelKey='#i18n{carto.modify_datalayermaptemplate.labelPictogram}' class='pb-5' >
 						<@selectIconFont id='pictogram' class='form-select' name='pictogram' defaultValue='${datalayermaptemplate.pictogram!\'\'}' showListLabel=true showListIcon=true searchShow=true searchFocus=false searchHighlight=true prefix='ti' resources=true />
+						<@input type='file' id='pictogram_icon' name='pictogram_icon' inputSize=60 />
+						<#if urlIcon?? && urlIcon?has_content >
+							<@img url="${urlIcon}" />
+							<@aButton href='jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp?action=deleteIconDataLayerMapTemplate&id=${datalayermaptemplate.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='danger'  />
+						</#if>
 					</@formGroup>
 				</@columns>
 				<@columns sm=1>

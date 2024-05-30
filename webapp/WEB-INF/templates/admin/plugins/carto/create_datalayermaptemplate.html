@@ -22,8 +22,12 @@
 			</@row>
 			<@row class='pb-5'>
 				<@columns sm=2>
-					<@formGroup labelFor='pictogram' labelKey='#i18n{carto.modify_datalayermaptemplate.labelPictogram}' mandatory=true rows=2>
+					<@formGroup labelFor='pictogram' labelKey='#i18n{carto.modify_datalayermaptemplate.labelPictogram}' >
 						<@selectIconFont id='pictogram' class='form-select' name='pictogram' defaultValue='${datalayermaptemplate.pictogram!\'\'}' showListLabel=true showListIcon=true searchShow=true searchFocus=false searchHighlight=true prefix='ti' resources=true />
+						<@input type='file' id='pictogram_icon' name='pictogram_icon' inputSize=60 />
+						<#if urlIcon?? >
+							<@img url="${urlIcon}" />
+						</#if>
 					</@formGroup>
 				</@columns>
 				<@columns sm=1>
