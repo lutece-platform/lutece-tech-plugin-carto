@@ -59,7 +59,16 @@ public class Coordonnee implements Serializable
 
     private DataLayer _dataLayer;
 
-    /**
+    public Coordonnee( ) {
+
+	}
+    
+    public Coordonnee(Double double1, Double double2) {
+    	_nCoordonneeX = double1;
+    	_nCoordonneeY = double2;
+	}
+
+	/**
      * Returns the Id
      * 
      * @return The Id

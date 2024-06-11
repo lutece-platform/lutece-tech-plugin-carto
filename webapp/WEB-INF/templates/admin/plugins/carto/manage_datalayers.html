@@ -31,6 +31,7 @@
                             <!-- <@offcanvas targetUrl="jsp/admin/plugins/carto/ManageDataLayers.jsp?view=modifyDataLayer&id=${datalayer.id}" targetElement="#modify_datalayer" id="template-modify-datalayer-${datalayer.id}" title="#i18n{portal.util.labelModify}" btnTitle="#i18n{portal.util.labelModify}" btnIcon="pencil" btnSize="" position="end" />  -->
                             <@aButton href='jsp/admin/plugins/carto/ManageDataLayers.jsp?view=modifyDataLayer&id=${datalayer.id}' title='#i18n{portal.util.labelModify}' hideTitle=['all'] buttonIcon='pencil' />
                             <@aButton href='jsp/admin/plugins/carto/ManageDataLayers.jsp?action=confirmRemoveDataLayer&id=${datalayer.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='danger'  />
+                            <@aButton href='jsp/admin/plugins/carto/ManageDataLayers.jsp?view=uploadFileDataLayer&id=${datalayer.id}' title='Upload Fichier' hideTitle=['all'] buttonIcon='download' />
                         </@td>
                     </@tr>
                     </#list>

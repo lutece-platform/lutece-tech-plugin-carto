@@ -40,14 +40,17 @@ import fr.paris.lutece.portal.service.security.SecurityTokenService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.admin.AccessDeniedException;
 import fr.paris.lutece.portal.service.util.AppException;
+import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.util.mvc.admin.annotations.Controller;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.Action;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.View;
+import fr.paris.lutece.portal.web.upload.MultipartHttpServletRequest;
 import fr.paris.lutece.util.url.UrlItem;
 import fr.paris.lutece.util.ReferenceList;
 import fr.paris.lutece.util.html.AbstractPaginator;
 
 import java.util.Comparator;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -55,10 +58,23 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.fileupload.FileItem;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import fr.paris.lutece.plugins.carto.business.Coordonnee;
+import fr.paris.lutece.plugins.carto.business.CoordonneeHome;
 import fr.paris.lutece.plugins.carto.business.DataLayer;
 import fr.paris.lutece.plugins.carto.business.DataLayerHome;
 import fr.paris.lutece.plugins.carto.business.DataLayerMapTemplate;
 import fr.paris.lutece.plugins.carto.business.DataLayerMapTemplateHome;
+import fr.paris.lutece.plugins.carto.business.Feature;
+import fr.paris.lutece.plugins.carto.business.FeatureCollection;
 import fr.paris.lutece.plugins.carto.business.GeometryType;
 import fr.paris.lutece.plugins.carto.business.GeometryTypeHome;
 import fr.paris.lutece.plugins.carto.provider.IMarkerProvider;
@@ -74,9 +90,11 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean<Integer, DataLa
     private static final String TEMPLATE_MANAGE_DATALAYERS = "/admin/plugins/carto/manage_datalayers.html";
     private static final String TEMPLATE_CREATE_DATALAYER = "/admin/plugins/carto/create_datalayer.html";
     private static final String TEMPLATE_MODIFY_DATALAYER = "/admin/plugins/carto/modify_datalayer.html";
+    private static final String TEMPLATE_UPLOAD_FILE_DATALAYER = "/admin/plugins/carto/modify_datalayer_upload_file.html";
 
     // Parameters
     private static final String PARAMETER_ID_DATALAYER = "id";
+    private static final String PARAMETER_GEOJSON_FILE = "filegeojson";
 
     // Properties for page titles
     private static final String PROPERTY_PAGE_TITLE_MANAGE_DATALAYERS = "carto.manage_datalayers.pageTitle";
@@ -101,12 +119,14 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean<Integer, DataLa
     private static final String VIEW_MANAGE_DATALAYERS = "manageDataLayers";
     private static final String VIEW_CREATE_DATALAYER = "createDataLayer";
     private static final String VIEW_MODIFY_DATALAYER = "modifyDataLayer";
+    private static final String VIEW_UPLOAD_FILE_DATALAYER = "uploadFileDataLayer";
 
     // Actions
     private static final String ACTION_CREATE_DATALAYER = "createDataLayer";
     private static final String ACTION_MODIFY_DATALAYER = "modifyDataLayer";
     private static final String ACTION_REMOVE_DATALAYER = "removeDataLayer";
     private static final String ACTION_CONFIRM_REMOVE_DATALAYER = "confirmRemoveDataLayer";
+    private static final String ACTION_UPLOAD_FILE_DATALAYER = "uploadDataLayer";
 
     // Infos
     private static final String INFO_DATALAYER_CREATED = "carto.info.datalayer.created";
@@ -343,5 +363,133 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean<Integer, DataLa
         resetListId( );
 
         return redirectView( request, VIEW_MANAGE_DATALAYERS );
+    }
+    
+    /**
+     * Returns the form to update info about a datalayer
+     *
+     * @param request
+     *            The Http request
+     * @return The HTML form to update info
+     */
+    @View( VIEW_UPLOAD_FILE_DATALAYER )
+    public String getUploadFileDataLayer( HttpServletRequest request )
+    {
+        int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_DATALAYER ) );
+
+        if ( _datalayer == null || ( _datalayer.getId( ) != nId ) )
+        {
+            Optional<DataLayer> optDataLayer = DataLayerHome.findByPrimaryKey( nId );
+            _datalayer = optDataLayer.orElseThrow( ( ) -> new AppException( ERROR_RESOURCE_NOT_FOUND ) );
+        }
+
+
+        Map<String, Object> model = getModel( );
+        model.put( MARK_DATALAYER, _datalayer );
+        model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_MODIFY_DATALAYER ) );
+
+        return getPage( PROPERTY_PAGE_TITLE_MODIFY_DATALAYER, TEMPLATE_UPLOAD_FILE_DATALAYER, model );
+    }
+    
+    /**
+     * Process the change form of a datalayer
+     *
+     * @param request
+     *            The Http request
+     * @return The Jsp URL of the process result
+     * @throws AccessDeniedException
+     */
+    @Action( ACTION_UPLOAD_FILE_DATALAYER )
+    public String doUploadDataLayer( HttpServletRequest request ) throws AccessDeniedException
+    {
+    	int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_DATALAYER ) );
+    	DataLayer dataLayerUpload = DataLayerHome.findByPrimaryKey( nId ).get( );
+    	
+    	MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        FileItem zoneJsonFileItem = multipartRequest.getFile( PARAMETER_GEOJSON_FILE );
+        String strGeoJSON = null;
+        if ( zoneJsonFileItem != null && zoneJsonFileItem.getSize( ) > 0 )
+        {
+            String strGeoJsonFeatureCollection = zoneJsonFileItem.getString( );
+            try
+            {
+            	new ObjectMapper( ).readTree( strGeoJsonFeatureCollection );
+            	//strGeoJSON = getGeoJSON( strGeoJsonFeatureCollection );
+            }
+            catch( IOException e )
+            {
+                AppLogService.error( "Exception during GEOJSON parsing : " + strGeoJsonFeatureCollection + " : " + e );
+                addError( "GeoJSON not valid" );
+                return redirect( request, VIEW_UPLOAD_FILE_DATALAYER, PARAMETER_ID_DATALAYER, nId );
+
+            }
+            
+            List<Coordonnee> lstCoordonnees = getListCoordonnees( strGeoJsonFeatureCollection, dataLayerUpload.getGeometryType().getTechnicalName( ) );
+			if ( lstCoordonnees.isEmpty( ) )
+			{
+				addError("Fichier GeoJSON non conforme");
+				return redirect(request, VIEW_UPLOAD_FILE_DATALAYER, PARAMETER_ID_DATALAYER, nId);
+			}
+            for (Coordonnee coord : lstCoordonnees) {
+				coord.setDataLayer(dataLayerUpload);
+				coord.setAdresse("");
+				CoordonneeHome.create(coord);
+			}
+            
+        }
+		else {
+			addError("No file uploaded");
+			return redirect( request, VIEW_UPLOAD_FILE_DATALAYER, PARAMETER_ID_DATALAYER, nId );
+		}
+        addInfo( INFO_DATALAYER_UPDATED, getLocale( ) );
+        resetListId( );
+
+        return redirectView( request, VIEW_MANAGE_DATALAYERS );
+    }
+    
+    public String getGeoJSON ( String strJSON ) throws JsonMappingException, JsonProcessingException
+    {
+    	String strGeoJSON = null;
+    	ObjectMapper objectMapper = new ObjectMapper( );
+        objectMapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
+    	JsonNode root = objectMapper.readTree( strJSON );
+        if ( root.has("features") )
+        {
+        	// Récupérer le nœud "feature"
+            JsonNode nodeFeatures = root.get("features");
+        	
+            //strGeoJSON = objectMapper.writeValueAsString(nodeFeatures).replace("[{", "{").replace("}]", "}");
+            strGeoJSON = objectMapper.writeValueAsString(nodeFeatures);
+
+        }
+        
+        return strGeoJSON;
+    }
+    
+    public List<Coordonnee> getListCoordonnees( String strGeoJson, String strType )
+    {
+    	ObjectMapper objectMapper = new ObjectMapper( );
+        objectMapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
+        List<Coordonnee> lstCoordonnnee = new ArrayList<>( );
+    	
+    	FeatureCollection featureCollection;
+		try {
+			featureCollection = objectMapper.readValue(strGeoJson, FeatureCollection.class);
+			
+			for (Feature feature : featureCollection.getFeatures()) {
+				if ( strType.equals( feature.getType( ) ) )
+				{
+					Coordonnee coord = new Coordonnee();
+					coord.setCoordonneeX( 0.0 );
+		            coord.setCoordonneeY( 0.0 );
+					coord.setGeoJson( objectMapper.writeValueAsString(feature) );
+					lstCoordonnnee.add(coord);
+				}
+			}
+		} catch (JsonProcessingException e) {
+			AppLogService.error( e.getMessage(  ), e );
+		}
+        
+		return lstCoordonnnee;
     }
 }
