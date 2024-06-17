@@ -50,7 +50,7 @@ public final class DataLayerMapTemplateDAO implements IDataLayerMapTemplateDAO
 {
     // Constants
     private static final String SQL_QUERY_SELECT = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate, zoom_picto, icon_image FROM carto_data_layer_map_template WHERE id_data_layer_map_template = ?";
-    private static final String SQL_QUERY_INSERT = "INSERT INTO carto_data_layer_map_template ( id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate, zoom_picto, icon_image ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ";
+    private static final String SQL_QUERY_INSERT = "INSERT INTO carto_data_layer_map_template ( id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate, zoom_picto, icon_image ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ";
     private static final String SQL_QUERY_DELETE = "DELETE FROM carto_data_layer_map_template WHERE id_data_layer_map_template = ? ";
     private static final String SQL_QUERY_UPDATE = "UPDATE carto_data_layer_map_template SET id_map_template = ?, id_data_layer = ?, pictogram = ?, zoom_min = ?, zoom_max = ?, layer_type = ?, color = ?, thickness = ?, id_coordinate = ?, zoom_picto = ?, icon_image = ? WHERE id_data_layer_map_template = ?";
     private static final String SQL_QUERY_SELECTALL = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate, zoom_picto, icon_image FROM carto_data_layer_map_template";
