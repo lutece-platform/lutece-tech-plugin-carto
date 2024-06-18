@@ -79,6 +79,7 @@ import fr.paris.lutece.plugins.carto.business.GeometryType;
 import fr.paris.lutece.plugins.carto.business.GeometryTypeHome;
 import fr.paris.lutece.plugins.carto.provider.IMarkerProvider;
 import fr.paris.lutece.plugins.carto.provider.InfoMarker;
+import fr.paris.lutece.plugins.carto.util.EnumDataLayerSource;
 
 /**
  * This class provides the user interface to manage DataLayer features ( manage, create, modify, remove )
@@ -106,6 +107,7 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean<Integer, DataLa
     private static final String MARK_DATALAYER = "datalayer";
     private static final String MARK_REF_GEOMETRY_LIST = "list_geo_type";
     private static final String MARK_SOLR_MARKER_LIST = "list_solr_marker";
+    private static final String MARK_DATALAYER_SOURCE_LIST = "list_source_datalayer";
 
     private static final String JSP_MANAGE_DATALAYERS = "jsp/admin/plugins/carto/ManageDataLayers.jsp";
 
@@ -205,6 +207,7 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean<Integer, DataLa
         Map<String, Object> model = getModel( );
         model.put( MARK_REF_GEOMETRY_LIST, refGeometry );
         model.put( MARK_DATALAYER, _datalayer );
+        model.put( MARK_DATALAYER_SOURCE_LIST, EnumDataLayerSource.getReferenceList( ) );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_CREATE_DATALAYER ) );
 
         return getPage( PROPERTY_PAGE_TITLE_CREATE_DATALAYER, TEMPLATE_CREATE_DATALAYER, model );
@@ -322,6 +325,7 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean<Integer, DataLa
         Map<String, Object> model = getModel( );
         model.put( MARK_REF_GEOMETRY_LIST, refGeometry );
         model.put( MARK_DATALAYER, _datalayer );
+        model.put( MARK_DATALAYER_SOURCE_LIST, EnumDataLayerSource.getReferenceList( ) );
         if ( !lstMarkerSolrList.isEmpty( ) )
             model.put( MARK_SOLR_MARKER_LIST, lstMarkerSolrList.get( 0 ).provideMarkerDescriptions( _datalayer.getSolrTag( ), request ) );
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_MODIFY_DATALAYER ) );

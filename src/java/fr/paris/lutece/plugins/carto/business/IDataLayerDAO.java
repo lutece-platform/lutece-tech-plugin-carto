@@ -153,4 +153,13 @@ public interface IDataLayerDAO
      * @return The instance of the dataLayer
      */
 	Optional<DataLayer> loadBySolrTag(String strSolrTag, Plugin plugin);
+
+	/**
+	 * Load the data of all the dataLayer objects with WFS source and returns them as a list
+	 * 
+	 * @param plugin the Plugin
+	 * @param nIdMapTemplate the id of the map template
+	 * @return The list which contains the data of all the dataLayer objects
+	 */
+	List<DataLayer> selectDataLayersListWFS(Plugin plugin, int nIdMapTemplate);
 }

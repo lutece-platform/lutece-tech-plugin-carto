@@ -49,15 +49,16 @@ import java.util.Optional;
 public final class DataLayerDAO implements IDataLayerDAO
 {
     // Constants
-    private static final String SQL_QUERY_SELECT = "SELECT id_data_layer, title, solr_tag, geometry, popup_content FROM carto_data_layer WHERE id_data_layer = ?";
-    private static final String SQL_QUERY_SELECT_BY_SOLR_TAG = "SELECT id_data_layer, title, solr_tag, geometry, popup_content FROM carto_data_layer WHERE solr_tag = ?";
-    private static final String SQL_QUERY_INSERT = "INSERT INTO carto_data_layer ( title, solr_tag, geometry, popup_content ) VALUES ( ?, ?, ?, ? ) ";
+    private static final String SQL_QUERY_SELECT = "SELECT id_data_layer, title, solr_tag, geometry, popup_content, source, url_flux, type_name_flux, version_flux FROM carto_data_layer WHERE id_data_layer = ?";
+    private static final String SQL_QUERY_SELECT_BY_SOLR_TAG = "SELECT id_data_layer, title, solr_tag, geometry, popup_content, source, url_flux, type_name_flux, version_flux FROM carto_data_layer WHERE solr_tag = ?";
+    private static final String SQL_QUERY_INSERT = "INSERT INTO carto_data_layer ( title, solr_tag, geometry, popup_content, source, url_flux, type_name_flux, version_flux ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? ) ";
     private static final String SQL_QUERY_DELETE = "DELETE FROM carto_data_layer WHERE id_data_layer = ? ";
-    private static final String SQL_QUERY_UPDATE = "UPDATE carto_data_layer SET title = ?, solr_tag = ?, geometry = ?, popup_content = ? WHERE id_data_layer = ?";
-    private static final String SQL_QUERY_SELECTALL = "SELECT id_data_layer, title, solr_tag, geometry, popup_content FROM carto_data_layer";
+    private static final String SQL_QUERY_UPDATE = "UPDATE carto_data_layer SET title = ?, solr_tag = ?, geometry = ?, popup_content = ?, source = ?, url_flux = ?, type_name_flux = ?, version_flux = ? WHERE id_data_layer = ?";
+    private static final String SQL_QUERY_SELECTALL = "SELECT id_data_layer, title, solr_tag, geometry, popup_content, source, url_flux, type_name_flux, version_flux FROM carto_data_layer";
+    private static final String SQL_QUERY_SELECTALL_WFS_BY_ID_TEMPLATE = "SELECT a.id_data_layer, a.title, a.solr_tag, a.geometry, a.popup_content, a.source, a.url_flux, a.type_name_flux, a.version_flux FROM carto_data_layer a INNER JOIN carto_data_layer_map_template b ON b.id_data_layer = a.id_data_layer WHERE a.source = 'WFS' AND b.id_map_template = ? ";
     private static final String SQL_QUERY_SELECTALL_ID = "SELECT id_data_layer FROM carto_data_layer";
-    private static final String SQL_QUERY_SELECTALL_BY_IDS = "SELECT id_data_layer, title, solr_tag, geometry, popup_content FROM carto_data_layer WHERE id_data_layer IN (  ";
-    private static final String SQL_QUERY_SELECT_LAYER_EDITABLE = "SELECT a.id_data_layer, a.title, a.solr_tag, a.geometry, a.popup_content FROM carto_data_layer a INNER JOIN carto_data_layer_map_template b ON a.id_data_layer = b.id_data_layer "
+    private static final String SQL_QUERY_SELECTALL_BY_IDS = "SELECT id_data_layer, title, solr_tag, geometry, popup_content, source, url_flux, type_name_flux, version_flux FROM carto_data_layer WHERE id_data_layer IN (  ";
+    private static final String SQL_QUERY_SELECT_LAYER_EDITABLE = "SELECT a.id_data_layer, a.title, a.solr_tag, a.geometry, a.popup_content, a.source, a.url_flux, a.type_name_flux, a.version_flux FROM carto_data_layer a INNER JOIN carto_data_layer_map_template b ON a.id_data_layer = b.id_data_layer "
             + "INNER JOIN carto_data_layer_type c ON b.layer_type = c.id_data_layer_type  WHERE c.editable = 1 AND b.id_map_template = ? ";
 
     /**
@@ -73,6 +74,11 @@ public final class DataLayerDAO implements IDataLayerDAO
             daoUtil.setString( nIndex++, dataLayer.getSolrTag( ) );
             daoUtil.setInt( nIndex++, dataLayer.getGeometryType( ).getId( ) );
             daoUtil.setString( nIndex++, dataLayer.getPopupContent( ) );
+            daoUtil.setString( nIndex++, dataLayer.getSource( ) );
+            daoUtil.setString( nIndex++, dataLayer.getUrlFlux( ) );
+            daoUtil.setString( nIndex++, dataLayer.getTypeNameFlux( ) );
+            daoUtil.setString( nIndex++, dataLayer.getVersionFlux( ) );
+            
 
             daoUtil.executeUpdate( );
             if ( daoUtil.nextGeneratedKey( ) )
@@ -110,6 +116,10 @@ public final class DataLayerDAO implements IDataLayerDAO
                     dataLayer.setGeometryType( geometryType.get( ) );
                 }
                 dataLayer.setPopupContent( daoUtil.getString( nIndex++ ) );
+                dataLayer.setSource( daoUtil.getString( nIndex++ ) );
+                dataLayer.setUrlFlux( daoUtil.getString( nIndex++ ) );
+                dataLayer.setTypeNameFlux( daoUtil.getString( nIndex++ ) );
+                dataLayer.setVersionFlux( daoUtil.getString( nIndex++ ) );
             }
 
             return Optional.ofNullable( dataLayer );
@@ -143,6 +153,10 @@ public final class DataLayerDAO implements IDataLayerDAO
                     dataLayer.setGeometryType( geometryType.get( ) );
                 }
                 dataLayer.setPopupContent( daoUtil.getString( nIndex++ ) );
+                dataLayer.setSource( daoUtil.getString( nIndex++ ) );
+                dataLayer.setUrlFlux( daoUtil.getString( nIndex++ ) );
+                dataLayer.setTypeNameFlux( daoUtil.getString( nIndex++ ) );
+                dataLayer.setVersionFlux( daoUtil.getString( nIndex++ ) );
             }
 
             return Optional.ofNullable( dataLayer );
@@ -177,6 +191,10 @@ public final class DataLayerDAO implements IDataLayerDAO
             // daoUtil.setInt( nIndex++ , dataLayer.getGeometry( ) );
             daoUtil.setInt( nIndex++, dataLayer.getGeometryType( ).getId( ) );
             daoUtil.setString( nIndex++, dataLayer.getPopupContent( ) );
+            daoUtil.setString( nIndex++, dataLayer.getSource( ) );
+            daoUtil.setString( nIndex++, dataLayer.getUrlFlux( ) );
+            daoUtil.setString( nIndex++, dataLayer.getTypeNameFlux( ) );
+            daoUtil.setString( nIndex++, dataLayer.getVersionFlux( ) );
             daoUtil.setInt( nIndex, dataLayer.getId( ) );
 
             daoUtil.executeUpdate( );
@@ -209,6 +227,49 @@ public final class DataLayerDAO implements IDataLayerDAO
                     dataLayer.setGeometryType( geometryType.get( ) );
                 }
                 dataLayer.setPopupContent( daoUtil.getString( nIndex++ ) );
+                dataLayer.setSource( daoUtil.getString( nIndex++ ) );
+                dataLayer.setUrlFlux( daoUtil.getString( nIndex++ ) );
+                dataLayer.setTypeNameFlux( daoUtil.getString( nIndex++ ) );
+                dataLayer.setVersionFlux( daoUtil.getString( nIndex++ ) );
+
+                dataLayerList.add( dataLayer );
+            }
+
+            return dataLayerList;
+        }
+    }
+    
+    /**
+     * {@inheritDoc }
+     */
+    @Override
+    public List<DataLayer> selectDataLayersListWFS( Plugin plugin, int nIdMapTemplate )
+    {
+        List<DataLayer> dataLayerList = new ArrayList<>( );
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL_WFS_BY_ID_TEMPLATE, plugin ) )
+        {
+        	daoUtil.setInt( 1, nIdMapTemplate );
+        	daoUtil.executeQuery( );
+
+            while ( daoUtil.next( ) )
+            {
+                DataLayer dataLayer = new DataLayer( );
+                int nIndex = 1;
+
+                dataLayer.setId( daoUtil.getInt( nIndex++ ) );
+                dataLayer.setTitle( daoUtil.getString( nIndex++ ) );
+                dataLayer.setSolrTag( daoUtil.getString( nIndex++ ) );
+                // dataLayer.setGeometry( daoUtil.getInt( nIndex ) );
+                Optional<GeometryType> geometryType = GeometryTypeHome.findByPrimaryKey( daoUtil.getInt( nIndex++ ) );
+                if ( geometryType.isPresent( ) )
+                {
+                    dataLayer.setGeometryType( geometryType.get( ) );
+                }
+                dataLayer.setPopupContent( daoUtil.getString( nIndex++ ) );
+                dataLayer.setSource( daoUtil.getString( nIndex++ ) );
+                dataLayer.setUrlFlux( daoUtil.getString( nIndex++ ) );
+                dataLayer.setTypeNameFlux( daoUtil.getString( nIndex++ ) );
+                dataLayer.setVersionFlux( daoUtil.getString( nIndex++ ) );
 
                 dataLayerList.add( dataLayer );
             }
@@ -301,6 +362,10 @@ public final class DataLayerDAO implements IDataLayerDAO
                         dataLayer.setGeometryType( geometryType.get( ) );
                     }
                     dataLayer.setPopupContent( daoUtil.getString( nIndex++ ) );
+                    dataLayer.setSource( daoUtil.getString( nIndex++ ) );
+                    dataLayer.setUrlFlux( daoUtil.getString( nIndex++ ) );
+                    dataLayer.setTypeNameFlux( daoUtil.getString( nIndex++ ) );
+                    dataLayer.setVersionFlux( daoUtil.getString( nIndex++ ) );
 
                     dataLayerList.add( dataLayer );
                 }
@@ -354,6 +419,10 @@ public final class DataLayerDAO implements IDataLayerDAO
                     dataLayer.setGeometryType( geometryType.get( ) );
                 }
                 dataLayer.setPopupContent( daoUtil.getString( nIndex++ ) );
+                dataLayer.setSource( daoUtil.getString( nIndex++ ) );
+                dataLayer.setUrlFlux( daoUtil.getString( nIndex++ ) );
+                dataLayer.setTypeNameFlux( daoUtil.getString( nIndex++ ) );
+                dataLayer.setVersionFlux( daoUtil.getString( nIndex++ ) );
             }
 
             return Optional.ofNullable( dataLayer );

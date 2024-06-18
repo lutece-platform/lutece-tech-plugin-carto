@@ -45,6 +45,10 @@ title varchar(255) default '' NOT NULL,
 solr_tag varchar(255) default '',
 geometry int default '0',
 popup_content text COLLATE utf8_unicode_ci,
+source varchar(255) default 'SOLR',
+url_flux varchar(255) default '',
+type_name_flux varchar(255) default '',
+version_flux varchar(255) default '',
 PRIMARY KEY (id_data_layer)
 );
 

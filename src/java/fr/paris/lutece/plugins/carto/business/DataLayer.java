@@ -59,6 +59,11 @@ public class DataLayer implements Serializable
     private GeometryType _geometryType;
 
     private String _strPopupContent;
+    
+    private String _strSource;
+    private String _strUrlFlux;
+    private String _strTypeNameFlux;
+    private String _strVersionFlux;
 
     /**
      * Returns the Id
@@ -185,4 +190,78 @@ public class DataLayer implements Serializable
     {
         this._strPopupContent = strPopupContent;
     }
+
+    /**
+     * Returns the source content
+     * 
+     * @return The source content
+     */
+	public String getSource() {
+		return _strSource;
+	}
+
+	/**
+	 * Sets the source content
+	 * 
+	 * @param _strSource The source content
+	 */
+	public void setSource(String _strSource) {
+		this._strSource = _strSource;
+	}
+
+	/**
+     * Returns the url flux content
+     * 
+     * @return The url flux content
+     */
+	public String getUrlFlux() {
+		return _strUrlFlux;
+	}
+
+	/**
+	 * Sets the url flux content
+	 * 
+	 * @param _strUrlFlux The url flux content
+	 */
+	public void setUrlFlux(String _strUrlFlux) {
+		this._strUrlFlux = _strUrlFlux;
+	}
+
+	/**
+     * Returns the type name content
+     * 
+     * @return The type name content
+     */
+	public String getTypeNameFlux() {
+		return _strTypeNameFlux;
+	}
+
+	/**
+	 * Sets the type name content
+	 * 
+	 * @param _strTypeNameFlux The type name content
+	 */
+	public void setTypeNameFlux(String _strTypeNameFlux) {
+		this._strTypeNameFlux = _strTypeNameFlux;
+	}
+
+	/**
+     * Returns the version content
+     * 
+     * @return The version content
+     */
+	public String getVersionFlux() {
+		return _strVersionFlux;
+	}
+
+	/**
+	 * Sets the version content
+	 * 
+	 * @param _strVersionFlux The version content
+	 */
+	public void setVersionFlux(String _strVersionFlux) {
+		this._strVersionFlux = _strVersionFlux;
+	}
+    
+    
 }

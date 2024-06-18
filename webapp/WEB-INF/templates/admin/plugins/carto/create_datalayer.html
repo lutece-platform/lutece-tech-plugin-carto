@@ -10,11 +10,23 @@
 				<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayer.labelTitle}' mandatory=true >
 					<@input type='text' id='title' name='title'  maxlength=255 value='${datalayer.title!\'\'}' />
 				</@formGroup>
+				<@formGroup labelFor='source' labelKey='#i18n{carto.modify_datalayer.labelSource}' mandatory=true>
+					<@select name='source' items=list_source_datalayer id='source' />
+				</@formGroup>
 				<@formGroup labelFor='solr_tag' labelKey='#i18n{carto.modify_datalayer.labelSolrTag}' mandatory=true>
 					<@input type='text' id='solr_tag' name='solr_tag'  maxlength=255 value='${datalayer.solrTag!\'\'}' />
 				</@formGroup>
 				<@formGroup labelFor='geometry' labelKey='#i18n{carto.modify_datalayer.labelGeometry}' mandatory=true>
 					<@select name='geometry' items=list_geo_type id='geometry' />
+				</@formGroup>
+				<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayer.labelUrlFlux}' >
+					<@input type='text' id='urlFlux' name='urlFlux'  maxlength=255 value='${datalayer.urlFlux!\'\'}' />
+				</@formGroup>
+				<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayer.labelTypeNameFlux}' >
+					<@input type='text' id='typeNameFlux' name='typeNameFlux'  maxlength=255 value='${datalayer.typeNameFlux!\'\'}' />
+				</@formGroup>
+				<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayer.labelVersionFlux}' >
+					<@input type='text' id='versionFlux' name='versionFlux'  maxlength=255 value='${datalayer.versionFlux!\'\'}' />
 				</@formGroup>
 				<@formGroup labelFor='texte_popup' labelKey='#i18n{carto.modify_maptemplate.popup}' mandatory=false >
                     <@input type='textarea' name='popupContent' id='popupContent' rows=15 cols=70 richtext=true> ${datalayer.popupContent!} </@input>

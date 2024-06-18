@@ -130,6 +130,16 @@ public final class DataLayerHome
     {
         return _dao.selectDataLayersList( _plugin );
     }
+    
+    /**
+     * Load the data of all the dataLayer objects with WFS source and returns them as a list
+     * 
+     * @return the list which contains the data of all the dataLayer objects
+     */
+    public static List<DataLayer> getDataLayersListWFS( int nMapId )
+    {
+        return _dao.selectDataLayersListWFS( _plugin, nMapId );
+    }
 
     /**
      * Load the id of all the dataLayer objects and returns them as a list
