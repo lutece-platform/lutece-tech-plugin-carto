@@ -45,6 +45,26 @@
 						<@input type='number' id='zoom_picto' class='poly' name='zoom_picto'  value='${datalayermaptemplate.zoomPicto!\'\'}' />
 					</@formGroup>
 				</@columns>
+				<@columns sm=1>
+					<@formGroup labelFor='pictoSizeZoom07' labelKey='#i18n{carto.modify_datalayermaptemplate.labelPicto0_7}' mandatory=true rows=2>
+						<@input type='number' id='pictoSizeZoom07' class='point' name='pictoSizeZoom07'  value='${datalayermaptemplate.pictoSizeZoom07!\'\'}' />
+					</@formGroup>
+				</@columns>
+				<@columns sm=1>
+					<@formGroup labelFor='pictoSizeZoom8_12' labelKey='#i18n{carto.modify_datalayermaptemplate.labelPicto8_12}' mandatory=true rows=2>
+						<@input type='number' id='pictoSizeZoom812' class='point' name='pictoSizeZoom812'  value='${datalayermaptemplate.pictoSizeZoom812!\'\'}' />
+					</@formGroup>
+				</@columns>
+				<@columns sm=1>
+					<@formGroup labelFor='pictoSizeZoom13_15' labelKey='#i18n{carto.modify_datalayermaptemplate.labelPicto13_15}' mandatory=true rows=2>
+						<@input type='number' id='pictoSizeZoom1315' class='point' name='pictoSizeZoom1315'  value='${datalayermaptemplate.pictoSizeZoom1315!\'\'}' />
+					</@formGroup>
+				</@columns>
+				<@columns sm=1>
+					<@formGroup labelFor='pictoSizeZoom16_19' labelKey='#i18n{carto.modify_datalayermaptemplate.labelPicto16_19}' mandatory=true rows=2>
+						<@input type='number' id='pictoSizeZoom1619' class='point' name='pictoSizeZoom1619'  value='${datalayermaptemplate.pictoSizeZoom1619!\'\'}' />
+					</@formGroup>
+				</@columns>
 				<@columns sm=2>
 					<@formGroup labelFor='layer_type' labelKey='#i18n{carto.modify_datalayermaptemplate.labelLayerType}' mandatory=true rows=2>
 						<@select name='layer_type' items=reflist_data_layer_type id='layer_type' default_value='${datalayermaptemplate.layerType!\'\'}' />

@@ -70,6 +70,11 @@ public class DataLayerMapTemplate implements Serializable
     private int _nZoomPicto;
     
     private String _strIconImage;
+    
+    private int _nPictoSizeZoom0_7;
+    private int _nPictoSizeZoom8_12;
+    private int _nPictoSizeZoom13_15;
+    private int _nPictoSizeZoom16_19;
 
     /**
      * Returns the Id
@@ -317,6 +322,70 @@ public class DataLayerMapTemplate implements Serializable
      */
 	public void setIconImage(String _strIconImage) {
 		this._strIconImage = _strIconImage;
+	}
+	
+	/**
+	 * Returns the nPictoSizeZoom0_7
+	 * 
+	 * @return The nPictoSizeZoom0_7
+	 */
+	public int getPictoSizeZoom07() {
+		return _nPictoSizeZoom0_7;
+    }
+	
+	/**
+	 * Sets the nPictoSizeZoom0_7
+	 */
+	public void setPictoSizeZoom07(int _nPictoSizeZoom0_7) {
+		this._nPictoSizeZoom0_7 = _nPictoSizeZoom0_7;
+	}
+	
+	/**
+	 * Returns the nPictoSizeZoom8_12
+	 * 
+	 * @return The nPictoSizeZoom8_12
+	 */
+	public int getPictoSizeZoom812() {
+		return _nPictoSizeZoom8_12;
+	}
+	
+	/**
+	 * Sets the nPictoSizeZoom8_12
+	 */
+	public void setPictoSizeZoom812(int _nPictoSizeZoom8_12) {
+		this._nPictoSizeZoom8_12 = _nPictoSizeZoom8_12;
+	}
+	
+	/**
+	 * Returns the nPictoSizeZoom13_15
+	 * 
+	 * @return The nPictoSizeZoom13_15
+	 */
+	public int getPictoSizeZoom1315() {
+		return _nPictoSizeZoom13_15;
+	}
+	
+	/**
+	 * Sets the nPictoSizeZoom13_15
+	 */
+	public void setPictoSizeZoom1315(int _nPictoSizeZoom13_15) {
+		this._nPictoSizeZoom13_15 = _nPictoSizeZoom13_15;
+	}
+	
+	/**
+	 * Returns the nPictoSizeZoom16_19
+	 * 
+	 * @return The nPictoSizeZoom16_19
+	 */
+	public int getPictoSizeZoom1619() {
+		return _nPictoSizeZoom16_19;
+	}
+	
+	/**
+	 * Sets the nPictoSizeZoom16_19
+	 */
+	public void setPictoSizeZoom1619(int _nPictoSizeZoom16_19) {
+		this._nPictoSizeZoom16_19 = _nPictoSizeZoom16_19;
 	}
 
 }
