@@ -71,6 +71,11 @@
 						<@input type='number' id='pictoSizeZoom1619' class='point' name='pictoSizeZoom1619'  value='${datalayermaptemplate.pictoSizeZoom1619!\'\'}' />
 					</@formGroup>
 				</@columns>
+				<@columns sm=1>
+					<@formGroup labelFor='clustermarker' labelKey='#i18n{carto.modify_datalayermaptemplate.labelClusterMarker}' rows=2>
+						<@checkBox labelFor='clustermarker' id='markerCluster' name='markerCluster' value='1' checked=datalayermaptemplate.markerCluster!'false' />
+					</@formGroup>
+				</@columns>
 				<@columns sm=2>
 					<@formGroup labelFor='layer_type' labelKey='#i18n{carto.modify_datalayermaptemplate.labelLayerType}' mandatory=true  rows=2>
 						<@select name='layer_type' items=reflist_data_layer_type id='layer_type' default_value='${datalayermaptemplate.layerType!\'\'}' />

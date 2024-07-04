@@ -75,6 +75,8 @@ public class DataLayerMapTemplate implements Serializable
     private int _nPictoSizeZoom8_12;
     private int _nPictoSizeZoom13_15;
     private int _nPictoSizeZoom16_19;
+    
+    private boolean _bMarkerCluster;
 
     /**
      * Returns the Id
@@ -386,6 +388,22 @@ public class DataLayerMapTemplate implements Serializable
 	 */
 	public void setPictoSizeZoom1619(int _nPictoSizeZoom16_19) {
 		this._nPictoSizeZoom16_19 = _nPictoSizeZoom16_19;
+	}
+
+	/**
+	 * Returns the bMarkerCluster
+	 * 
+	 * @return The bMarkerCluster
+	 */
+	public boolean isMarkerCluster() {
+		return _bMarkerCluster;
+	}
+
+	/**
+	 * Sets the bMarkerCluster
+	 */
+	public void setMarkerCluster(boolean _bMarkerCluster) {
+		this._bMarkerCluster = _bMarkerCluster;
 	}
 
 }

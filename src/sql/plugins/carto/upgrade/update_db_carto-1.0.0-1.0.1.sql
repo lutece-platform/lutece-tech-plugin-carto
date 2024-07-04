@@ -11,3 +11,5 @@ ALTER TABLE carto_data_layer_map_template add column picto_size_zoom_0_7 int(11)
 ALTER TABLE carto_data_layer_map_template add column picto_size_zoom_8_12 int(11) default 50;
 ALTER TABLE carto_data_layer_map_template add column picto_size_zoom_13_15 int(11) default 50;
 ALTER TABLE carto_data_layer_map_template add column picto_size_zoom_16_19 int(11) default 50;
+
+ALTER TABLE carto_data_layer_map_template add column cluster_marker smallint(6) default 1;

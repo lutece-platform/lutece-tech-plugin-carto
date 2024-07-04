@@ -49,16 +49,16 @@ import java.util.Optional;
 public final class DataLayerMapTemplateDAO implements IDataLayerMapTemplateDAO
 {
     // Constants
-    private static final String SQL_QUERY_SELECT = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate, zoom_picto, icon_image, picto_size_zoom_0_7, picto_size_zoom_8_12, picto_size_zoom_13_15, picto_size_zoom_16_19 FROM carto_data_layer_map_template WHERE id_data_layer_map_template = ?";
-    private static final String SQL_QUERY_INSERT = "INSERT INTO carto_data_layer_map_template ( id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate, zoom_picto, icon_image, picto_size_zoom_0_7, picto_size_zoom_8_12, picto_size_zoom_13_15, picto_size_zoom_16_19 ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ";
+    private static final String SQL_QUERY_SELECT = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate, zoom_picto, icon_image, picto_size_zoom_0_7, picto_size_zoom_8_12, picto_size_zoom_13_15, picto_size_zoom_16_19, cluster_marker FROM carto_data_layer_map_template WHERE id_data_layer_map_template = ?";
+    private static final String SQL_QUERY_INSERT = "INSERT INTO carto_data_layer_map_template ( id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate, zoom_picto, icon_image, picto_size_zoom_0_7, picto_size_zoom_8_12, picto_size_zoom_13_15, picto_size_zoom_16_19, cluster_marker ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ";
     private static final String SQL_QUERY_DELETE = "DELETE FROM carto_data_layer_map_template WHERE id_data_layer_map_template = ? ";
-    private static final String SQL_QUERY_UPDATE = "UPDATE carto_data_layer_map_template SET id_map_template = ?, id_data_layer = ?, pictogram = ?, zoom_min = ?, zoom_max = ?, layer_type = ?, color = ?, thickness = ?, id_coordinate = ?, zoom_picto = ?, icon_image = ?, picto_size_zoom_0_7 = ?, picto_size_zoom_8_12 = ?, picto_size_zoom_13_15 = ?, picto_size_zoom_16_19 = ? WHERE id_data_layer_map_template = ?";
-    private static final String SQL_QUERY_SELECTALL = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate, zoom_picto, icon_image, picto_size_zoom_0_7, picto_size_zoom_8_12, picto_size_zoom_13_15, picto_size_zoom_16_19 FROM carto_data_layer_map_template";
+    private static final String SQL_QUERY_UPDATE = "UPDATE carto_data_layer_map_template SET id_map_template = ?, id_data_layer = ?, pictogram = ?, zoom_min = ?, zoom_max = ?, layer_type = ?, color = ?, thickness = ?, id_coordinate = ?, zoom_picto = ?, icon_image = ?, picto_size_zoom_0_7 = ?, picto_size_zoom_8_12 = ?, picto_size_zoom_13_15 = ?, picto_size_zoom_16_19 = ?, cluster_marker = ? WHERE id_data_layer_map_template = ?";
+    private static final String SQL_QUERY_SELECTALL = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate, zoom_picto, icon_image, picto_size_zoom_0_7, picto_size_zoom_8_12, picto_size_zoom_13_15, picto_size_zoom_16_19, cluster_marker FROM carto_data_layer_map_template";
     private static final String SQL_QUERY_SELECTALL_ID = "SELECT id_data_layer_map_template FROM carto_data_layer_map_template";
-    private static final String SQL_QUERY_SELECTALL_BY_IDS = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate, zoom_picto, icon_image, picto_size_zoom_0_7, picto_size_zoom_8_12, picto_size_zoom_13_15, picto_size_zoom_16_19 FROM carto_data_layer_map_template WHERE id_data_layer_map_template IN (  ";
+    private static final String SQL_QUERY_SELECTALL_BY_IDS = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate, zoom_picto, icon_image, picto_size_zoom_0_7, picto_size_zoom_8_12, picto_size_zoom_13_15, picto_size_zoom_16_19, cluster_marker FROM carto_data_layer_map_template WHERE id_data_layer_map_template IN (  ";
     private static final String SQL_QUERY_SELECT_DATA_LAYER_BY_MAP_TEMPLATE_ID = "SELECT id_data_layer FROM carto_data_layer_map_template WHERE id_map_template = ?";
-    private static final String SQL_QUERY_SELECT_BY_ID_MAP_ID_LAYER = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate, zoom_picto, icon_image, picto_size_zoom_0_7, picto_size_zoom_8_12, picto_size_zoom_13_15, picto_size_zoom_16_19 FROM carto_data_layer_map_template WHERE id_map_template = ? AND id_data_layer = ?";
-    private static final String SQL_QUERY_SELECT_BY_DATA_LAYER_ID = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate, zoom_picto, icon_image, picto_size_zoom_0_7, picto_size_zoom_8_12, picto_size_zoom_13_15, picto_size_zoom_16_19 FROM carto_data_layer_map_template WHERE id_data_layer = ?";
+    private static final String SQL_QUERY_SELECT_BY_ID_MAP_ID_LAYER = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate, zoom_picto, icon_image, picto_size_zoom_0_7, picto_size_zoom_8_12, picto_size_zoom_13_15, picto_size_zoom_16_19, cluster_marker FROM carto_data_layer_map_template WHERE id_map_template = ? AND id_data_layer = ?";
+    private static final String SQL_QUERY_SELECT_BY_DATA_LAYER_ID = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate, zoom_picto, icon_image, picto_size_zoom_0_7, picto_size_zoom_8_12, picto_size_zoom_13_15, picto_size_zoom_16_19, cluster_marker FROM carto_data_layer_map_template WHERE id_data_layer = ?";
 
     /**
      * {@inheritDoc }
@@ -84,6 +84,7 @@ public final class DataLayerMapTemplateDAO implements IDataLayerMapTemplateDAO
             daoUtil.setInt( nIndex++, dataLayerMapTemplate.getPictoSizeZoom812( ) );
             daoUtil.setInt( nIndex++, dataLayerMapTemplate.getPictoSizeZoom1315( ) );
             daoUtil.setInt( nIndex++, dataLayerMapTemplate.getPictoSizeZoom1619( ) );
+            daoUtil.setBoolean( nIndex++, dataLayerMapTemplate.isMarkerCluster( ) );
             
 
             daoUtil.executeUpdate( );
@@ -128,6 +129,7 @@ public final class DataLayerMapTemplateDAO implements IDataLayerMapTemplateDAO
                 dataLayerMapTemplate.setPictoSizeZoom812( daoUtil.getInt( nIndex++ ) );
                 dataLayerMapTemplate.setPictoSizeZoom1315( daoUtil.getInt( nIndex++ ) );
                 dataLayerMapTemplate.setPictoSizeZoom1619( daoUtil.getInt( nIndex++ ) );
+                dataLayerMapTemplate.setMarkerCluster( daoUtil.getBoolean( nIndex++ ) );
 
             }
 
@@ -173,6 +175,7 @@ public final class DataLayerMapTemplateDAO implements IDataLayerMapTemplateDAO
             daoUtil.setInt( nIndex++, dataLayerMapTemplate.getPictoSizeZoom812( ) );
             daoUtil.setInt( nIndex++, dataLayerMapTemplate.getPictoSizeZoom1315( ) );
             daoUtil.setInt( nIndex++, dataLayerMapTemplate.getPictoSizeZoom1619( ) );
+            daoUtil.setBoolean( nIndex++, dataLayerMapTemplate.isMarkerCluster( ) );
             daoUtil.setInt( nIndex, dataLayerMapTemplate.getId( ) );
 
             daoUtil.executeUpdate( );
@@ -211,6 +214,7 @@ public final class DataLayerMapTemplateDAO implements IDataLayerMapTemplateDAO
                 dataLayerMapTemplate.setPictoSizeZoom812( daoUtil.getInt( nIndex++ ) );
                 dataLayerMapTemplate.setPictoSizeZoom1315( daoUtil.getInt( nIndex++ ) );
                 dataLayerMapTemplate.setPictoSizeZoom1619( daoUtil.getInt( nIndex++ ) );
+                dataLayerMapTemplate.setMarkerCluster( daoUtil.getBoolean( nIndex++ ) );
 
                 dataLayerMapTemplateList.add( dataLayerMapTemplate );
             }
@@ -309,6 +313,7 @@ public final class DataLayerMapTemplateDAO implements IDataLayerMapTemplateDAO
                     dataLayerMapTemplate.setPictoSizeZoom812( daoUtil.getInt( nIndex++ ) );
                     dataLayerMapTemplate.setPictoSizeZoom1315( daoUtil.getInt( nIndex++ ) );
                     dataLayerMapTemplate.setPictoSizeZoom1619( daoUtil.getInt( nIndex++ ) );
+                    dataLayerMapTemplate.setMarkerCluster( daoUtil.getBoolean( nIndex++ ) );
 
                     dataLayerMapTemplateList.add( dataLayerMapTemplate );
                 }
@@ -381,6 +386,7 @@ public final class DataLayerMapTemplateDAO implements IDataLayerMapTemplateDAO
                 dataLayerMapTemplate.setPictoSizeZoom812( daoUtil.getInt( nIndex++ ) );
                 dataLayerMapTemplate.setPictoSizeZoom1315( daoUtil.getInt( nIndex++ ) );
                 dataLayerMapTemplate.setPictoSizeZoom1619( daoUtil.getInt( nIndex++ ) );
+                dataLayerMapTemplate.setMarkerCluster( daoUtil.getBoolean( nIndex++ ) );
             }
 
             return Optional.ofNullable( dataLayerMapTemplate );
@@ -420,6 +426,7 @@ public final class DataLayerMapTemplateDAO implements IDataLayerMapTemplateDAO
                 dataLayerMapTemplate.setPictoSizeZoom812( daoUtil.getInt( nIndex++ ) );
                 dataLayerMapTemplate.setPictoSizeZoom1315( daoUtil.getInt( nIndex++ ) );
                 dataLayerMapTemplate.setPictoSizeZoom1619( daoUtil.getInt( nIndex++ ) );
+                dataLayerMapTemplate.setMarkerCluster( daoUtil.getBoolean( nIndex++ ) );
             }
 
             return Optional.ofNullable( dataLayerMapTemplate );
