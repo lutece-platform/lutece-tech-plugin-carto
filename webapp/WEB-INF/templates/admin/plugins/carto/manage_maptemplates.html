@@ -32,7 +32,7 @@
                         <@td>${maptemplate.defaultZoom}</@td>
                         <@td>${maptemplate.zoomMin}</@td>
                         <@td>${maptemplate.zoomMax}</@td>
-                        <@td><#if maptemplate.frontOffice><@tag color='success' title='#i18n{portal.util.labelEnabled}' tagIcon='check' /><#else><@tag color='danger' title='#i18n{portal.util.labelDisabled}' tagIcon='x' /></#if></@td>
+                        <@td><@aButton href='jsp/site/Portal.jsp?page=coordinate&view=manageCoordonnees&idMap=${maptemplate.id}' title='Previsualiser' buttonIcon='edit' /></@td>
                         <@td>${maptemplate.centerMap}</@td>
                         <@td>
                             <@aButton href='jsp/admin/plugins/carto/ManageMapTemplates.jsp?view=modifyMapTemplate&id=${maptemplate.id}' title='#i18n{portal.util.labelModify}' buttonIcon='pencil' />
