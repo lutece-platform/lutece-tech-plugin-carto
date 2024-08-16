@@ -40,6 +40,7 @@ import fr.paris.lutece.portal.service.security.SecurityTokenService;
 import fr.paris.lutece.portal.business.file.File;
 import fr.paris.lutece.portal.service.admin.AccessDeniedException;
 import fr.paris.lutece.portal.service.file.FileService;
+import fr.paris.lutece.portal.service.file.FileServiceException;
 import fr.paris.lutece.portal.service.file.IFileStoreServiceProvider;
 import fr.paris.lutece.portal.service.fileimage.FileImagePublicService;
 import fr.paris.lutece.portal.service.image.ImageResourceManager;
@@ -527,7 +528,11 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
         DataLayerMapTemplate dataLayerMaptemplateUpdate = DataLayerMapTemplateHome.findByPrimaryKey( nId ).get( );
         
         IFileStoreServiceProvider fileStoreService = FileService.getInstance( ).getFileStoreServiceProvider( );
-        fileStoreService.delete( dataLayerMaptemplateUpdate.getIconImage( ) );
+        try {
+			fileStoreService.delete( dataLayerMaptemplateUpdate.getIconImage( ) );
+		} catch (FileServiceException e) {
+			AppLogService.error(e);
+		}
 
         dataLayerMaptemplateUpdate.setIconImage( "" );
 
