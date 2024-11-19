@@ -57,6 +57,8 @@ public final class DataLayerMapTemplateDAO implements IDataLayerMapTemplateDAO
     private static final String SQL_QUERY_SELECTALL_ID = "SELECT id_data_layer_map_template FROM carto_data_layer_map_template";
     private static final String SQL_QUERY_SELECTALL_BY_IDS = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate, zoom_picto, icon_image, picto_size_zoom_0_7, picto_size_zoom_8_12, picto_size_zoom_13_15, picto_size_zoom_16_19, cluster_marker FROM carto_data_layer_map_template WHERE id_data_layer_map_template IN (  ";
     private static final String SQL_QUERY_SELECT_DATA_LAYER_BY_MAP_TEMPLATE_ID = "SELECT id_data_layer FROM carto_data_layer_map_template WHERE id_map_template = ?";
+    //private static final String SQL_QUERY_SELECT_DATA_LAYER_BY_MAP_TEMPLATE_ID = "SELECT id_data_layer FROM carto_data_layer_map_template a inner join carto_data_layer_type b on a.layer_type = b.id_data_layer_type WHERE id_map_template = ? and searchable_by_others = 1";
+    private static final String SQL_QUERY_SELECT_DATA_LAYER_BY_MAP_TEMPLATE_ID_AND_SEARCHABLE = "SELECT id_data_layer FROM carto_data_layer_map_template a inner join carto_data_layer_type b on a.layer_type = b.id_data_layer_type WHERE id_map_template = ? and searchable_by_others = ?";
     private static final String SQL_QUERY_SELECT_BY_ID_MAP_ID_LAYER = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate, zoom_picto, icon_image, picto_size_zoom_0_7, picto_size_zoom_8_12, picto_size_zoom_13_15, picto_size_zoom_16_19, cluster_marker FROM carto_data_layer_map_template WHERE id_map_template = ? AND id_data_layer = ?";
     private static final String SQL_QUERY_SELECT_BY_DATA_LAYER_ID = "SELECT id_data_layer_map_template, id_map_template, id_data_layer, pictogram, zoom_min, zoom_max, layer_type, color, thickness, id_coordinate, zoom_picto, icon_image, picto_size_zoom_0_7, picto_size_zoom_8_12, picto_size_zoom_13_15, picto_size_zoom_16_19, cluster_marker FROM carto_data_layer_map_template WHERE id_data_layer = ?";
 
@@ -336,6 +338,33 @@ public final class DataLayerMapTemplateDAO implements IDataLayerMapTemplateDAO
         try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_DATA_LAYER_BY_MAP_TEMPLATE_ID, _plugin ) )
         {
             daoUtil.setInt( 1, nKey );
+            daoUtil.executeQuery( );
+
+            while ( daoUtil.next( ) )
+            {
+                int nIndex = 1;
+                Optional<DataLayer> dataLayer = DataLayerHome.findByPrimaryKey( daoUtil.getInt( nIndex++ ) );
+                if ( dataLayer.isPresent( ) )
+                {
+                    dataLayerList.add( dataLayer.get( ) );
+                }
+            }
+
+            return dataLayerList;
+        }
+    }
+    
+    /**
+     * {@inheritDoc }
+     */
+    @Override
+    public List<DataLayer> selectDataLayerListByMapTemplateIdAndSearchable( Plugin _plugin, int nKey, boolean isSearchableByOther )
+    {
+        List<DataLayer> dataLayerList = new ArrayList<>( );
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_DATA_LAYER_BY_MAP_TEMPLATE_ID_AND_SEARCHABLE, _plugin ) )
+        {
+            daoUtil.setInt( 1, nKey );
+            daoUtil.setBoolean( 2, isSearchableByOther );
             daoUtil.executeQuery( );
 
             while ( daoUtil.next( ) )

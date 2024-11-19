@@ -13,3 +13,6 @@ ALTER TABLE carto_data_layer_map_template add column picto_size_zoom_13_15 int(1
 ALTER TABLE carto_data_layer_map_template add column picto_size_zoom_16_19 int(11) default 50;
 
 ALTER TABLE carto_data_layer_map_template add column cluster_marker smallint(6) default 1;
+
+update carto_data_layer_type set searchable_by_others = 1;
+insert into carto_data_layer_type(title, editable, searchable_by_others, inclusion, exclusion) values ('Editable par les usagers et consultable uniquement par les utilisateurs du même role',1,0,0,0);

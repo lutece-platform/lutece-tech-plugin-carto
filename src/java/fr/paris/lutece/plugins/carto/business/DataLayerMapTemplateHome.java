@@ -162,6 +162,19 @@ public final class DataLayerMapTemplateHome
     {
         return _dao.selectDataLayerListByMapTemplateId( _plugin, nKey );
     }
+    
+    /**
+     * Load all the DataLayer attached to the MapTemplate id
+     * 
+     * @param nkey
+     *            : id of the mapTemplate
+     * @param isSearchableByOther : is viewable by others users
+     * @return The list of DataLayer
+     */
+    public static List<DataLayer> getDataLayerListByMapTemplateId( int nKey, boolean isSearchableByOther )
+    {
+        return _dao.selectDataLayerListByMapTemplateIdAndSearchable( _plugin, nKey, isSearchableByOther );
+    }
 
     /**
      * Returns an instance of a dataLayerMapTemplate whose identifier is specified in parameter

@@ -160,4 +160,18 @@ public interface IDataLayerMapTemplateDAO
      * @return The instance of the dataLayerMapTemplate
      */
     Optional<DataLayerMapTemplate> loadByDataLayerId( Plugin plugin, int nKey );
+
+    /**
+     * Load all the DataLayer attached to the MapTemplate id
+     * 
+     * @param plugin
+     *            the Plugin
+     * @param nkey
+     *            : id of the mapTemplate
+     *           
+     * @param isSearchableByOther : is the map viewable by others
+     * @return The list of DataLayer
+     */
+	List<DataLayer> selectDataLayerListByMapTemplateIdAndSearchable(Plugin _plugin, int nKey,
+			boolean isSearchableByOther);
 }

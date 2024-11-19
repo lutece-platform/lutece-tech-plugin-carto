@@ -21,9 +21,6 @@
 				<@formGroup labelFor='geometry' labelKey='#i18n{carto.modify_datalayer.labelGeometry}' mandatory=true>
 					<@select name='geometry' items=list_geo_type id='geometry' default_value='${datalayer.geometryType.id!\'\'}' />
 				</@formGroup>
-				<@formGroup labelFor='geometry' labelKey='#i18n{carto.modify_datalayer.labelGeometry}' mandatory=true>
-					<@select name='geometry' items=list_geo_type id='geometry' />
-				</@formGroup>
 				<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayer.labelUrlFlux}' >
 					<@input type='text' id='urlFlux' name='urlFlux'  maxlength=255 value='${datalayer.urlFlux!\'\'}' />
 				</@formGroup>

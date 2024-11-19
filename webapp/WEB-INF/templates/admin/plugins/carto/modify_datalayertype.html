@@ -18,6 +18,9 @@
 			<@formGroup labelFor='exclusion' labelKey='#i18n{carto.modify_datalayertype.labelExclusion}' hideLabel=['all'] mandatory=true>
 				<@checkBox id="exclusion" name="exclusion" labelKey='#i18n{carto.modify_datalayertype.labelExclusion}' orientation='switch' value="1" checked=datalayertype.exclusion!'false' />
 			</@formGroup>
+			<@formGroup labelFor='exclusion' labelKey='#i18n{carto.modify_datalayertype.labelSearchableByOthers}'  hideLabel=['all']  mandatory=true>
+				<@checkBox id="searchableByOthers" name="searchableByOthers" labelKey='#i18n{carto.modify_datalayertype.labelSearchableByOthers}' orientation='switch' value="1" checked=datalayertype.searchableByOthers!'false' />
+			</@formGroup>
         	<@actionButtons button1Name="action_modifyDataLayerType" button2Name="view_manageDataLayerType"/>
     		</@tform>
 		</@div>
