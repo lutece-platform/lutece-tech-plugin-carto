@@ -25,8 +25,8 @@
 					<@actionButtons button1Name="action_modifyDataLayerMapTemplate" button2Name="view_manageDataLayerMapTemplate"/>
 				</@columns>
 			</@row>
-			<@row>
-                <@columns sm=1 class='pb-5'>
+			<@row class='pb-5'>
+                <@columns sm=2>
 					<@formGroup labelFor='pictogram' labelKey='#i18n{carto.modify_datalayermaptemplate.labelPictogram}' class='pb-5' >
 						<@selectIconFont id='pictogram' class='form-select' name='pictogram' defaultValue='${datalayermaptemplate.pictogram!\'\'}' showListLabel=true showListIcon=true searchShow=true searchFocus=false searchHighlight=true prefix='ti' resources=true />
 						<@input type='file' id='pictogram_icon' name='pictogram_icon' inputSize=60 />
@@ -49,26 +49,6 @@
 				<@columns sm=1>
 					<@formGroup labelFor='zoom_picto' labelKey='#i18n{carto.modify_datalayermaptemplate.labelZoomPicto}' rows=2>
 						<@input type='number' id='zoom_picto' class='poly' name='zoom_picto'  value='${datalayermaptemplate.zoomPicto!\'\'}' />
-					</@formGroup>
-				</@columns>
-				<@columns sm=1>
-					<@formGroup labelFor='pictoSizeZoom07' labelKey='#i18n{carto.modify_datalayermaptemplate.labelPicto0_7}' mandatory=true rows=2>
-						<@input type='number' id='pictoSizeZoom07' class='point' name='pictoSizeZoom07'  value='${datalayermaptemplate.pictoSizeZoom07!\'\'}' />
-					</@formGroup>
-				</@columns>
-				<@columns sm=1>
-					<@formGroup labelFor='pictoSizeZoom8_12' labelKey='#i18n{carto.modify_datalayermaptemplate.labelPicto8_12}' mandatory=true rows=2>
-						<@input type='number' id='pictoSizeZoom812' class='point' name='pictoSizeZoom812'  value='${datalayermaptemplate.pictoSizeZoom812!\'\'}' />
-					</@formGroup>
-				</@columns>
-				<@columns sm=1>
-					<@formGroup labelFor='pictoSizeZoom13_15' labelKey='#i18n{carto.modify_datalayermaptemplate.labelPicto13_15}' mandatory=true rows=2>
-						<@input type='number' id='pictoSizeZoom1315' class='point' name='pictoSizeZoom1315'  value='${datalayermaptemplate.pictoSizeZoom1315!\'\'}' />
-					</@formGroup>
-				</@columns>
-				<@columns sm=1>
-					<@formGroup labelFor='pictoSizeZoom16_19' labelKey='#i18n{carto.modify_datalayermaptemplate.labelPicto16_19}' mandatory=true rows=2>
-						<@input type='number' id='pictoSizeZoom1619' class='point' name='pictoSizeZoom1619'  value='${datalayermaptemplate.pictoSizeZoom1619!\'\'}' />
 					</@formGroup>
 				</@columns>
 				<@columns sm=1>
