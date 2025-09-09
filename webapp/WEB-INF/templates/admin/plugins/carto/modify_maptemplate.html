@@ -36,6 +36,11 @@
                         <@input type='text' id='zoom_max' name='zoom_max'  value='${maptemplate.zoomMax!\'\'}' />
                     </@formGroup>
                 </@columns>
+                <@columns sm=1>
+                    <@formGroup labelFor='front_office' labelKey='#i18n{carto.modify_maptemplate.labelFrontOffice}' hideLabel=['all'] class='ms-3 mt-4' mandatory=true  rows=2>
+                        <@checkBox id='front_office' name='front_office' labelKey='#i18n{carto.modify_maptemplate.labelFrontOffice}' orientation='switch' value='1' checked=maptemplate.frontOffice!'false' />
+                    </@formGroup>
+                </@columns>
                 <@columns sm=5>
                     <@formGroup labelFor='center_map' labelKey='#i18n{carto.modify_maptemplate.labelCenterMap}' mandatory=true rows=2>
                         <@input type='text' id='center_map' name='center_map'  maxlength=255 value='${maptemplate.centerMap!\'\'}' />
