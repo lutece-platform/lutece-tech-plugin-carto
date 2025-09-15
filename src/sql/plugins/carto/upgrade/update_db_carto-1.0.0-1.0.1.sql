@@ -1,3 +1,6 @@
+-- liquibase formatted sql
+-- changeset carto:update_db_carto-1.0.0-1.0.1.sql
+-- preconditions onFail:MARK_RAN onError:WARN
 ALTER TABLE carto_basemap add column attribution varchar(255) default '';
 ALTER TABLE carto_data_layer_map_template add column zoom_picto int default '0';
 ALTER TABLE carto_data_layer_map_template add column icon_image long varchar default '';
