@@ -1,3 +1,6 @@
+-- liquibase formatted sql
+-- changeset carto:init_core_carto.sql
+-- preconditions onFail:MARK_RAN onError:WARN
 
 --
 -- Data for table core_admin_right
