@@ -31,8 +31,8 @@ default_zoom int default '0',
 zoom_min int default '0',
 zoom_max int default '0',
 center_map varchar(255) default '',
-center_map_x float default '0',
-center_map_y float default '0',
+center_map_x float default 0,
+center_map_y float default 0,
 front_office SMALLINT,
 PRIMARY KEY (id_modele_carte)
 );
@@ -73,11 +73,11 @@ color varchar(50) default '',
 thickness int default '0',
 id_coordinate int default '0' NOT NULL,
 icon_image long varchar default '',
-picto_size_zoom_0_7 int(11) default 50,
-picto_size_zoom_8_12 int(11) default 50,
-picto_size_zoom_13_15 int(11) default 50,
-picto_size_zoom_16_19 int(11) default 50,
-cluster_marker smallint(6) default 1,
+picto_size_zoom_0_7 int default 50,
+picto_size_zoom_8_12 int default 50,
+picto_size_zoom_13_15 int default 50,
+picto_size_zoom_16_19 int default 50,
+cluster_marker smallint default 1,
 PRIMARY KEY (id_data_layer_map_template)
 );
 
