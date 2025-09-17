@@ -5,7 +5,6 @@
 			<@tform method="post" name="modify_basemap" action="jsp/admin/plugins/carto/ManageBasemaps.jsp" >
 			<@messages errors=errors />
 			<@input type="hidden" id="id" name="id" value="${basemap.id}"/>
-			<@input type="hidden" value="${token}" name="token" />
 			<@formGroup labelFor='title' labelKey='#i18n{carto.modify_basemap.labelTitle}' mandatory=true>
 				<@input type='text' id='title' name='title'  maxlength=255 value='${basemap.title!\'\'}' />
 			</@formGroup>

@@ -1,9 +1,8 @@
-<jsp:useBean id="managereferentielcartographieBasemap" scope="session" class="fr.paris.lutece.plugins.carto.web.BasemapJspBean" />
-<% String strContent = managereferentielcartographieBasemap.processController ( request , response ); %>
+${ pageContext.setAttribute( 'strContent', basemapJspBean.processController ( pageContext.request , pageContext.response ) ) }
 
 <%@ page errorPage="../../ErrorPage.jsp" %>
 <jsp:include page="../../AdminHeader.jsp" />
 
-<%= strContent %>
+${ pageContext.getAttribute( 'strContent' ) }
 
 <%@ include file="../../AdminFooter.jsp" %>

@@ -1,9 +1,8 @@
-<jsp:useBean id="managecartoDataLayerType" scope="session" class="fr.paris.lutece.plugins.carto.web.DataLayerTypeJspBean" />
-<% String strContent = managecartoDataLayerType.processController ( request , response ); %>
+${ pageContext.setAttribute( 'strContent', dataLayerTypeJspBean.processController ( pageContext.request , pageContext.response ) ) }
 
 <%@ page errorPage="../../ErrorPage.jsp" %>
 <jsp:include page="../../AdminHeader.jsp" />
 
-<%= strContent %>
+${ pageContext.getAttribute( 'strContent' ) }
 
 <%@ include file="../../AdminFooter.jsp" %>

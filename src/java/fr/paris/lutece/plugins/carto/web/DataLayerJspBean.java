@@ -36,14 +36,14 @@ package fr.paris.lutece.plugins.carto.web;
 
 import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
-import fr.paris.lutece.portal.service.security.SecurityTokenService;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
+import fr.paris.lutece.portal.service.upload.MultipartItem;
 import fr.paris.lutece.portal.service.admin.AccessDeniedException;
 import fr.paris.lutece.portal.service.util.AppException;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.util.mvc.admin.annotations.Controller;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.Action;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.View;
+import fr.paris.lutece.portal.web.cdi.mvc.Models;
 import fr.paris.lutece.portal.web.upload.MultipartHttpServletRequest;
 import fr.paris.lutece.util.url.UrlItem;
 import fr.paris.lutece.util.ReferenceList;
@@ -51,15 +51,18 @@ import fr.paris.lutece.util.html.AbstractPaginator;
 
 import java.util.Comparator;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.fileupload.FileItem;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.enterprise.inject.spi.CDI;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -78,13 +81,14 @@ import fr.paris.lutece.plugins.carto.business.FeatureCollection;
 import fr.paris.lutece.plugins.carto.business.GeometryType;
 import fr.paris.lutece.plugins.carto.business.GeometryTypeHome;
 import fr.paris.lutece.plugins.carto.provider.IMarkerProvider;
-import fr.paris.lutece.plugins.carto.provider.InfoMarker;
 import fr.paris.lutece.plugins.carto.util.EnumDataLayerSource;
 
 /**
  * This class provides the user interface to manage DataLayer features ( manage, create, modify, remove )
  */
-@Controller( controllerJsp = "ManageDataLayers.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT" )
+@SessionScoped
+@Named
+@Controller( controllerJsp = "ManageDataLayers.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT", securityTokenEnabled = true )
 public class DataLayerJspBean extends AbstractManageCartoJspBean<Integer, DataLayer>
 {
     // Templates
@@ -145,6 +149,9 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean<Integer, DataLa
     private DataLayer _datalayer;
     private List<Integer> _listIdDataLayers;
 
+    @Inject
+    private Models model;
+    
     /**
      * Build the Manage View
      * 
@@ -204,11 +211,9 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean<Integer, DataLa
 
         ReferenceList refGeometry = GeometryTypeHome.getGeometryTypesReferenceList( );
 
-        Map<String, Object> model = getModel( );
         model.put( MARK_REF_GEOMETRY_LIST, refGeometry );
         model.put( MARK_DATALAYER, _datalayer );
         model.put( MARK_DATALAYER_SOURCE_LIST, EnumDataLayerSource.getReferenceList( ) );
-        model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_CREATE_DATALAYER ) );
 
         return getPage( PROPERTY_PAGE_TITLE_CREATE_DATALAYER, TEMPLATE_CREATE_DATALAYER, model );
     }
@@ -231,10 +236,6 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean<Integer, DataLa
             _datalayer.setGeometryType( geoType.get( ) );
         }
 
-        if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_CREATE_DATALAYER ) )
-        {
-            throw new AccessDeniedException( "Invalid security token" );
-        }
         Optional<DataLayer> optDataLayerSolrTag = DataLayerHome.findBySolrTag( _datalayer.getSolrTag( ) );
         if ( optDataLayerSolrTag.isPresent( ) )
         {
@@ -261,14 +262,14 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean<Integer, DataLa
      *            The Http request
      * @return the html code to confirm
      */
-    @Action( ACTION_CONFIRM_REMOVE_DATALAYER )
+    @Action( value = ACTION_CONFIRM_REMOVE_DATALAYER, securityTokenAction = ACTION_REMOVE_DATALAYER )
     public String getConfirmRemoveDataLayer( HttpServletRequest request )
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_DATALAYER ) );
         UrlItem url = new UrlItem( getActionUrl( ACTION_REMOVE_DATALAYER ) );
         url.addParameter( PARAMETER_ID_DATALAYER, nId );
 
-        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_DATALAYER, url.getUrl( ), AdminMessage.TYPE_CONFIRMATION );
+        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_DATALAYER, null, null, url.getUrl( ), null, AdminMessage.TYPE_CONFIRMATION, null, JSP_MANAGE_DATALAYERS );
 
         return redirect( request, strMessageUrl );
     }
@@ -318,17 +319,15 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean<Integer, DataLa
             _datalayer = optDataLayer.orElseThrow( ( ) -> new AppException( ERROR_RESOURCE_NOT_FOUND ) );
         }
 
-        List<IMarkerProvider> lstMarkerSolrList = SpringContextService.getBeansOfType( IMarkerProvider.class );
+        List<IMarkerProvider> lstMarkerSolrList = CDI.current( ).select( IMarkerProvider.class ).stream( ).toList( );
 
         ReferenceList refGeometry = GeometryTypeHome.getGeometryTypesReferenceList( );
 
-        Map<String, Object> model = getModel( );
         model.put( MARK_REF_GEOMETRY_LIST, refGeometry );
         model.put( MARK_DATALAYER, _datalayer );
         model.put( MARK_DATALAYER_SOURCE_LIST, EnumDataLayerSource.getReferenceList( ) );
         if ( !lstMarkerSolrList.isEmpty( ) )
             model.put( MARK_SOLR_MARKER_LIST, lstMarkerSolrList.get( 0 ).provideMarkerDescriptions( _datalayer.getSolrTag( ), request ) );
-        model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_MODIFY_DATALAYER ) );
 
         return getPage( PROPERTY_PAGE_TITLE_MODIFY_DATALAYER, TEMPLATE_MODIFY_DATALAYER, model );
     }
@@ -351,11 +350,6 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean<Integer, DataLa
             _datalayer.setGeometryType( geoType.get( ) );
         }
 
-        if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_MODIFY_DATALAYER ) )
-        {
-            throw new AccessDeniedException( "Invalid security token" );
-        }
-
         // Check constraints
         if ( !validateBean( _datalayer, VALIDATION_ATTRIBUTES_PREFIX ) )
         {
@@ -376,7 +370,7 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean<Integer, DataLa
      *            The Http request
      * @return The HTML form to update info
      */
-    @View( VIEW_UPLOAD_FILE_DATALAYER )
+    @View( value = VIEW_UPLOAD_FILE_DATALAYER, securityTokenAction = ACTION_UPLOAD_FILE_DATALAYER )
     public String getUploadFileDataLayer( HttpServletRequest request )
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_DATALAYER ) );
@@ -387,10 +381,7 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean<Integer, DataLa
             _datalayer = optDataLayer.orElseThrow( ( ) -> new AppException( ERROR_RESOURCE_NOT_FOUND ) );
         }
 
-
-        Map<String, Object> model = getModel( );
         model.put( MARK_DATALAYER, _datalayer );
-        model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_MODIFY_DATALAYER ) );
 
         return getPage( PROPERTY_PAGE_TITLE_MODIFY_DATALAYER, TEMPLATE_UPLOAD_FILE_DATALAYER, model );
     }
@@ -410,19 +401,18 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean<Integer, DataLa
     	DataLayer dataLayerUpload = DataLayerHome.findByPrimaryKey( nId ).get( );
     	
     	MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        FileItem zoneJsonFileItem = multipartRequest.getFile( PARAMETER_GEOJSON_FILE );
-        String strGeoJSON = null;
+        MultipartItem zoneJsonFileItem = multipartRequest.getFile( PARAMETER_GEOJSON_FILE );
+        
         if ( zoneJsonFileItem != null && zoneJsonFileItem.getSize( ) > 0 )
         {
-            String strGeoJsonFeatureCollection = zoneJsonFileItem.getString( );
+            String strGeoJsonFeatureCollection = new String( zoneJsonFileItem.get( ), StandardCharsets.UTF_8 );
             try
             {
             	new ObjectMapper( ).readTree( strGeoJsonFeatureCollection );
-            	//strGeoJSON = getGeoJSON( strGeoJsonFeatureCollection );
             }
             catch( IOException e )
             {
-                AppLogService.error( "Exception during GEOJSON parsing : " + strGeoJsonFeatureCollection + " : " + e );
+                AppLogService.error( "Exception during GEOJSON parsing : {} ", strGeoJsonFeatureCollection, e );
                 addError( "GeoJSON not valid" );
                 return redirect( request, VIEW_UPLOAD_FILE_DATALAYER, PARAMETER_ID_DATALAYER, nId );
 
@@ -434,14 +424,16 @@ public class DataLayerJspBean extends AbstractManageCartoJspBean<Integer, DataLa
 				addError("Fichier GeoJSON non conforme");
 				return redirect(request, VIEW_UPLOAD_FILE_DATALAYER, PARAMETER_ID_DATALAYER, nId);
 			}
-            for (Coordonnee coord : lstCoordonnees) {
+            for (Coordonnee coord : lstCoordonnees) 
+            {
 				coord.setDataLayer(dataLayerUpload);
 				coord.setAdresse("");
 				CoordonneeHome.create(coord);
 			}
             
         }
-		else {
+		else 
+		{
 			addError("No file uploaded");
 			return redirect( request, VIEW_UPLOAD_FILE_DATALAYER, PARAMETER_ID_DATALAYER, nId );
 		}

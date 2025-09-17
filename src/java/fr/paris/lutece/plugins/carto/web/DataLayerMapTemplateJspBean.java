@@ -36,10 +36,8 @@ package fr.paris.lutece.plugins.carto.web;
 
 import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
-import fr.paris.lutece.portal.service.security.SecurityTokenService;
-import fr.paris.lutece.portal.business.file.File;
+import fr.paris.lutece.portal.service.upload.MultipartItem;
 import fr.paris.lutece.portal.service.admin.AccessDeniedException;
-import fr.paris.lutece.portal.service.file.FileService;
 import fr.paris.lutece.portal.service.file.FileServiceException;
 import fr.paris.lutece.portal.service.file.IFileStoreServiceProvider;
 import fr.paris.lutece.portal.service.fileimage.FileImagePublicService;
@@ -49,6 +47,7 @@ import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.util.mvc.admin.annotations.Controller;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.Action;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.View;
+import fr.paris.lutece.portal.web.cdi.mvc.Models;
 import fr.paris.lutece.portal.web.upload.MultipartHttpServletRequest;
 import fr.paris.lutece.util.url.UrlItem;
 import fr.paris.lutece.util.ReferenceList;
@@ -56,14 +55,17 @@ import fr.paris.lutece.util.html.AbstractPaginator;
 
 import java.util.Comparator;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.fileupload.FileItem;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -84,7 +86,9 @@ import fr.paris.lutece.plugins.carto.business.MapTemplateHome;
 /**
  * This class provides the user interface to manage DataLayerMapTemplate features ( manage, create, modify, remove )
  */
-@Controller( controllerJsp = "ManageDataLayerMapTemplates.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT" )
+@SessionScoped
+@Named
+@Controller( controllerJsp = "ManageDataLayerMapTemplates.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT", securityTokenEnabled = true )
 public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Integer, DataLayerMapTemplate>
 {
     // Templates
@@ -140,12 +144,18 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
     // Errors
     private static final String ERROR_RESOURCE_NOT_FOUND = "Resource not found";
     private static final String ERROR_LAYER_TEMPLATE_EDITABLE = "carto.modify_datalayermaptemplate.error.layereditable";
-    private static final String ERROR_LAYER_TEMPLATE_INCLUSION_EXCLUSION = "carto.modify_datalayermaptemplate.error.layerinclusionexclusion";
 
     // Session variable to store working values
     private DataLayerMapTemplate _datalayermaptemplate;
     private List<Integer> _listIdDataLayerMapTemplates;
 
+    @Inject
+    @Named( "defaultDatabaseFileStoreProvider" )
+    private IFileStoreServiceProvider _fileStoreServiceProvider;
+    
+    @Inject
+    private Models model;
+    
     /**
      * Build the Manage View
      * 
@@ -217,13 +227,11 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
         ReferenceList refDataLayerType = DataLayerTypeHome.getDataLayerTypesReferenceList( );
         List<DataLayer> lstDataLayer = DataLayerHome.getDataLayersList( );
 
-        Map<String, Object> model = getModel( );
         model.put( MARK_REF_DATA_LAYER, refDataLayer );
         model.put( MARK_REF_MAP_TEMPLATE, refMapTemplate );
         model.put( MARK_DATALAYERMAPTEMPLATE, _datalayermaptemplate );
         model.put( MARK_REF_DATA_LAYER_TYPE, refDataLayerType );
         model.put( MARK_LIST_DATA_LAYER, lstDataLayer );
-        model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_CREATE_DATALAYERMAPTEMPLATE ) );
 
         return getPage( PROPERTY_PAGE_TITLE_CREATE_DATALAYERMAPTEMPLATE, TEMPLATE_CREATE_DATALAYERMAPTEMPLATE, model );
     }
@@ -241,11 +249,6 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
     {
         populate( _datalayermaptemplate, request, getLocale( ) );
 
-        if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_CREATE_DATALAYERMAPTEMPLATE ) )
-        {
-            throw new AccessDeniedException( "Invalid security token" );
-        }
-
         // Check constraints
         if ( !validateBean( _datalayermaptemplate, VALIDATION_ATTRIBUTES_PREFIX ) )
         {
@@ -261,11 +264,11 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
         }
 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        FileItem zoneJsonFileItem = multipartRequest.getFile( PARAMETER_ZONE_JSON );
+        MultipartItem zoneJsonFileItem = multipartRequest.getFile( PARAMETER_ZONE_JSON );
         String strGeoJSON = null;
         if ( zoneJsonFileItem != null && zoneJsonFileItem.getSize( ) > 0 )
         {
-            String strGeoJsonFeatureCollection = zoneJsonFileItem.getString( );
+            String strGeoJsonFeatureCollection = new String( zoneJsonFileItem.get( ), StandardCharsets.UTF_8 );
             try
             {
                 new ObjectMapper( ).readTree( strGeoJsonFeatureCollection );
@@ -273,7 +276,7 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
             }
             catch( IOException e )
             {
-                AppLogService.error( "Exception during GEOJSON parsing : " + strGeoJsonFeatureCollection + " : " + e );
+                AppLogService.error( "Exception during GEOJSON parsing : {} ", strGeoJsonFeatureCollection, e );
                 addError( "GeoJSON not valid" );
                 return redirect( request, VIEW_MODIFY_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE, _datalayermaptemplate.getId( ) );
 
@@ -292,7 +295,7 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
             _datalayermaptemplate.setIdCoordinate( coord.getId( ) );
         }
         
-        FileItem zoneIconFileItem = multipartRequest.getFile( PARAMETER_ICONE_IMAGE );
+        MultipartItem zoneIconFileItem = multipartRequest.getFile( PARAMETER_ICONE_IMAGE );
         if ( zoneIconFileItem != null && zoneIconFileItem.getSize( ) > 0 )
         {
         	String strFileStoreKey = ImageResourceManager.addImageResource( FileImagePublicService.IMAGE_RESOURCE_TYPE_ID, zoneIconFileItem );
@@ -313,15 +316,15 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
      *            The Http request
      * @return the html code to confirm
      */
-    @Action( ACTION_CONFIRM_REMOVE_DATALAYERMAPTEMPLATE )
+    @Action( value = ACTION_CONFIRM_REMOVE_DATALAYERMAPTEMPLATE, securityTokenAction = ACTION_REMOVE_DATALAYERMAPTEMPLATE )
     public String getConfirmRemoveDataLayerMapTemplate( HttpServletRequest request )
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_DATALAYERMAPTEMPLATE ) );
         UrlItem url = new UrlItem( getActionUrl( ACTION_REMOVE_DATALAYERMAPTEMPLATE ) );
         url.addParameter( PARAMETER_ID_DATALAYERMAPTEMPLATE, nId );
 
-        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_DATALAYERMAPTEMPLATE, url.getUrl( ),
-                AdminMessage.TYPE_CONFIRMATION );
+        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_DATALAYERMAPTEMPLATE, null, null, url.getUrl( ),
+                null, AdminMessage.TYPE_CONFIRMATION, null, JSP_MANAGE_DATALAYERMAPTEMPLATES );
 
         return redirect( request, strMessageUrl );
     }
@@ -374,8 +377,6 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
         ReferenceList refDataLayerType = DataLayerTypeHome.getDataLayerTypesReferenceList( );
         List<DataLayer> lstDataLayer = DataLayerHome.getDataLayersList( );
 
-        Map<String, Object> model = getModel( );
-
         //affichage image
         String strUrlIcon = null;
         if ( _datalayermaptemplate.getIconImage( ) != null && !_datalayermaptemplate.getIconImage( ).isEmpty() )
@@ -394,7 +395,6 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
         model.put( MARK_REF_DATA_LAYER_TYPE, refDataLayerType );
         model.put( MARK_LIST_DATA_LAYER, lstDataLayer );
         model.put( MARK_URK_ICON, strUrlIcon );
-        model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_MODIFY_DATALAYERMAPTEMPLATE ) );
 
         return getPage( PROPERTY_PAGE_TITLE_MODIFY_DATALAYERMAPTEMPLATE, TEMPLATE_MODIFY_DATALAYERMAPTEMPLATE, model );
     }
@@ -411,11 +411,6 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
     public String doModifyDataLayerMapTemplate( HttpServletRequest request ) throws AccessDeniedException
     {
         populate( _datalayermaptemplate, request, getLocale( ) );
-
-        if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_MODIFY_DATALAYERMAPTEMPLATE ) )
-        {
-            throw new AccessDeniedException( "Invalid security token" );
-        }
 
         // Check constraints
         if ( !validateBean( _datalayermaptemplate, VALIDATION_ATTRIBUTES_PREFIX ) )
@@ -435,11 +430,11 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
         }
 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        FileItem zoneJsonFileItem = multipartRequest.getFile( PARAMETER_ZONE_JSON );
+        MultipartItem zoneJsonFileItem = multipartRequest.getFile( PARAMETER_ZONE_JSON );
         String strGeoJSON = null;
         if ( zoneJsonFileItem != null && zoneJsonFileItem.getSize( ) > 0 )
         {
-            String strGeoJsonFeatureCollection = zoneJsonFileItem.getString( );
+            String strGeoJsonFeatureCollection = new String( zoneJsonFileItem.get( ), StandardCharsets.UTF_8 );
             try
             {
             	new ObjectMapper( ).readTree( strGeoJsonFeatureCollection );
@@ -447,7 +442,7 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
             }
             catch( IOException e )
             {
-                AppLogService.error( "Exception during GEOJSON parsing : " + strGeoJsonFeatureCollection + " : " + e );
+                AppLogService.error( "Exception during GEOJSON parsing : {} ", strGeoJsonFeatureCollection, e );
                 addError( "GeoJSON not valid" );
                 return redirect( request, VIEW_MODIFY_DATALAYERMAPTEMPLATE, PARAMETER_ID_DATALAYERMAPTEMPLATE, _datalayermaptemplate.getId( ) );
 
@@ -479,7 +474,7 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
             }
         }
         
-        FileItem zoneIconFileItem = multipartRequest.getFile( PARAMETER_ICONE_IMAGE );
+        MultipartItem zoneIconFileItem = multipartRequest.getFile( PARAMETER_ICONE_IMAGE );
         if ( zoneIconFileItem != null && zoneIconFileItem.getSize( ) > 0 )
         {
         	String strFileStoreKey = ImageResourceManager.addImageResource( FileImagePublicService.IMAGE_RESOURCE_TYPE_ID, zoneIconFileItem );
@@ -527,9 +522,9 @@ public class DataLayerMapTemplateJspBean extends AbstractManageCartoJspBean<Inte
     	int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_DATALAYERMAPTEMPLATE ) );
         DataLayerMapTemplate dataLayerMaptemplateUpdate = DataLayerMapTemplateHome.findByPrimaryKey( nId ).get( );
         
-        IFileStoreServiceProvider fileStoreService = FileService.getInstance( ).getFileStoreServiceProvider( );
-        try {
-			fileStoreService.delete( dataLayerMaptemplateUpdate.getIconImage( ) );
+        try 
+        {
+        	_fileStoreServiceProvider.delete( dataLayerMaptemplateUpdate.getIconImage( ) );
 		} catch (FileServiceException e) {
 			AppLogService.error(e);
 		}
