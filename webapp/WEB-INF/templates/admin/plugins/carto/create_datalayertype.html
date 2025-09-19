@@ -4,7 +4,6 @@
 		<@div id='new_datalayertype'>
 			<@tform name='create_datalayertype' action='jsp/admin/plugins/carto/ManageDataLayerTypes.jsp' >
 			<@messages errors=errors />
-			<@input type="hidden" value="${token}" name="token" />
 			<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayertype.labelTitle}' mandatory=true>
 				<@input type='text' id='title' name='title'  maxlength=255 value='${datalayertype.title!\'\'}' />
 			</@formGroup>

@@ -37,6 +37,8 @@ import fr.paris.lutece.test.LuteceTestCase;
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * This is the business class test for the object GeometryType
  */
@@ -50,6 +52,7 @@ public class GeometryTypeBusinessTest extends LuteceTestCase
     /**
      * test GeometryType
      */
+    @Test
     public void testBusiness( )
     {
         // Initialize an object

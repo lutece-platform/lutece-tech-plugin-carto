@@ -4,7 +4,6 @@
 			<@tform method="post" enctype="multipart/form-data" name="modify_datalayermaptemplate" action="jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp" boxed=true>
 			<@messages errors=errors />
 			<@input type="hidden" id="id" name="id" value="${datalayermaptemplate.id}"/>
-			<@input type="hidden" value="${token}" name="token" />
 			<@row>
 				<@columns sm=3> 
 					<@formGroup labelFor='id_map_template' labelKey='#i18n{carto.modify_datalayermaptemplate.labelIdMapTemplate}' mandatory=true rows=2>

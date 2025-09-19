@@ -36,8 +36,8 @@ package fr.paris.lutece.plugins.carto.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.util.ReferenceList;
+import jakarta.enterprise.inject.spi.CDI;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +48,7 @@ import java.util.Optional;
 public final class MapTemplateHome
 {
     // Static variable pointed at the DAO instance
-    private static IMapTemplateDAO _dao = SpringContextService.getBean( "carto.mapTemplateDAO" );
+    private static IMapTemplateDAO _dao = CDI.current( ).select( IMapTemplateDAO.class ).get( );
     private static Plugin _plugin = PluginService.getPlugin( "carto" );
 
     /**

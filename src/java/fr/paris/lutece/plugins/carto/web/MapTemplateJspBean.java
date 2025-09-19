@@ -36,12 +36,12 @@ package fr.paris.lutece.plugins.carto.web;
 
 import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
-import fr.paris.lutece.portal.service.security.SecurityTokenService;
 import fr.paris.lutece.portal.service.admin.AccessDeniedException;
 import fr.paris.lutece.portal.service.util.AppException;
 import fr.paris.lutece.portal.util.mvc.admin.annotations.Controller;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.Action;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.View;
+import fr.paris.lutece.portal.web.cdi.mvc.Models;
 import fr.paris.lutece.util.url.UrlItem;
 import fr.paris.lutece.util.ReferenceList;
 import fr.paris.lutece.util.html.AbstractPaginator;
@@ -52,7 +52,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
+
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -65,7 +69,9 @@ import fr.paris.lutece.plugins.carto.business.MapTemplateHome;
 /**
  * This class provides the user interface to manage MapTemplate features ( manage, create, modify, remove )
  */
-@Controller( controllerJsp = "ManageMapTemplates.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT" )
+@SessionScoped
+@Named
+@Controller( controllerJsp = "ManageMapTemplates.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT", securityTokenEnabled = true )
 public class MapTemplateJspBean extends AbstractManageCartoJspBean<Integer, MapTemplate>
 {
     // Templates
@@ -118,6 +124,9 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean<Integer, MapT
     private MapTemplate _maptemplate;
     private List<Integer> _listIdMapTemplates;
 
+    @Inject
+    private Models model;
+    
     /**
      * Build the Manage View
      * 
@@ -175,10 +184,8 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean<Integer, MapT
     {
         _maptemplate = ( _maptemplate != null ) ? _maptemplate : new MapTemplate( );
 
-        Map<String, Object> model = getModel( );
         model.put( MARK_MAPTEMPLATE, _maptemplate );
         model.put( MARK_MAP_PROVIDER_LIST, BasemapHome.getBasemapsReferenceList( ) );
-        model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_CREATE_MAPTEMPLATE ) );
 
         return getPage( PROPERTY_PAGE_TITLE_CREATE_MAPTEMPLATE, TEMPLATE_CREATE_MAPTEMPLATE, model );
     }
@@ -214,11 +221,6 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean<Integer, MapT
     {
         populate( _maptemplate, request, getLocale( ) );
 
-        if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_CREATE_MAPTEMPLATE ) )
-        {
-            throw new AccessDeniedException( "Invalid security token" );
-        }
-
         // Check constraints
         if ( !validateBean( _maptemplate, VALIDATION_ATTRIBUTES_PREFIX ) )
         {
@@ -239,14 +241,14 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean<Integer, MapT
      *            The Http request
      * @return the html code to confirm
      */
-    @Action( ACTION_CONFIRM_REMOVE_MAPTEMPLATE )
+    @Action( value = ACTION_CONFIRM_REMOVE_MAPTEMPLATE, securityTokenAction = ACTION_REMOVE_MAPTEMPLATE )
     public String getConfirmRemoveMapTemplate( HttpServletRequest request )
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_MAPTEMPLATE ) );
         UrlItem url = new UrlItem( getActionUrl( ACTION_REMOVE_MAPTEMPLATE ) );
         url.addParameter( PARAMETER_ID_MAPTEMPLATE, nId );
-
-        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_MAPTEMPLATE, url.getUrl( ), AdminMessage.TYPE_CONFIRMATION );
+        
+        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_MAPTEMPLATE, null, null, url.getUrl( ), null, AdminMessage.TYPE_CONFIRMATION, null, JSP_MANAGE_MAPTEMPLATES );
 
         return redirect( request, strMessageUrl );
     }
@@ -295,10 +297,8 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean<Integer, MapT
             _maptemplate = optMapTemplate.orElseThrow( ( ) -> new AppException( ERROR_RESOURCE_NOT_FOUND ) );
         }
 
-        Map<String, Object> model = getModel( );
         model.put( MARK_MAPTEMPLATE, _maptemplate );
         model.put( MARK_MAP_PROVIDER_LIST, BasemapHome.getBasemapsReferenceList( ) );
-        model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_MODIFY_MAPTEMPLATE ) );
 
         return getPage( PROPERTY_PAGE_TITLE_MODIFY_MAPTEMPLATE, TEMPLATE_MODIFY_MAPTEMPLATE, model );
     }
@@ -315,11 +315,6 @@ public class MapTemplateJspBean extends AbstractManageCartoJspBean<Integer, MapT
     public String doModifyMapTemplate( HttpServletRequest request ) throws AccessDeniedException
     {
         populate( _maptemplate, request, getLocale( ) );
-
-        if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_MODIFY_MAPTEMPLATE ) )
-        {
-            throw new AccessDeniedException( "Invalid security token" );
-        }
 
         // Check constraints
         if ( !validateBean( _maptemplate, VALIDATION_ATTRIBUTES_PREFIX ) )
