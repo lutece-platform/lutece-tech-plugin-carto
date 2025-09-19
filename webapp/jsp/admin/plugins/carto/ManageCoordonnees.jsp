@@ -1,9 +1,8 @@
-<jsp:useBean id="managecartoCoordonnee" scope="session" class="fr.paris.lutece.plugins.carto.web.CoordonneeJspBean" />
-<% String strContent = managecartoCoordonnee.processController ( request , response ); %>
+${ pageContext.setAttribute( 'strContent', coordonneeJspBean.processController ( pageContext.request , pageContext.response ) ) }
 
 <%@ page errorPage="../../ErrorPage.jsp" %>
 <jsp:include page="../../AdminHeader.jsp" />
 
-<%= strContent %>
+${ pageContext.getAttribute( 'strContent' ) }
 
 <%@ include file="../../AdminFooter.jsp" %>

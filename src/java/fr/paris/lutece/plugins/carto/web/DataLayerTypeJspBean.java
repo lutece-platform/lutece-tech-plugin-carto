@@ -36,12 +36,12 @@ package fr.paris.lutece.plugins.carto.web;
 
 import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
-import fr.paris.lutece.portal.service.security.SecurityTokenService;
 import fr.paris.lutece.portal.service.admin.AccessDeniedException;
 import fr.paris.lutece.portal.service.util.AppException;
 import fr.paris.lutece.portal.util.mvc.admin.annotations.Controller;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.Action;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.View;
+import fr.paris.lutece.portal.web.cdi.mvc.Models;
 import fr.paris.lutece.util.url.UrlItem;
 import fr.paris.lutece.util.html.AbstractPaginator;
 
@@ -51,14 +51,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.servlet.http.HttpServletRequest;
 import fr.paris.lutece.plugins.carto.business.DataLayerType;
 import fr.paris.lutece.plugins.carto.business.DataLayerTypeHome;
 
 /**
  * This class provides the user interface to manage DataLayerType features ( manage, create, modify, remove )
  */
-@Controller( controllerJsp = "ManageDataLayerTypes.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT_REFERENTIEL" )
+@SessionScoped
+@Named
+@Controller( controllerJsp = "ManageDataLayerTypes.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT_REFERENTIEL", securityTokenEnabled = true )
 public class DataLayerTypeJspBean extends AbstractManageCartoJspBean<Integer, DataLayerType>
 {
     // Templates
@@ -109,6 +114,9 @@ public class DataLayerTypeJspBean extends AbstractManageCartoJspBean<Integer, Da
     private DataLayerType _datalayertype;
     private List<Integer> _listIdDataLayerTypes;
 
+    @Inject
+    private Models model;
+    
     /**
      * Build the Manage View
      * 
@@ -166,9 +174,7 @@ public class DataLayerTypeJspBean extends AbstractManageCartoJspBean<Integer, Da
     {
         _datalayertype = ( _datalayertype != null ) ? _datalayertype : new DataLayerType( );
 
-        Map<String, Object> model = getModel( );
         model.put( MARK_DATALAYERTYPE, _datalayertype );
-        model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_CREATE_DATALAYERTYPE ) );
 
         return getPage( PROPERTY_PAGE_TITLE_CREATE_DATALAYERTYPE, TEMPLATE_CREATE_DATALAYERTYPE, model );
     }
@@ -185,11 +191,6 @@ public class DataLayerTypeJspBean extends AbstractManageCartoJspBean<Integer, Da
     public String doCreateDataLayerType( HttpServletRequest request ) throws AccessDeniedException
     {
         populate( _datalayertype, request, getLocale( ) );
-
-        if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_CREATE_DATALAYERTYPE ) )
-        {
-            throw new AccessDeniedException( "Invalid security token" );
-        }
 
         // Check constraints
         if ( !validateBean( _datalayertype, VALIDATION_ATTRIBUTES_PREFIX ) )
@@ -211,15 +212,15 @@ public class DataLayerTypeJspBean extends AbstractManageCartoJspBean<Integer, Da
      *            The Http request
      * @return the html code to confirm
      */
-    @Action( ACTION_CONFIRM_REMOVE_DATALAYERTYPE )
+    @Action( value = ACTION_CONFIRM_REMOVE_DATALAYERTYPE, securityTokenAction = ACTION_REMOVE_DATALAYERTYPE )
     public String getConfirmRemoveDataLayerType( HttpServletRequest request )
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_DATALAYERTYPE ) );
         UrlItem url = new UrlItem( getActionUrl( ACTION_REMOVE_DATALAYERTYPE ) );
         url.addParameter( PARAMETER_ID_DATALAYERTYPE, nId );
 
-        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_DATALAYERTYPE, url.getUrl( ),
-                AdminMessage.TYPE_CONFIRMATION );
+        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_DATALAYERTYPE, null, null, url.getUrl( ),
+                null, AdminMessage.TYPE_CONFIRMATION, null, JSP_MANAGE_DATALAYERTYPES );
 
         return redirect( request, strMessageUrl );
     }
@@ -261,9 +262,7 @@ public class DataLayerTypeJspBean extends AbstractManageCartoJspBean<Integer, Da
             _datalayertype = optDataLayerType.orElseThrow( ( ) -> new AppException( ERROR_RESOURCE_NOT_FOUND ) );
         }
 
-        Map<String, Object> model = getModel( );
         model.put( MARK_DATALAYERTYPE, _datalayertype );
-        model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_MODIFY_DATALAYERTYPE ) );
 
         return getPage( PROPERTY_PAGE_TITLE_MODIFY_DATALAYERTYPE, TEMPLATE_MODIFY_DATALAYERTYPE, model );
     }
@@ -280,11 +279,6 @@ public class DataLayerTypeJspBean extends AbstractManageCartoJspBean<Integer, Da
     public String doModifyDataLayerType( HttpServletRequest request ) throws AccessDeniedException
     {
         populate( _datalayertype, request, getLocale( ) );
-
-        if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_MODIFY_DATALAYERTYPE ) )
-        {
-            throw new AccessDeniedException( "Invalid security token" );
-        }
 
         // Check constraints
         if ( !validateBean( _datalayertype, VALIDATION_ATTRIBUTES_PREFIX ) )

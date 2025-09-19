@@ -7,7 +7,6 @@
 			<@tform method="post" name="upload_datalayer" enctype="multipart/form-data" action="jsp/admin/plugins/carto/ManageDataLayers.jsp" >
 				<@messages errors=errors />
 				<@input type="hidden" id="id" name="id" value="${datalayer.id}"/>
-				<@input type="hidden" value="${token}" name="token" />
 				
 				<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayer.labelUploadFile}' mandatory=true>
 					<@input type='file' id='filegeojson' name='filegeojson' />

@@ -5,7 +5,6 @@
 			<@messages errors=errors />
 		    <@tform method="post" name="modify_geometrytype" action="jsp/admin/plugins/carto/ManageGeometryTypes.jsp" >
 				<@input type="hidden" id="id" name="id" value="${geometrytype.id}"/>
-				<@input type="hidden" value="${token}" name="token" />
 				<@formGroup labelFor='name' labelKey='#i18n{carto.modify_geometrytype.labelName}' mandatory=true>
 					<@input type='text' id='name' name='name'  maxlength=255 value='${geometrytype.name!\'\'}' />
 				</@formGroup>
