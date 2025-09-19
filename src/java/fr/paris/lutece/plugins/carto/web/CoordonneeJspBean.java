@@ -35,12 +35,12 @@ package fr.paris.lutece.plugins.carto.web;
 
 import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
-import fr.paris.lutece.portal.service.security.SecurityTokenService;
 import fr.paris.lutece.portal.service.admin.AccessDeniedException;
 import fr.paris.lutece.portal.service.util.AppException;
 import fr.paris.lutece.portal.util.mvc.admin.annotations.Controller;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.Action;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.View;
+import fr.paris.lutece.portal.web.cdi.mvc.Models;
 import fr.paris.lutece.util.url.UrlItem;
 import fr.paris.lutece.util.html.AbstractPaginator;
 
@@ -50,14 +50,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.servlet.http.HttpServletRequest;
 import fr.paris.lutece.plugins.carto.business.Coordonnee;
 import fr.paris.lutece.plugins.carto.business.CoordonneeHome;
 
 /**
  * This class provides the user interface to manage Coordonnee features ( manage, create, modify, remove )
  */
-@Controller( controllerJsp = "ManageCoordonnees.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT" )
+@SessionScoped
+@Named
+@Controller( controllerJsp = "ManageCoordonnees.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT", securityTokenEnabled = true )
 public class CoordonneeJspBean extends AbstractManageCartoJspBean<Integer, Coordonnee>
 {
     // Templates
@@ -108,6 +113,9 @@ public class CoordonneeJspBean extends AbstractManageCartoJspBean<Integer, Coord
     private Coordonnee _coordonnee;
     private List<Integer> _listIdCoordonnees;
 
+    @Inject
+    private Models model;
+    
     /**
      * Build the Manage View
      * 
@@ -165,9 +173,7 @@ public class CoordonneeJspBean extends AbstractManageCartoJspBean<Integer, Coord
     {
         _coordonnee = ( _coordonnee != null ) ? _coordonnee : new Coordonnee( );
 
-        Map<String, Object> model = getModel( );
         model.put( MARK_COORDONNEE, _coordonnee );
-        model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_CREATE_COORDONNEE ) );
 
         return getPage( PROPERTY_PAGE_TITLE_CREATE_COORDONNEE, TEMPLATE_CREATE_COORDONNEE, model );
     }
@@ -184,11 +190,6 @@ public class CoordonneeJspBean extends AbstractManageCartoJspBean<Integer, Coord
     public String doCreateCoordonnee( HttpServletRequest request ) throws AccessDeniedException
     {
         populate( _coordonnee, request, getLocale( ) );
-
-        if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_CREATE_COORDONNEE ) )
-        {
-            throw new AccessDeniedException( "Invalid security token" );
-        }
 
         // Check constraints
         if ( !validateBean( _coordonnee, VALIDATION_ATTRIBUTES_PREFIX ) )
@@ -210,14 +211,14 @@ public class CoordonneeJspBean extends AbstractManageCartoJspBean<Integer, Coord
      *            The Http request
      * @return the html code to confirm
      */
-    @Action( ACTION_CONFIRM_REMOVE_COORDONNEE )
+    @Action( value = ACTION_CONFIRM_REMOVE_COORDONNEE, securityTokenAction = ACTION_REMOVE_COORDONNEE )
     public String getConfirmRemoveCoordonnee( HttpServletRequest request )
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_COORDONNEE ) );
         UrlItem url = new UrlItem( getActionUrl( ACTION_REMOVE_COORDONNEE ) );
         url.addParameter( PARAMETER_ID_COORDONNEE, nId );
 
-        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_COORDONNEE, url.getUrl( ), AdminMessage.TYPE_CONFIRMATION );
+        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_COORDONNEE, null, null, url.getUrl( ), null, AdminMessage.TYPE_CONFIRMATION, null, JSP_MANAGE_COORDONNEES );
 
         return redirect( request, strMessageUrl );
     }
@@ -259,9 +260,7 @@ public class CoordonneeJspBean extends AbstractManageCartoJspBean<Integer, Coord
             _coordonnee = optCoordonnee.orElseThrow( ( ) -> new AppException( ERROR_RESOURCE_NOT_FOUND ) );
         }
 
-        Map<String, Object> model = getModel( );
         model.put( MARK_COORDONNEE, _coordonnee );
-        model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_MODIFY_COORDONNEE ) );
 
         return getPage( PROPERTY_PAGE_TITLE_MODIFY_COORDONNEE, TEMPLATE_MODIFY_COORDONNEE, model );
     }
@@ -278,11 +277,6 @@ public class CoordonneeJspBean extends AbstractManageCartoJspBean<Integer, Coord
     public String doModifyCoordonnee( HttpServletRequest request ) throws AccessDeniedException
     {
         populate( _coordonnee, request, getLocale( ) );
-
-        if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_MODIFY_COORDONNEE ) )
-        {
-            throw new AccessDeniedException( "Invalid security token" );
-        }
 
         // Check constraints
         if ( !validateBean( _coordonnee, VALIDATION_ATTRIBUTES_PREFIX ) )

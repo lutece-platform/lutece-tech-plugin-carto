@@ -36,12 +36,12 @@ package fr.paris.lutece.plugins.carto.web;
 
 import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
-import fr.paris.lutece.portal.service.security.SecurityTokenService;
 import fr.paris.lutece.portal.service.admin.AccessDeniedException;
 import fr.paris.lutece.portal.service.util.AppException;
 import fr.paris.lutece.portal.util.mvc.admin.annotations.Controller;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.Action;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.View;
+import fr.paris.lutece.portal.web.cdi.mvc.Models;
 import fr.paris.lutece.util.url.UrlItem;
 import fr.paris.lutece.util.html.AbstractPaginator;
 
@@ -51,14 +51,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.servlet.http.HttpServletRequest;
 import fr.paris.lutece.plugins.carto.business.GeometryType;
 import fr.paris.lutece.plugins.carto.business.GeometryTypeHome;
 
 /**
  * This class provides the user interface to manage GeometryType features ( manage, create, modify, remove )
  */
-@Controller( controllerJsp = "ManageGeometryTypes.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT_REFERENTIEL" )
+@SessionScoped
+@Named
+@Controller( controllerJsp = "ManageGeometryTypes.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT_REFERENTIEL", securityTokenEnabled = true )
 public class GeometryTypeJspBean extends AbstractManageCartoJspBean<Integer, GeometryType>
 {
     // Templates
@@ -109,6 +114,9 @@ public class GeometryTypeJspBean extends AbstractManageCartoJspBean<Integer, Geo
     private GeometryType _geometrytype;
     private List<Integer> _listIdGeometryTypes;
 
+    @Inject
+    private Models model;
+    
     /**
      * Build the Manage View
      * 
@@ -166,9 +174,7 @@ public class GeometryTypeJspBean extends AbstractManageCartoJspBean<Integer, Geo
     {
         _geometrytype = ( _geometrytype != null ) ? _geometrytype : new GeometryType( );
 
-        Map<String, Object> model = getModel( );
         model.put( MARK_GEOMETRYTYPE, _geometrytype );
-        model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_CREATE_GEOMETRYTYPE ) );
 
         return getPage( PROPERTY_PAGE_TITLE_CREATE_GEOMETRYTYPE, TEMPLATE_CREATE_GEOMETRYTYPE, model );
     }
@@ -185,11 +191,6 @@ public class GeometryTypeJspBean extends AbstractManageCartoJspBean<Integer, Geo
     public String doCreateGeometryType( HttpServletRequest request ) throws AccessDeniedException
     {
         populate( _geometrytype, request, getLocale( ) );
-
-        if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_CREATE_GEOMETRYTYPE ) )
-        {
-            throw new AccessDeniedException( "Invalid security token" );
-        }
 
         // Check constraints
         if ( !validateBean( _geometrytype, VALIDATION_ATTRIBUTES_PREFIX ) )
@@ -211,14 +212,15 @@ public class GeometryTypeJspBean extends AbstractManageCartoJspBean<Integer, Geo
      *            The Http request
      * @return the html code to confirm
      */
-    @Action( ACTION_CONFIRM_REMOVE_GEOMETRYTYPE )
+    @Action( value = ACTION_CONFIRM_REMOVE_GEOMETRYTYPE, securityTokenAction = ACTION_REMOVE_GEOMETRYTYPE )
     public String getConfirmRemoveGeometryType( HttpServletRequest request )
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_GEOMETRYTYPE ) );
         UrlItem url = new UrlItem( getActionUrl( ACTION_REMOVE_GEOMETRYTYPE ) );
         url.addParameter( PARAMETER_ID_GEOMETRYTYPE, nId );
 
-        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_GEOMETRYTYPE, url.getUrl( ), AdminMessage.TYPE_CONFIRMATION );
+        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_GEOMETRYTYPE, null, null, url.getUrl( ), 
+        		null, AdminMessage.TYPE_CONFIRMATION, null, JSP_MANAGE_GEOMETRYTYPES );
 
         return redirect( request, strMessageUrl );
     }
@@ -260,9 +262,7 @@ public class GeometryTypeJspBean extends AbstractManageCartoJspBean<Integer, Geo
             _geometrytype = optGeometryType.orElseThrow( ( ) -> new AppException( ERROR_RESOURCE_NOT_FOUND ) );
         }
 
-        Map<String, Object> model = getModel( );
         model.put( MARK_GEOMETRYTYPE, _geometrytype );
-        model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_MODIFY_GEOMETRYTYPE ) );
 
         return getPage( PROPERTY_PAGE_TITLE_MODIFY_GEOMETRYTYPE, TEMPLATE_MODIFY_GEOMETRYTYPE, model );
     }
@@ -279,11 +279,6 @@ public class GeometryTypeJspBean extends AbstractManageCartoJspBean<Integer, Geo
     public String doModifyGeometryType( HttpServletRequest request ) throws AccessDeniedException
     {
         populate( _geometrytype, request, getLocale( ) );
-
-        if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_MODIFY_GEOMETRYTYPE ) )
-        {
-            throw new AccessDeniedException( "Invalid security token" );
-        }
 
         // Check constraints
         if ( !validateBean( _geometrytype, VALIDATION_ATTRIBUTES_PREFIX ) )

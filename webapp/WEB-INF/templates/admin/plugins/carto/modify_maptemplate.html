@@ -8,7 +8,6 @@
             <@messages errors=errors />
             <@tform method="post" name="modify_maptemplate" action="jsp/admin/plugins/carto/ManageMapTemplates.jsp" boxed=true >
 			<@input type="hidden" id="id" name="id" value="${maptemplate.id}"/>
-			<@input type="hidden" value="${token}" name="token" />
 			<@formGroup labelFor='title' labelKey='#i18n{carto.modify_maptemplate.labelTitle}' mandatory=true>
 				<@input type='text' id='title' name='title'  maxlength=255 value='${maptemplate.title!\'\'}' />
 			</@formGroup>

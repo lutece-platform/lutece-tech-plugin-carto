@@ -20,7 +20,6 @@ public class Feature {
         this.geometry = geometry;
     }
     */
-	private String type;
     //private List<Double> coordinates;
     private List<Double> _pointCoord;
     private List<List<List<Double>>> _polygonCoord;

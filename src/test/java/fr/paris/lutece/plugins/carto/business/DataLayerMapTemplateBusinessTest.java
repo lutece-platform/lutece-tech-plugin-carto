@@ -37,6 +37,8 @@ import fr.paris.lutece.test.LuteceTestCase;
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * This is the business class test for the object DataLayerMapTemplate
  */
@@ -62,6 +64,7 @@ public class DataLayerMapTemplateBusinessTest extends LuteceTestCase
     /**
      * test DataLayerMapTemplate
      */
+    @Test
     public void testBusiness( )
     {
         // Initialize an object

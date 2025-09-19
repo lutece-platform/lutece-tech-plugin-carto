@@ -36,10 +36,7 @@ package fr.paris.lutece.plugins.carto.provider;
 import java.util.Collection;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
-import fr.paris.lutece.plugins.workflowcore.business.resource.ResourceHistory;
-import fr.paris.lutece.plugins.workflowcore.service.task.ITask;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * This interface represents a provider of NotifyGru markers

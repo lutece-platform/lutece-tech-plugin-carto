@@ -36,12 +36,12 @@ package fr.paris.lutece.plugins.carto.web;
 
 import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
-import fr.paris.lutece.portal.service.security.SecurityTokenService;
 import fr.paris.lutece.portal.service.admin.AccessDeniedException;
 import fr.paris.lutece.portal.service.util.AppException;
 import fr.paris.lutece.portal.util.mvc.admin.annotations.Controller;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.Action;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.View;
+import fr.paris.lutece.portal.web.cdi.mvc.Models;
 import fr.paris.lutece.util.url.UrlItem;
 import fr.paris.lutece.util.html.AbstractPaginator;
 
@@ -51,14 +51,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.servlet.http.HttpServletRequest;
 import fr.paris.lutece.plugins.carto.business.Basemap;
 import fr.paris.lutece.plugins.carto.business.BasemapHome;
 
 /**
  * This class provides the user interface to manage Basemap features ( manage, create, modify, remove )
  */
-@Controller( controllerJsp = "ManageBasemaps.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT_REFERENTIEL" )
+@SessionScoped
+@Named
+@Controller( controllerJsp = "ManageBasemaps.jsp", controllerPath = "jsp/admin/plugins/carto/", right = "CARTO_MANAGEMENT_REFERENTIEL", securityTokenEnabled = true )
 public class BasemapJspBean extends AbstractManageCartoJspBean<Integer, Basemap>
 {
     // Templates
@@ -109,6 +114,9 @@ public class BasemapJspBean extends AbstractManageCartoJspBean<Integer, Basemap>
     private Basemap _basemap;
     private List<Integer> _listIdBasemaps;
 
+    @Inject
+    private Models model;
+    
     /**
      * Build the Manage View
      * 
@@ -166,9 +174,7 @@ public class BasemapJspBean extends AbstractManageCartoJspBean<Integer, Basemap>
     {
         _basemap = ( _basemap != null ) ? _basemap : new Basemap( );
 
-        Map<String, Object> model = getModel( );
         model.put( MARK_BASEMAP, _basemap );
-        model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_CREATE_BASEMAP ) );
 
         return getPage( PROPERTY_PAGE_TITLE_CREATE_BASEMAP, TEMPLATE_CREATE_BASEMAP, model );
     }
@@ -185,11 +191,6 @@ public class BasemapJspBean extends AbstractManageCartoJspBean<Integer, Basemap>
     public String doCreateBasemap( HttpServletRequest request ) throws AccessDeniedException
     {
         populate( _basemap, request, getLocale( ) );
-
-        if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_CREATE_BASEMAP ) )
-        {
-            throw new AccessDeniedException( "Invalid security token" );
-        }
 
         // Check constraints
         if ( !validateBean( _basemap, VALIDATION_ATTRIBUTES_PREFIX ) )
@@ -211,14 +212,14 @@ public class BasemapJspBean extends AbstractManageCartoJspBean<Integer, Basemap>
      *            The Http request
      * @return the html code to confirm
      */
-    @Action( ACTION_CONFIRM_REMOVE_BASEMAP )
+    @Action( value = ACTION_CONFIRM_REMOVE_BASEMAP, securityTokenAction = ACTION_REMOVE_BASEMAP )
     public String getConfirmRemoveBasemap( HttpServletRequest request )
     {
         int nId = Integer.parseInt( request.getParameter( PARAMETER_ID_BASEMAP ) );
         UrlItem url = new UrlItem( getActionUrl( ACTION_REMOVE_BASEMAP ) );
         url.addParameter( PARAMETER_ID_BASEMAP, nId );
 
-        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_BASEMAP, url.getUrl( ), AdminMessage.TYPE_CONFIRMATION );
+        String strMessageUrl = AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_BASEMAP, null, null, url.getUrl( ), null, AdminMessage.TYPE_CONFIRMATION, null, JSP_MANAGE_BASEMAPS );
 
         return redirect( request, strMessageUrl );
     }
@@ -260,9 +261,7 @@ public class BasemapJspBean extends AbstractManageCartoJspBean<Integer, Basemap>
             _basemap = optBasemap.orElseThrow( ( ) -> new AppException( ERROR_RESOURCE_NOT_FOUND ) );
         }
 
-        Map<String, Object> model = getModel( );
         model.put( MARK_BASEMAP, _basemap );
-        model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, ACTION_MODIFY_BASEMAP ) );
 
         return getPage( PROPERTY_PAGE_TITLE_MODIFY_BASEMAP, TEMPLATE_MODIFY_BASEMAP, model );
     }
@@ -279,11 +278,6 @@ public class BasemapJspBean extends AbstractManageCartoJspBean<Integer, Basemap>
     public String doModifyBasemap( HttpServletRequest request ) throws AccessDeniedException
     {
         populate( _basemap, request, getLocale( ) );
-
-        if ( !SecurityTokenService.getInstance( ).validate( request, ACTION_MODIFY_BASEMAP ) )
-        {
-            throw new AccessDeniedException( "Invalid security token" );
-        }
 
         // Check constraints
         if ( !validateBean( _basemap, VALIDATION_ATTRIBUTES_PREFIX ) )

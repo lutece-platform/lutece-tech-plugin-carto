@@ -33,8 +33,7 @@
  */
 package fr.paris.lutece.plugins.carto.business;
 
-import javax.validation.constraints.Size;
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 
 /**

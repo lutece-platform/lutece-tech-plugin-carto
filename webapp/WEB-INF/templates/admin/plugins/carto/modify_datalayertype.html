@@ -5,7 +5,6 @@
 			<@messages errors=errors />
 			<@tform method="post" name="modify_datalayertype" action="jsp/admin/plugins/carto/ManageDataLayerTypes.jsp" >
 			<@input type="hidden" id="id" name="id" value="${datalayertype.id}"/>
-			<@input type="hidden" value="${token}" name="token" />
 			<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayertype.labelTitle}' mandatory=true>
 				<@input type='text' id='title' name='title'  maxlength=255 value='${datalayertype.title!\'\'}' />
 			</@formGroup>

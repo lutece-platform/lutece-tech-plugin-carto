@@ -4,7 +4,6 @@
         <@pageHeader title='#i18n{carto.create_maptemplate.title}' />
         <@messages errors=errors />
         <@tform name='create_maptemplate' action='jsp/admin/plugins/carto/ManageMapTemplates.jsp' boxed=true >
-        <@input type="hidden" value="${token}" name="token" />
 		<@formGroup labelFor='title' labelKey='#i18n{carto.modify_maptemplate.labelTitle}' mandatory=true>
 			<@input type='text' id='title' name='title'  maxlength=255 value='${maptemplate.title!\'\'}' />
 		</@formGroup>
