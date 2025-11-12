@@ -5,8 +5,8 @@
                 <@button type='submit' name='view_createDataLayerMapTemplate' buttonIcon='plus' title='#i18n{carto.manage_datalayermaptemplate.buttonAdd}' />
             </@tform>
 	    </@pageHeader>
-            <@messages errors=errors />
-            <@tform method="post" name="modify_maptemplate" action="jsp/admin/plugins/carto/ManageMapTemplates.jsp" boxed=true >
+        <@messages errors=errors />
+        <@tform method="post" name="modify_maptemplate" action="jsp/admin/plugins/carto/ManageMapTemplates.jsp" boxed=true>
 			<@input type="hidden" id="id" name="id" value="${maptemplate.id}"/>
 			<@input type="hidden" value="${token}" name="token" />
 			<@formGroup labelFor='title' labelKey='#i18n{carto.modify_maptemplate.labelTitle}' mandatory=true>
@@ -15,43 +15,31 @@
 			<@formGroup labelFor='description' labelKey='#i18n{carto.modify_maptemplate.labelDescription}' mandatory=true>
 				<@input type='text' id='description' name='description'  value='${maptemplate.description!\'\'}' />
 			</@formGroup>
-            <@row>
-                <@columns sm=2>
-                    <@formGroup labelFor='map_background' labelKey='#i18n{carto.modify_maptemplate.labelMapBackground}' rows=2>
-                        <@select name='map_background' items=mapprovider_list id='map_background' default_value='${maptemplate.mapBackground!\'\'}' />
-                    </@formGroup>
-                </@columns>
-                <@columns sm=1>
-                    <@formGroup labelFor='default_zoom' labelKey='#i18n{carto.modify_maptemplate.labelDefaultZoom}' mandatory=true rows=2>
-                        <@input type='text' id='default_zoom' name='default_zoom'  value='${maptemplate.defaultZoom!\'\'}' />
-                    </@formGroup>
-                </@columns>
-                <@columns sm=1>
-                    <@formGroup labelFor='zoom_min' labelKey='#i18n{carto.modify_maptemplate.labelZoomMin}' mandatory=true rows=2>
-                        <@input type='text' id='zoom_min' name='zoom_min'  value='${maptemplate.zoomMin!\'\'}' />
-                    </@formGroup>
-                </@columns>
-                <@columns sm=1>    
-                    <@formGroup labelFor='zoom_max' labelKey='#i18n{carto.modify_maptemplate.labelZoomMax}' mandatory=true rows=2>
-                        <@input type='text' id='zoom_max' name='zoom_max'  value='${maptemplate.zoomMax!\'\'}' />
-                    </@formGroup>
-                </@columns>
-                <@columns sm=1>
-                    <@formGroup labelFor='front_office' labelKey='#i18n{carto.modify_maptemplate.labelFrontOffice}' hideLabel=['all'] class='ms-3 mt-4' mandatory=true  rows=2>
-                        <@checkBox id='front_office' name='front_office' labelKey='#i18n{carto.modify_maptemplate.labelFrontOffice}' orientation='switch' value='1' checked=maptemplate.frontOffice!'false' />
-                    </@formGroup>
-                </@columns>
-                <@columns sm=5>
-                    <@formGroup labelFor='center_map' labelKey='#i18n{carto.modify_maptemplate.labelCenterMap}' mandatory=true rows=2>
-                        <@input type='text' id='center_map' name='center_map'  maxlength=255 value='${maptemplate.centerMap!\'\'}' />
-                        <@input type='hidden' id='4_idAddress' name='4_idAddress'  value="" />
-                        <@input type='hidden' id='center_map_x' name='center_map_x'  value='${maptemplate.centerMapX?c}' />
-                        <@input type='hidden' id='center_map_y' name='center_map_y'  value="${maptemplate.centerMapY?c}" />
-                        <@input type='hidden' id='4_geometry' name='4_geometry'  value="" />
-                    </@formGroup>
-                </@columns>
+            <@formGroup labelFor='map_background' labelKey='#i18n{carto.modify_maptemplate.labelMapBackground}'>
+                <@select name='map_background' items=mapprovider_list id='map_background' default_value='${maptemplate.mapBackground!\'\'}' />
+            </@formGroup>
+            <@formGroup labelFor='default_zoom' labelKey='#i18n{carto.modify_maptemplate.labelDefaultZoom}' mandatory=true>
+                <@input type='text' id='default_zoom' name='default_zoom'  value='${maptemplate.defaultZoom!\'\'}' />
+            </@formGroup>
+            <@formGroup labelFor='zoom_min' labelKey='#i18n{carto.modify_maptemplate.labelZoomMin}' mandatory=true>
+                <@input type='text' id='zoom_min' name='zoom_min'  value='${maptemplate.zoomMin!\'\'}' />
+            </@formGroup>
+            <@formGroup labelFor='zoom_max' labelKey='#i18n{carto.modify_maptemplate.labelZoomMax}' mandatory=true>
+                <@input type='text' id='zoom_max' name='zoom_max'  value='${maptemplate.zoomMax!\'\'}' />
+            </@formGroup>
+            <@formGroup labelFor='front_office' labelKey='#i18n{carto.modify_maptemplate.labelFrontOffice}' mandatory=true>
+                <@checkBox id='front_office' name='front_office' labelKey='#i18n{carto.modify_maptemplate.labelFrontOffice}' orientation='switch' value='1' checked=maptemplate.frontOffice!'false' />
+            </@formGroup>
+            <@formGroup labelFor='center_map' labelKey='#i18n{carto.modify_maptemplate.labelCenterMap}' mandatory=true>
+                <@input type='text' id='center_map' name='center_map'  maxlength=255 value='${maptemplate.centerMap!\'\'}' />
+                <@input type='hidden' id='4_idAddress' name='4_idAddress'  value="" />
+                <@input type='hidden' id='center_map_x' name='center_map_x'  value='${maptemplate.centerMapX?c}' />
+                <@input type='hidden' id='center_map_y' name='center_map_y'  value="${maptemplate.centerMapY?c}" />
+                <@input type='hidden' id='4_geometry' name='4_geometry'  value="" />
+            </@formGroup>
+            <@formGroup>
                 <@actionButtons button1Name="action_modifyMapTemplate" button2Name="view_manageMapTemplate"/>
-            </@row>
+            </@formGroup>
         </@tform>
 	</@pageColumn>
 </@pageContainer>
