@@ -3,16 +3,18 @@
         <@pageHeader title='#i18n{carto.create_geometrytype.title}' />
 		<@div id='new_geometrytype'>
 			<@tform name='create_geometrytype' action='jsp/admin/plugins/carto/ManageGeometryTypes.jsp' >
-	        <@messages errors=errors />
-    	    <@input type="hidden" value="${token}" name="token" />
-			<@formGroup labelFor='name' labelKey='#i18n{carto.modify_geometrytype.labelName}' mandatory=true>
-				<@input type='text' id='name' name='name'  maxlength=255 value='${geometrytype.name!\'\'}' />
-			</@formGroup>
-			<@formGroup labelFor='technical_name' labelKey='#i18n{carto.modify_geometrytype.labelTechnicalName}' mandatory=true>
-				<@input type='text' id='technical_name' name='technical_name'  maxlength=255 value='${geometrytype.technicalName!\'\'}' />
-			</@formGroup>
-			<@actionButtons button1Name="action_createGeometryType" button2Name="view_manageGeometryType"/>
-    	</@tform>
+				<@messages errors=errors />
+				<@input type='hidden' value='${token}' name='token' />
+				<@formGroup labelFor='name' labelKey='#i18n{carto.modify_geometrytype.labelName}' mandatory=true rows=2>
+					<@input type='text' id='name' name='name'  maxlength=255 value='${geometrytype.name!\'\'}' />
+				</@formGroup>
+				<@formGroup labelFor='technical_name' labelKey='#i18n{carto.modify_geometrytype.labelTechnicalName}' mandatory=true rows=2>
+					<@input type='text' id='technical_name' name='technical_name'  maxlength=255 value='${geometrytype.technicalName!\'\'}' />
+				</@formGroup>
+				<@formGroup rows=2>
+					<@actionButtons button1Name='action_createGeometryType' button2Name='view_manageGeometryType' />
+				</@formGroup>
+			</@tform>
 		</@div>
 	</@pageColumn>
 </@pageContainer>

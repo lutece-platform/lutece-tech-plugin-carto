@@ -2,20 +2,22 @@
     <@pageColumn>
         <@pageHeader title='#i18n{carto.modify_basemap.title}' />
 		<@div id='modify_basemap'>
-			<@tform method="post" name="modify_basemap" action="jsp/admin/plugins/carto/ManageBasemaps.jsp" >
-			<@messages errors=errors />
-			<@input type="hidden" id="id" name="id" value="${basemap.id}"/>
-			<@input type="hidden" value="${token}" name="token" />
-			<@formGroup labelFor='title' labelKey='#i18n{carto.modify_basemap.labelTitle}' mandatory=true>
-				<@input type='text' id='title' name='title'  maxlength=255 value='${basemap.title!\'\'}' />
-			</@formGroup>
-			<@formGroup labelFor='url' labelKey='#i18n{carto.modify_basemap.labelUrl}' mandatory=true>
-				<@input type='text' id='url' name='url'  value='${basemap.url!\'\'}'  />
-			</@formGroup>
-			<@formGroup labelFor='attribution' labelKey='#i18n{carto.modify_basemap.labelAttribution}' mandatory=true>
-				<@input type='text' id='attribution' name='attribution'  value='${basemap.attribution!\'\'}'  />
-			</@formGroup>
-			<@actionButtons button1Name="action_modifyBasemap" button2Name="view_manageBasemap"/>
+			<@tform method='post' name='modify_basemap' action='jsp/admin/plugins/carto/ManageBasemaps.jsp' >
+				<@messages errors=errors />
+				<@input type='hidden' id='id' name='id' value='${basemap.id}'/>
+				<@input type='hidden' value='${token}' name='token' />
+				<@formGroup labelFor='title' labelKey='#i18n{carto.modify_basemap.labelTitle}' mandatory=true rows=2>
+					<@input type='text' id='title' name='title'  maxlength=255 value='${basemap.title!\'\'}' />
+				</@formGroup>
+				<@formGroup labelFor='url' labelKey='#i18n{carto.modify_basemap.labelUrl}' mandatory=true rows=2>
+					<@input type='text' id='url' name='url'  value='${basemap.url!\'\'}'  />
+				</@formGroup>
+				<@formGroup labelFor='attribution' labelKey='#i18n{carto.modify_basemap.labelAttribution}' mandatory=true rows=2>
+					<@input type='text' id='attribution' name='attribution'  value='${basemap.attribution!\'\'}'  />
+				</@formGroup>
+				<@formGroup rows=2>
+					<@actionButtons button1Name='action_modifyBasemap' button2Name='view_manageBasemap'/>
+				</@formGroup>
 			</@tform>
 		</@div>
 	</@pageColumn>

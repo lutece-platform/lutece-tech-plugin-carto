@@ -3,18 +3,20 @@
         <@pageHeader title='#i18n{carto.create_basemap.title}' />
 		<@div id='new_basemap'>
 			<@tform name='create_basemap' action='jsp/admin/plugins/carto/ManageBasemaps.jsp' class='w-100'>
-			<@messages errors=errors />
-			<@input type="hidden" value="${token}" name="token" />
-			<@formGroup labelFor='title' labelKey='#i18n{carto.modify_basemap.labelTitle}' mandatory=true>
-				<@input type='text' id='title' name='title'  maxlength=255 value='${basemap.title!\'\'}' />
-			</@formGroup>
-			<@formGroup labelFor='url' labelKey='#i18n{carto.modify_basemap.labelUrl}' mandatory=true>
-				<@input type='url' id='url' name='url'  value='${basemap.url!\'\'}'  />
-			</@formGroup>
-			<@formGroup labelFor='attribution' labelKey='#i18n{carto.modify_basemap.labelAttribution}' mandatory=true>
-				<@input type='text' id='attribution' name='attribution'  value='${basemap.attribution!\'\'}'  />
-			</@formGroup>
-			<@actionButtons button1Name="action_createBasemap" button2Name="view_manageBasemap"/>
+				<@messages errors=errors />
+				<@input type='hidden' value='${token}' name='token' />
+				<@formGroup labelFor='title' labelKey='#i18n{carto.modify_basemap.labelTitle}' mandatory=true rows=2>
+					<@input type='text' id='title' name='title'  maxlength=255 value='${basemap.title!\'\'}' />
+				</@formGroup>
+				<@formGroup labelFor='url' labelKey='#i18n{carto.modify_basemap.labelUrl}' mandatory=true rows=2>
+					<@input type='url' id='url' name='url'  value='${basemap.url!\'\'}'  />
+				</@formGroup>
+				<@formGroup labelFor='attribution' labelKey='#i18n{carto.modify_basemap.labelAttribution}' mandatory=true rows=2>
+					<@input type='text' id='attribution' name='attribution'  value='${basemap.attribution!\'\'}'  />
+				</@formGroup>
+				<@formGroup rows=2>
+					<@actionButtons button1Name='action_createBasemap' button2Name='view_manageBasemap' />
+				</@formGroup>
 			</@tform>
     	</@div>
 	</@pageColumn>
