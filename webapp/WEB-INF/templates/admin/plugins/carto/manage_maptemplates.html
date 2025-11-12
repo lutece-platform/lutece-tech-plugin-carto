@@ -10,38 +10,38 @@
             <@tabsConfig tab="maptemplate" />
             <@tabContent>
                 <@tabPanel id='basemap' active=true>
-                <@messages infos=infos />
-                <@messages errors=errors />
-                <@table headBody=true>
-                    <@tr>
-                        <@th>#i18n{carto.manage_maptemplate.columnTitle}</@th>
-                        <@th>#i18n{carto.manage_maptemplate.columnDescription}</@th>
-                        <@th>#i18n{carto.manage_maptemplate.columnDefaultZoom}</@th>
-                        <@th>#i18n{carto.manage_maptemplate.columnZoomMin}</@th>
-                        <@th>#i18n{carto.manage_maptemplate.columnZoomMax}</@th>
-                        <@th>#i18n{carto.manage_maptemplate.columnFrontOffice}</@th>
-                        <@th>#i18n{carto.manage_maptemplate.columnCenterMap}</@th>
-                        <@th>#i18n{portal.util.labelActions}</@th>
-                    </@tr>
-                    <@tableHeadBodySeparator />
-                    <#list maptemplate_list as maptemplate >
-                    <@tr>
-                        <@td>${maptemplate.title}
-                        </@td>
-                        <@td>${maptemplate.description}</@td>
-                        <@td>${maptemplate.defaultZoom}</@td>
-                        <@td>${maptemplate.zoomMin}</@td>
-                        <@td>${maptemplate.zoomMax}</@td>
-                        <@td><@aButton href='jsp/site/Portal.jsp?page=coordinate&view=manageCoordonnees&idMap=${maptemplate.id}' title='Previsualiser' buttonIcon='edit' /></@td>
-                        <@td>${maptemplate.centerMap}</@td>
-                        <@td>
-                            <@aButton href='jsp/admin/plugins/carto/ManageMapTemplates.jsp?view=modifyMapTemplate&id=${maptemplate.id}' title='#i18n{portal.util.labelModify}' buttonIcon='pencil' />
-                            <@aButton href='jsp/admin/plugins/carto/ManageMapTemplates.jsp?action=confirmRemoveMapTemplate&id=${maptemplate.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='danger'  />
-                        </@td>
-                    </@tr>
-                    </#list>
-                </@table>
-                <@paginationAdmin paginator=paginator combo=1 showcount=0 />
+                    <@messages infos=infos />
+                    <@messages errors=errors />
+                    <@table headBody=true>
+                        <@tr>
+                            <@th>#i18n{carto.manage_maptemplate.columnTitle}</@th>
+                            <@th>#i18n{carto.manage_maptemplate.columnDescription}</@th>
+                            <@th>#i18n{carto.manage_maptemplate.columnDefaultZoom}</@th>
+                            <@th>#i18n{carto.manage_maptemplate.columnZoomMin}</@th>
+                            <@th>#i18n{carto.manage_maptemplate.columnZoomMax}</@th>
+                            <@th>#i18n{carto.manage_maptemplate.columnFrontOffice}</@th>
+                            <@th>#i18n{carto.manage_maptemplate.columnCenterMap}</@th>
+                            <@th>#i18n{portal.util.labelActions}</@th>
+                        </@tr>
+                        <@tableHeadBodySeparator />
+                        <#list maptemplate_list as maptemplate >
+                        <@tr>
+                            <@td>${maptemplate.title}
+                            </@td>
+                            <@td>${maptemplate.description}</@td>
+                            <@td>${maptemplate.defaultZoom}</@td>
+                            <@td>${maptemplate.zoomMin}</@td>
+                            <@td>${maptemplate.zoomMax}</@td>
+                            <@td><@aButton href='jsp/site/Portal.jsp?page=coordinate&view=manageCoordonnees&idMap=${maptemplate.id}' title='Previsualiser' buttonIcon='eye' hideTitle=['all'] /></@td>
+                            <@td>${maptemplate.centerMap}</@td>
+                            <@td>
+                                <@aButton href='jsp/admin/plugins/carto/ManageMapTemplates.jsp?view=modifyMapTemplate&id=${maptemplate.id}' title='#i18n{portal.util.labelModify}' buttonIcon='pencil' hideTitle=['all'] />
+                                <@aButton href='jsp/admin/plugins/carto/ManageMapTemplates.jsp?action=confirmRemoveMapTemplate&id=${maptemplate.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='danger' />
+                            </@td>
+                        </@tr>
+                        </#list>
+                    </@table>
+                    <@paginationAdmin paginator=paginator combo=1 showcount=0 />
                 </@tabPanel>
             </@tabContent>
         </@tabs>
