@@ -2,9 +2,9 @@
     <@pageColumn >
         <@pageHeader title='#i18n{carto.create_bcreate_datalayertypeasemap.title}' />
 		<@div id='new_datalayertype'>
-			<@tform name='create_datalayertype' action='jsp/admin/plugins/carto/ManageDataLayerTypes.jsp' >
+			<@tform name='create_datalayertype' action='jsp/admin/plugins/carto/ManageDataLayerTypes.jsp' boxed=true>
 			<@messages errors=errors />
-			<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayertype.labelTitle}' mandatory=true>
+			<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayertype.labelTitle}' mandatory=true rows=2>
 				<@input type='text' id='title' name='title'  maxlength=255 value='${datalayertype.title!\'\'}' />
 			</@formGroup>
 			<@formGroup labelFor='editable' labelKey='#i18n{carto.modify_datalayertype.labelEditable}'  hideLabel=['all']  mandatory=true>
@@ -19,7 +19,9 @@
 			<@formGroup labelFor='exclusion' labelKey='#i18n{carto.modify_datalayertype.labelSearchableByOthers}'  hideLabel=['all']  mandatory=true>
 				<@checkBox id="searchableByOthers" name="searchableByOthers" labelKey='#i18n{carto.modify_datalayertype.labelSearchableByOthers}' orientation='switch' value="1" checked=datalayertype.searchableByOthers!'false' />
 			</@formGroup>
-			<@actionButtons button1Name="action_createDataLayerType" button2Name="view_manageDataLayerType"/>
+			<@formGroup rows=2>
+				<@actionButtons button1Name='action_createDataLayerType' button2Name='view_manageDataLayerType' />
+			</@formGroup>
 			</@tform>
 		</@div>
 	</@pageColumn>

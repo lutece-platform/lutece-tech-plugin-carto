@@ -4,14 +4,15 @@
 	<@pageColumn>
 		<@pageHeader title='#i18n{carto.modify_datalayer.title}' />
 		<@div id='modify_datalayer'>
-			<@tform method="post" name="upload_datalayer" enctype="multipart/form-data" action="jsp/admin/plugins/carto/ManageDataLayers.jsp" >
+			<@tform method="post" name='upload_datalayer' enctype='multipart/form-data' action='jsp/admin/plugins/carto/ManageDataLayers.jsp' boxed=true>
 				<@messages errors=errors />
-				<@input type="hidden" id="id" name="id" value="${datalayer.id}"/>
-				
+				<@input type='hidden' id='id' name='id' value='${datalayer.id}'/>
 				<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayer.labelUploadFile}' mandatory=true>
 					<@input type='file' id='filegeojson' name='filegeojson' />
 				</@formGroup>
-        		<@actionButtons button1Name="action_uploadDataLayer" button2Name="view_manageDataLayer"/>
+				<@formGroup>
+        			<@actionButtons button1Name='action_uploadDataLayer' button2Name='view_manageDataLayer'/>
+				</@formGroup>
    			</@tform>
 		</@div>
 	</@pageColumn>
