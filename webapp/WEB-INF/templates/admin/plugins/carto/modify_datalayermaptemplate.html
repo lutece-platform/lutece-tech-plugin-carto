@@ -1,16 +1,17 @@
 <@pageContainer>
     <@pageColumn>
         <@pageHeader title='#i18n{carto.modify_datalayermaptemplate.title}' />
-			<@tform method="post" enctype="multipart/form-data" name="modify_datalayermaptemplate" action="jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp" boxed=true>
+			<@tform method='post' enctype='multipart/form-data' name='modify_datalayermaptemplate' action='jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp' boxed=true>
 			<@messages errors=errors />
-			<@input type="hidden" id="id" name="id" value="${datalayermaptemplate.id}"/>
+			<@input type='hidden' id='id' name='id' value='${datalayermaptemplate.id}' />
 			<@row>
-				<@columns sm=3> 
+				<@columns md=5>
+					<@div id='forms-admin-map' class='mb-3 vw-75' params='style="height:100vh;"'></@div>				
+				</@columns>
+				<@columns md=7>
 					<@formGroup labelFor='id_map_template' labelKey='#i18n{carto.modify_datalayermaptemplate.labelIdMapTemplate}' mandatory=true rows=2>
 						<@select name='id_map_template' items=reflist_map_template id='id_map_template' default_value='${datalayermaptemplate.idMapTemplate!\'\'}' />
 					</@formGroup>
-				</@columns>
-				<@columns sm=3>
 					<@formGroup labelFor='id_data_layer' labelKey='#i18n{carto.modify_datalayermaptemplate.labelIdDataLayer}' mandatory=true rows=2>
 						<@select name='id_data_layer' id='id_data_layer' default_value='${datalayermaptemplate.idDataLayer!\'\'}' >
 							<#list list_data_layer as dataLayer>
@@ -19,14 +20,7 @@
 							</#list>
 						</@select>
 					</@formGroup>
-				</@columns>
-				<@columns sm=6 class='d-flex justify-content-end align-items-center'>	
-					<@actionButtons button1Name="action_modifyDataLayerMapTemplate" button2Name="view_manageDataLayerMapTemplate"/>
-				</@columns>
-			</@row>
-			<@row class='pb-5'>
-                <@columns sm=2>
-					<@formGroup labelFor='pictogram' labelKey='#i18n{carto.modify_datalayermaptemplate.labelPictogram}' class='pb-5' >
+					<@formGroup labelFor='pictogram' labelKey='#i18n{carto.modify_datalayermaptemplate.labelPictogram}' class='pb-5' rows=2>
 						<@selectIconFont id='pictogram' class='form-select' name='pictogram' defaultValue='${datalayermaptemplate.pictogram!\'\'}' showListLabel=true showListIcon=true searchShow=true searchFocus=false searchHighlight=true prefix='ti' resources=true />
 						<@input type='file' id='pictogram_icon' name='pictogram_icon' inputSize=60 />
 						<#if urlIcon?? && urlIcon?has_content >
@@ -34,51 +28,36 @@
 							<@aButton href='jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp?action=deleteIconDataLayerMapTemplate&id=${datalayermaptemplate.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='danger'  />
 						</#if>
 					</@formGroup>
-				</@columns>
-				<@columns sm=1>
 					<@formGroup labelFor='zoom_min' labelKey='#i18n{carto.modify_datalayermaptemplate.labelZoomMin}' mandatory=true rows=2>
 						<@input type='number' id='zoom_min' name='zoom_min' value='${datalayermaptemplate.zoomMin!\'\'}' />
 					</@formGroup>
-				</@columns>
-				<@columns sm=1>
 					<@formGroup labelFor='zoom_max' labelKey='#i18n{carto.modify_datalayermaptemplate.labelZoomMax}' mandatory=true rows=2>
 						<@input type='number' id='zoom_max' class='point' name='zoom_max'  value='${datalayermaptemplate.zoomMax!\'\'}' />
 					</@formGroup>
-				</@columns>
-				<@columns sm=1>
 					<@formGroup labelFor='zoom_picto' labelKey='#i18n{carto.modify_datalayermaptemplate.labelZoomPicto}' rows=2>
 						<@input type='number' id='zoom_picto' class='poly' name='zoom_picto'  value='${datalayermaptemplate.zoomPicto!\'\'}' />
 					</@formGroup>
-				</@columns>
-				<@columns sm=1>
 					<@formGroup labelFor='clustermarker' labelKey='#i18n{carto.modify_datalayermaptemplate.labelClusterMarker}' rows=2>
 						<@checkBox labelFor='clustermarker' id='markerCluster' name='markerCluster' value='1' checked=datalayermaptemplate.markerCluster!'false' />
 					</@formGroup>
-				</@columns>
-				<@columns sm=2>
 					<@formGroup labelFor='layer_type' labelKey='#i18n{carto.modify_datalayermaptemplate.labelLayerType}' mandatory=true  rows=2>
 						<@select name='layer_type' items=reflist_data_layer_type id='layer_type' default_value='${datalayermaptemplate.layerType!\'\'}' />
 					</@formGroup>
-				</@columns>
-				<@columns sm=1>
 					<@formGroup labelFor='color' labelKey='#i18n{carto.modify_datalayermaptemplate.labelColor}' mandatory=true rows=2>
 						<@input type='color' id='color' name='color' class='poly' maxlength=50 value='${datalayermaptemplate.color!\'\'}' params='style="height:36px"' />
 					</@formGroup>
-				</@columns>
-				<@columns sm=1>
 					<@formGroup labelFor='thickness' labelKey='#i18n{carto.modify_datalayermaptemplate.labelThickness}' mandatory=true rows=2>
 						<@input type='number' id='thickness' name='thickness' class='poly' value='${datalayermaptemplate.thickness!\'\'}' />
 					</@formGroup>
-				</@columns>
-				<@columns sm=2>
 					<@formGroup labelFor='zone_json' labelKey='#i18n{carto.modify_datalayermaptemplate.labelJson}' rows=2 >
 						<@input type='file' id='zone_json' class='poly' name='zone_json' />
 						<label class="poly" >#i18n{carto.modify_datalayermaptemplate.labelJsonWarning}</label>
 					</@formGroup>
+					<@formGroup rows=2>
+						<@actionButtons button1Name='action_modifyDataLayerMapTemplate' button2Name='view_manageDataLayerMapTemplate' />
+					</@formGroup>
 				</@columns>
-			</@row>		
-			<@div id='forms-admin-map' class='mb-3 vw-75' params='style="height:400px;"'></@div>
-			<@actionButtons button1Name="action_modifyDataLayerMapTemplate" button2Name="view_manageDataLayerMapTemplate"/>
+			</@row>
 		</@tform>
 	</@pageColumn>
 </@pageContainer>

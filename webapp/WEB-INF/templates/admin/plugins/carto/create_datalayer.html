@@ -4,36 +4,42 @@
     <@pageColumn >
         <@pageHeader title='#i18n{carto.create_datalayer.title}' />
 		<@div id='new_datalayer'>
-			<@tform name='create_datalayer' action='jsp/admin/plugins/carto/ManageDataLayers.jsp' >
+			<@tform name='create_datalayer' action='jsp/admin/plugins/carto/ManageDataLayers.jsp' boxed=true>
 				<@messages errors=errors />
-				<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayer.labelTitle}' mandatory=true >
-					<@input type='text' id='title' name='title'  maxlength=255 value='${datalayer.title!\'\'}' />
-				</@formGroup>
-				<@formGroup labelFor='source' labelKey='#i18n{carto.modify_datalayer.labelSource}' mandatory=true>
-					<@select name='source' items=list_source_datalayer id='source' />
-				</@formGroup>
-				<@formGroup labelFor='solr_tag' labelKey='#i18n{carto.modify_datalayer.labelSolrTag}' mandatory=true>
-					<@input type='text' id='solr_tag' name='solr_tag'  maxlength=255 value='${datalayer.solrTag!\'\'}' />
-				</@formGroup>
-				<@formGroup labelFor='geometry' labelKey='#i18n{carto.modify_datalayer.labelGeometry}' mandatory=true>
-					<@select name='geometry' items=list_geo_type id='geometry' />
-				</@formGroup>
-				<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayer.labelUrlFlux}' >
-					<@input type='text' id='urlFlux' name='urlFlux'  maxlength=255 value='${datalayer.urlFlux!\'\'}' />
-				</@formGroup>
-				<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayer.labelTypeNameFlux}' >
-					<@input type='text' id='typeNameFlux' name='typeNameFlux'  maxlength=255 value='${datalayer.typeNameFlux!\'\'}' />
-				</@formGroup>
-				<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayer.labelVersionFlux}' >
-					<@input type='text' id='versionFlux' name='versionFlux'  maxlength=255 value='${datalayer.versionFlux!\'\'}' />
-				</@formGroup>
-				<@formGroup labelFor='texte_popup' labelKey='#i18n{carto.modify_maptemplate.popup}' mandatory=false >
-                    <@input type='textarea' name='popupContent' id='popupContent' rows=15 cols=70 richtext=true> ${datalayer.popupContent!} </@input>
-                </@formGroup>
-                <@columns sm=4>
-					<@marker_descriptions />
-				</@columns>
-				<@actionButtons button1Name="action_createDataLayer" button2Name="view_manageDataLayer"/>
+				<@row>
+					<@columns md=4>
+						<@marker_descriptions />
+					</@columns>
+					<@columns offsetMd=1 md=7 class='mt-6'>
+						<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayer.labelTitle}' mandatory=true rows=2>
+							<@input type='text' id='title' name='title'  maxlength=255 value='${datalayer.title!\'\'}' />
+						</@formGroup>
+						<@formGroup labelFor='source' labelKey='#i18n{carto.modify_datalayer.labelSource}' mandatory=true rows=2>
+							<@select name='source' items=list_source_datalayer id='source' />
+						</@formGroup>
+						<@formGroup labelFor='solr_tag' labelKey='#i18n{carto.modify_datalayer.labelSolrTag}' mandatory=true rows=2>
+							<@input type='text' id='solr_tag' name='solr_tag'  maxlength=255 value='${datalayer.solrTag!\'\'}' />
+						</@formGroup>
+						<@formGroup labelFor='geometry' labelKey='#i18n{carto.modify_datalayer.labelGeometry}' mandatory=true rows=2>
+							<@select name='geometry' items=list_geo_type id='geometry' />
+						</@formGroup>
+						<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayer.labelUrlFlux}' rows=2>
+							<@input type='text' id='urlFlux' name='urlFlux'  maxlength=255 value='${datalayer.urlFlux!\'\'}' />
+						</@formGroup>
+						<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayer.labelTypeNameFlux}' rows=2>
+							<@input type='text' id='typeNameFlux' name='typeNameFlux'  maxlength=255 value='${datalayer.typeNameFlux!\'\'}' />
+						</@formGroup>
+						<@formGroup labelFor='title' labelKey='#i18n{carto.modify_datalayer.labelVersionFlux}' rows=2>
+							<@input type='text' id='versionFlux' name='versionFlux'  maxlength=255 value='${datalayer.versionFlux!\'\'}' />
+						</@formGroup>
+						<@formGroup labelFor='texte_popup' labelKey='#i18n{carto.modify_maptemplate.popup}' mandatory=false rows=2>
+							<@input type='textarea' name='popupContent' id='popupContent' rows=15 cols=70 richtext=true> ${datalayer.popupContent!} </@input>
+						</@formGroup>
+						<@formGroup rows=2>
+							<@actionButtons button1Name='action_createDataLayer' button2Name='view_manageDataLayer' />
+						</@formGroup>
+					</@columns>
+				</@row>
 			</@tform>
 		</@div>
 	</@pageColumn>
