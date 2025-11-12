@@ -25,7 +25,7 @@
                         <@td>${reflist_data_layer[datalayermaptemplate.idDataLayer?c]}</@td>
                         <@td>${reflist_data_layer_type[datalayermaptemplate.layerType?c]}</@td>
                         <@td>
-                            <@aButton href='jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp?view=modifyDataLayerMapTemplate&id=${datalayermaptemplate.id}' title='#i18n{portal.util.labelModify}' buttonIcon='pencil' />
+                            <@aButton href='jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp?view=modifyDataLayerMapTemplate&id=${datalayermaptemplate.id}' title='#i18n{portal.util.labelModify}' buttonIcon='pencil' hideTitle=['all'] />
                             <@aButton href='jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp?action=confirmRemoveDataLayerMapTemplate&id=${datalayermaptemplate.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='danger'  />
                         </@td>
                     </@tr>

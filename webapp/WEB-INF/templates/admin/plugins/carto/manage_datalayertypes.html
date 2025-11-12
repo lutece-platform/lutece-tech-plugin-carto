@@ -27,7 +27,7 @@
                         <@td><#if datalayertype.exclusion>#i18n{portal.util.labelYes}<#else>#i18n{portal.util.labelNo}</#if></@td>
                         <@td><#if datalayertype.searchableByOthers>#i18n{portal.util.labelYes}<#else>#i18n{portal.util.labelNo}</#if></@td>
                         <@td>
-                            <@offcanvas targetUrl="jsp/admin/plugins/carto/ManageDataLayerTypes.jsp?view=modifyDataLayerType&id=${datalayertype.id}" targetElement="#modify_datalayertype" id="template-modify-datalayertype-${datalayertype.id}" title="#i18n{portal.util.labelModify}" btnTitle="#i18n{portal.util.labelModify}" btnIcon="pencil" btnSize="" position="end" size="half" />
+                            <@offcanvas targetUrl="jsp/admin/plugins/carto/ManageDataLayerTypes.jsp?view=modifyDataLayerType&id=${datalayertype.id}" targetElement="#modify_datalayertype" id="template-modify-datalayertype-${datalayertype.id}" title="#i18n{portal.util.labelModify}" btnTitle="#i18n{portal.util.labelModify}" btnIcon="pencil" btnSize="" position="end" size="half" hideTitle=['all'] />
                             <@aButton href='jsp/admin/plugins/carto/ManageDataLayerTypes.jsp?action=confirmRemoveDataLayerType&id=${datalayertype.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='danger'  />
                         </@td>
                     </@tr>
