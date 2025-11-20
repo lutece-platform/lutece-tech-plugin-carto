@@ -24,20 +24,20 @@
 				<@input type='number' id='zoom_min' name='zoom_min'  value='${maptemplate.zoomMin!\'\'}' />
 			</@formGroup>
 			
-			<@formGroup labelFor='zoom_max' labelKey='#i18n{carto.modify_maptemplate.labelZoomMax}' mandatory=true rows=2>
+			<@formGroup labelFor='zoom_max' labelKey='#i18n{carto.modify_maptemplate.labelZoomMax}' mandatory=true>
 				<@input type='number' id='zoom_max' name='zoom_max'  value='${maptemplate.zoomMax!\'\'}' />
 			</@formGroup>
 			
-			<@formGroup labelFor='front_office' labelKey='#i18n{carto.modify_maptemplate.labelFrontOffice}' hideLabel=['all'] class='ms-3 mt-4' mandatory=true  rows=2>
+			<@formGroup labelFor='front_office' labelKey='#i18n{carto.modify_maptemplate.labelFrontOffice}' hideLabel=['all'] mandatory=true>
 				<@checkBox id='front_office' name='front_office' labelKey='#i18n{carto.modify_maptemplate.labelFrontOffice}' orientation='switch' value='1' checked=maptemplate.frontOffice!'false' />
 			</@formGroup>
 			
-			<@formGroup labelFor='center_map' labelKey='#i18n{carto.modify_maptemplate.labelCenterMap}' class='ms-3' mandatory=true rows=2>
+			<@formGroup labelFor='center_map' labelKey='#i18n{carto.modify_maptemplate.labelCenterMap}' mandatory=true>
 				<@input type='text' id='center_map' name='center_map'  maxlength=255 value='${maptemplate.centerMap!\'\'}' />
-				<@input type='hidden' id='4_idAddress' name='4_idAddress'  value="" />
+				<@input type='hidden' id='4_idAddress' name='4_idAddress'  value='' />
 				<@input type='hidden' id='center_map_x' name='center_map_x'  value='${maptemplate.centerMapX!0?c}' />
-				<@input type='hidden' id='center_map_y' name='center_map_y'  value="${maptemplate.centerMapY!0?c}" />
-				<@input type='hidden' id='4_geometry' name='4_geometry'  value="" />
+				<@input type='hidden' id='center_map_y' name='center_map_y'  value='${maptemplate.centerMapY!0?c}' />
+				<@input type='hidden' id='4_geometry' name='4_geometry' value='' />
 			</@formGroup>
 			
 			<@formGroup>
