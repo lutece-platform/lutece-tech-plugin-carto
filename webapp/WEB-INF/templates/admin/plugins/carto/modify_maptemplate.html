@@ -1,10 +1,6 @@
 <@pageContainer>
     <@pageColumn>
-        <@pageHeader title='#i18n{carto.modify_maptemplate.title}'>
-            <@tform class='form-inline pull-right' name='manage_datalayermaptemplate' action='jsp/admin/plugins/carto/ManageDataLayerMapTemplates.jsp'>
-                <@button type='submit' name='view_createDataLayerMapTemplate' buttonIcon='plus' title='#i18n{carto.manage_datalayermaptemplate.buttonAdd}' />
-            </@tform>
-	    </@pageHeader>
+        <@pageHeader title='#i18n{carto.modify_maptemplate.title}' />
         <@messages errors=errors />
         <@tform method="post" name="modify_maptemplate" action="jsp/admin/plugins/carto/ManageMapTemplates.jsp" boxed=true>
 			<@input type="hidden" id="id" name="id" value="${maptemplate.id}"/>
