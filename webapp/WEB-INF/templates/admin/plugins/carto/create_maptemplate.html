@@ -30,7 +30,7 @@
 				<@input type='number' id='zoom_max' name='zoom_max'  value='${maptemplate.zoomMax!\'\'}' />
 			</@formGroup>
 			
-			<@formGroup labelFor='front_office' labelKey='#i18n{carto.modify_maptemplate.labelFrontOffice}' hideLabel=['all'] mandatory=true>
+			<@formGroup labelFor='front_office' labelKey='#i18n{carto.modify_maptemplate.labelFrontOffice}' mandatory=true>
 				<@checkBox id='front_office' name='front_office' labelKey='#i18n{carto.modify_maptemplate.labelFrontOffice}' orientation='switch' value='1' checked=maptemplate.frontOffice!'false' />
 			</@formGroup>
 			
