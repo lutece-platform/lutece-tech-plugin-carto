@@ -2,7 +2,7 @@
 <@pageContainer>
     <@pageColumn>
         <@pageHeader title='#i18n{carto.manage_datalayertype.title}'>
-            <@offcanvas targetUrl="jsp/admin/plugins/carto/ManageDataLayerTypes.jsp?view_createDataLayerType" targetElement="#new_datalayertype" id="template-create-datalayertyp" title="#i18n{carto.manage_datalayertype.buttonAdd}" btnTitle="#i18n{carto.manage_datalayertype.buttonAdd}" btnIcon="plus" btnSize="" position="end" size="half" />
+            <@aButton href='jsp/admin/plugins/carto/ManageDataLayerTypes.jsp?view=createDataLayerType' id="template-create-datalayertyp" title='#i18n{carto.manage_datalayertype.buttonAdd}' buttonIcon='plus' size='' iconPosition='left' />
 	    </@pageHeader>   
         <@tabs>
             <@tabsReferentiel tab="datalayertype" />
@@ -27,7 +27,7 @@
                         <@td><#if datalayertype.exclusion>#i18n{portal.util.labelYes}<#else>#i18n{portal.util.labelNo}</#if></@td>
                         <@td><#if datalayertype.searchableByOthers>#i18n{portal.util.labelYes}<#else>#i18n{portal.util.labelNo}</#if></@td>
                         <@td>
-                            <@offcanvas targetUrl="jsp/admin/plugins/carto/ManageDataLayerTypes.jsp?view=modifyDataLayerType&id=${datalayertype.id}" targetElement="#modify_datalayertype" id="template-modify-datalayertype-${datalayertype.id}" title="#i18n{portal.util.labelModify}" btnTitle="#i18n{portal.util.labelModify}" btnIcon="pencil" btnSize="" position="end" size="half" hideTitle=['all'] />
+                            <@aButton href='jsp/admin/plugins/carto/ManageDataLayerTypes.jsp?view=modifyDataLayerType&id=${datalayertype.id}' title='#i18n{portal.util.labelModify}' buttonIcon='pencil' hideTitle=['all'] />
                             <@aButton href='jsp/admin/plugins/carto/ManageDataLayerTypes.jsp?action=confirmRemoveDataLayerType&id=${datalayertype.id}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' hideTitle=['all'] color='danger'  />
                         </@td>
                     </@tr>
