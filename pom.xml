@@ -12,7 +12,7 @@
     <artifactId>plugin-carto</artifactId>
     <packaging>lutece-plugin</packaging>
     
-    <version>1.0.2</version>
+    <version>1.0.3-SNAPSHOT</version>
     <name>Lutece carto plugin</name>
 
     <repositories>
